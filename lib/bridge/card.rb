@@ -8,7 +8,7 @@ module Bridge
 
     @all = []
 
-    Strain.card.each do |suit|
+    Strain.suits.each do |suit|
       Rank.all.each do |rank|
         @all << new(rank, suit).freeze
       end

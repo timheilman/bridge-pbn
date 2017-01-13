@@ -43,7 +43,7 @@ module Bridge
     def short_points trump=nil
       by_suit = cards.group_by(&:suit)
 
-      Strain.card.reduce(0) do |memo, suit|
+      Strain.suits.reduce(0) do |memo, suit|
         if suit == trump # don't count short in trump
           memo
         else

@@ -18,14 +18,14 @@ module Bridge
     NoTrump = new(4, :no_trump ).freeze
 
     @all = [Club,Diamond,Heart,Spade,NoTrump].sort.freeze
-    @card = (@all - [NoTrump]).freeze
+    @suits = (@all - [NoTrump]).freeze
 
     def self.all
       @all
     end
 
-    def self.card # suits that can be used on cards
-      @card
+    def self.suits # suits that can be used on cards
+      @suits
     end
 
     def initialize(*args)

@@ -19,15 +19,15 @@ RSpec.describe Bridge::Strain do
     end
   end
 
-  describe ".card" do
+  describe ".suits" do
     it "gives an array of suits" do
-      result = described_class.card
+      result = described_class.suits
       expect(result).to be_a Array
       expect(result.map(&:class).uniq).to match_array [Bridge::Strain]
     end
 
     it "does not include notrump" do
-      expect(described_class.card).not_to include Bridge::Strain::NoTrump
+      expect(described_class.suits).not_to include Bridge::Strain::NoTrump
     end
   end
 

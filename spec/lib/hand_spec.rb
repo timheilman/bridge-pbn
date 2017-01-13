@@ -15,7 +15,7 @@ RSpec.describe Bridge::Hand do
     context "with no short suits" do
       let(:cards) do
         lengths = [4,3,3,3]
-        Bridge::Strain.card.map do |suit|
+        Bridge::Strain.suits.map do |suit|
           low_by_suit[suit].sample(lengths.pop)
         end.flatten
       end
@@ -27,7 +27,7 @@ RSpec.describe Bridge::Hand do
     context "with one doubleton suit" do
       let(:cards) do
         lengths = [4,4,3,2]
-        Bridge::Strain.card.map do |suit|
+        Bridge::Strain.suits.map do |suit|
           low_by_suit[suit].sample(lengths.pop)
         end.flatten
       end
@@ -39,7 +39,7 @@ RSpec.describe Bridge::Hand do
     context "with one singleton suit" do
       let(:cards) do
         lengths = [4,4,4,1]
-        Bridge::Strain.card.map do |suit|
+        Bridge::Strain.suits.map do |suit|
           low_by_suit[suit].sample(lengths.pop)
         end.flatten
       end
@@ -51,7 +51,7 @@ RSpec.describe Bridge::Hand do
     context "with one void suit" do
       let(:cards) do
         lengths = [5,4,4,0]
-        Bridge::Strain.card.map do |suit|
+        Bridge::Strain.suits.map do |suit|
           low_by_suit[suit].sample(lengths.pop)
         end.flatten
       end
@@ -63,7 +63,7 @@ RSpec.describe Bridge::Hand do
     context "with one of each short suit" do
       let(:cards) do
         lengths = [9,2,1,0]
-        suits = Bridge::Strain.card
+        suits = Bridge::Strain.suits
         suits.map do |suit|
           low_by_suit[suit].sample(lengths.shift)
         end.flatten + high_by_suit[suits.first].sample(1)
@@ -74,10 +74,10 @@ RSpec.describe Bridge::Hand do
     end
 
     context "with a trump suit" do
-      let(:trump) { Bridge::Strain.card.first }
+      let(:trump) { Bridge::Strain.suits.first }
       let(:cards) do
         lengths = [9,2,1,0]
-        suits = Bridge::Strain.card
+        suits = Bridge::Strain.suits
         suits.map do |suit|
           low_by_suit[suit].sample(lengths.pop)
         end.flatten + high_by_suit[suits.last].sample(1)
@@ -157,7 +157,7 @@ RSpec.describe Bridge::Hand do
     context "with no long suit" do
       let(:cards) do
         lengths = [4,3,3,3]
-        Bridge::Strain.card.map do |suit|
+        Bridge::Strain.suits.map do |suit|
           low_by_suit[suit].sample(lengths.pop)
         end.flatten
       end
@@ -169,7 +169,7 @@ RSpec.describe Bridge::Hand do
     context "with one somewhat long suit" do
       let(:cards) do
         lengths = [6,2,2,3]
-        Bridge::Strain.card.map do |suit|
+        Bridge::Strain.suits.map do |suit|
           low_by_suit[suit].sample(lengths.pop)
         end.flatten
       end

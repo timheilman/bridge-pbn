@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Bridge::Suit do
+RSpec.describe Bridge::Strain do
   all = %i{Club Diamond Heart Spade NoTrump}.map { |c| described_class.const_get c }
 
   describe ".new" do
@@ -15,7 +15,7 @@ RSpec.describe Bridge::Suit do
     it "gives an array of suits" do
       result = described_class.all
       expect(result).to be_a Array
-      expect(result.map(&:class).uniq).to match_array [Bridge::Suit]
+      expect(result.map(&:class).uniq).to match_array [Bridge::Strain]
     end
   end
 
@@ -23,11 +23,11 @@ RSpec.describe Bridge::Suit do
     it "gives an array of suits" do
       result = described_class.card
       expect(result).to be_a Array
-      expect(result.map(&:class).uniq).to match_array [Bridge::Suit]
+      expect(result.map(&:class).uniq).to match_array [Bridge::Strain]
     end
 
     it "does not include notrump" do
-      expect(described_class.card).not_to include Bridge::Suit::NoTrump
+      expect(described_class.card).not_to include Bridge::Strain::NoTrump
     end
   end
 

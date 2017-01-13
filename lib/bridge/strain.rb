@@ -1,5 +1,5 @@
 module Bridge
-  class Suit < Struct.new(:order, :key)
+  class Strain < Struct.new(:order, :key)
     include Comparable
 
     def <=> other

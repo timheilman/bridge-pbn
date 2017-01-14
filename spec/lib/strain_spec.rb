@@ -32,11 +32,11 @@ RSpec.describe Bridge::Strain do
   end
 
   describe "#>" do
-    described_class.all.each do |suit|
-      context "with #{suit} as the reciever" do
-        subject(:left) { suit }
+    described_class.all.each do |strain|
+      context "with #{strain} as the receiver" do
+        subject(:left) { strain }
 
-        lower = all.take_while { |x| x != suit }.each do |right|
+        lower = all.take_while { |x| x != strain }.each do |right|
           it "is true for #{right}" do
             expect(left > right).to be true
           end
@@ -52,11 +52,11 @@ RSpec.describe Bridge::Strain do
   end
 
   describe "#<" do
-    described_class.all.each do |suit|
-      context "with #{suit} as the reciever" do
-        subject(:left) { suit }
+    described_class.all.each do |strain|
+      context "with #{strain} as the receiver" do
+        subject(:left) { strain }
 
-        lower = (all.take_while { |x| x != suit } + [suit]).each do |right|
+        lower = (all.take_while { |x| x != strain } + [strain]).each do |right|
           it "is false for #{right}" do
             expect(left < right).to be false
           end

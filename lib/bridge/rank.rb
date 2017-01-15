@@ -39,6 +39,23 @@ module Bridge
       @all
     end
 
+    def self.rankForLetter letter
+      case letter
+        when 'T'
+          Bridge::Rank::Ten
+        when 'J'
+          Bridge::Rank::Jack
+        when 'Q'
+          Bridge::Rank::Queen
+        when 'K'
+          Bridge::Rank::King
+        when 'A'
+          Bridge::Rank::Ace
+        else
+          const_get(NAME_MAP[letter.to_i].capitalize.to_sym)
+      end
+    end
+
     def initialize(*args)
       raise NoMethodError, "Cannot initialize a new rank"
     end

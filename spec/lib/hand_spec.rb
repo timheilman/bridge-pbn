@@ -1,89 +1,87 @@
+def setup_zero_hcp_shape(lengths)
+  let(:cards) do
+    Bridge::Strain.suits.map do |suit|
+      low_by_suit[suit].sample(lengths.pop)
+    end.flatten
+  end
+end
+
+def setup_specific_hand(pbnHandNotation)
+  let(:cards) do
+    #todo: split out this body to production code, potentially (for the practice) into object which passes suit
+    #to a fellow member function; this will be involved in PBN import
+    pbnHandNotation.split(/\./).reduce([]) do |memo, hand|
+      suit = Bridge::Strain.suits[-memo.length-1]
+
+      memo << hand.split(//).reduce([]) do |innermemo, rankOfSuit|
+        innermemo << Bridge::Card.for(ranks: [Bridge::Rank.forLetter(rankOfSuit)], suits: [suit])
+      end
+    end.flatten
+  end
+end
+
 RSpec.describe Bridge::Hand do
-  let(:low_cards)    { Bridge::Card.for(ranks:    Bridge::Rank::Two..Bridge::Rank::Ten)                   }
-  let(:high_by_suit) { Bridge::Card.for(ranks:    Bridge::Rank::Jack..Bridge::Rank::Ace).group_by(&:suit) }
-  let(:low_by_suit)  { low_cards.group_by(&:suit) }
+  let(:low_cards) { Bridge::Card.for(ranks: Bridge::Rank::Two..Bridge::Rank::Ten) }
+  let(:high_by_suit) { Bridge::Card.for(ranks: Bridge::Rank::Jack..Bridge::Rank::Ace).group_by(&:suit) }
+  let(:low_by_suit) { low_cards.group_by(&:suit) }
 
-  let(:aces)   { Bridge::Card.for(ranks: [Bridge::Rank::Ace])   }
-  let(:kings)  { Bridge::Card.for(ranks: [Bridge::Rank::King])  }
+  let(:aces) { Bridge::Card.for(ranks: [Bridge::Rank::Ace]) }
+  let(:kings) { Bridge::Card.for(ranks: [Bridge::Rank::King]) }
   let(:queens) { Bridge::Card.for(ranks: [Bridge::Rank::Queen]) }
-  let(:jacks)  { Bridge::Card.for(ranks: [Bridge::Rank::Jack])  }
+  let(:jacks) { Bridge::Card.for(ranks: [Bridge::Rank::Jack]) }
 
-  let(:cards) { Brige::Card.all.sample(13) }
+  let(:cards) { Bridge::Card.all.sample(13) }
   subject(:hand) { described_class.new cards }
 
-  describe "#short_points" do
+  describe "#shortness_points" do
     context "with no short suits" do
-      let(:cards) do
-        lengths = [4,3,3,3]
-        Bridge::Strain.suits.map do |suit|
-          low_by_suit[suit].sample(lengths.pop)
-        end.flatten
-      end
-      it "returns no short points" do
-        expect(subject.short_points).to eq(0)
+      setup_zero_hcp_shape([4, 3, 3, 3])
+      it "returns no shortness points" do
+        expect(subject.shortness_points).to eq(0)
       end
     end
 
     context "with one doubleton suit" do
-      let(:cards) do
-        lengths = [4,4,3,2]
-        Bridge::Strain.suits.map do |suit|
-          low_by_suit[suit].sample(lengths.pop)
-        end.flatten
-      end
-      it "returns 1 short point" do
-        expect(subject.short_points).to eq(1)
+      setup_zero_hcp_shape([4, 4, 3, 2])
+      it "returns 1 shortness point" do
+        expect(subject.shortness_points).to eq(1)
       end
     end
 
     context "with one singleton suit" do
-      let(:cards) do
-        lengths = [4,4,4,1]
-        Bridge::Strain.suits.map do |suit|
-          low_by_suit[suit].sample(lengths.pop)
-        end.flatten
-      end
-      it "returns 3 short points" do
-        expect(subject.short_points).to eq(3)
+      setup_zero_hcp_shape([4, 4, 4, 1])
+      it "returns 3 shortness points" do
+        expect(subject.shortness_points).to eq(3)
       end
     end
 
     context "with one void suit" do
-      let(:cards) do
-        lengths = [5,4,4,0]
-        Bridge::Strain.suits.map do |suit|
-          low_by_suit[suit].sample(lengths.pop)
-        end.flatten
-      end
-      it "returns 5 short points" do
-        expect(subject.short_points).to eq(5)
+      setup_zero_hcp_shape([5, 4, 4, 0])
+      it "returns 5 shortness points" do
+        expect(subject.shortness_points).to eq(5)
       end
     end
 
     context "with one of each short suit" do
-      let(:cards) do
-        lengths = [9,2,1,0]
-        suits = Bridge::Strain.suits
-        suits.map do |suit|
-          low_by_suit[suit].sample(lengths.shift)
-        end.flatten + high_by_suit[suits.first].sample(1)
-      end
-      it "returns 9 short points" do
-        expect(subject.short_points).to eq(9)
+      setup_specific_hand('23456789TJ.23.2.')
+      it "returns 9 shortness points" do
+        expect(subject.shortness_points).to eq(9)
       end
     end
 
-    context "with a trump suit" do
-      let(:trump) { Bridge::Strain.suits.first }
-      let(:cards) do
-        lengths = [9,2,1,0]
-        suits = Bridge::Strain.suits
-        suits.map do |suit|
-          low_by_suit[suit].sample(lengths.pop)
-        end.flatten + high_by_suit[suits.last].sample(1)
+    context "with spades as trump" do
+      setup_specific_hand('23456789TJ.23.2.')
+      let(:trump) { Bridge::Strain::Spade }
+      it "does count voids outside trumps" do
+        expect(subject.shortness_points trump).to eq(9)
       end
-      it "returns does not count a void in trump" do
-        expect(subject.short_points).to eq(9)
+    end
+
+    context "with clubs as trump" do
+      setup_specific_hand('23456789TJ.23.2.')
+      let(:trump) { Bridge::Strain::Club }
+      it "doesn't count voids in trump" do
+        expect(subject.shortness_points trump).to eq(4)
       end
     end
   end
@@ -146,36 +144,54 @@ RSpec.describe Bridge::Hand do
     end
   end
 
-  describe "#long_points" do
+  describe "#length_points" do
     context "with all hearts" do
       let(:cards) { low_by_suit[Bridge::Strain::Heart] + high_by_suit[Bridge::Strain::Heart] }
-      it "gives 9 long points" do
-        expect(subject.long_points).to eq(9)
+      it "gives 9 length points" do
+        expect(subject.length_points).to eq(9)
       end
     end
 
     context "with no long suit" do
-      let(:cards) do
-        lengths = [4,3,3,3]
-        Bridge::Strain.suits.map do |suit|
-          low_by_suit[suit].sample(lengths.pop)
-        end.flatten
-      end
-      it "returns no long points" do
-        expect(subject.long_points).to eq(0)
+      setup_zero_hcp_shape([4, 3, 3, 3])
+      it "returns no length points" do
+        expect(subject.length_points).to eq(0)
       end
     end
 
     context "with one somewhat long suit" do
-      let(:cards) do
-        lengths = [6,2,2,3]
-        Bridge::Strain.suits.map do |suit|
-          low_by_suit[suit].sample(lengths.pop)
-        end.flatten
+      setup_zero_hcp_shape([6, 2, 2, 3])
+      it "returns 2 length points" do
+        expect(subject.length_points).to eq(2)
       end
-      it "returns 2 long points" do
-        expect(subject.long_points).to eq(2)
-      end
+    end
+  end
+
+  aceOfSpades = Bridge::Card.for(suits: [Bridge::Strain::Spade], ranks: [Bridge::Rank::Ace]).first
+  twoOfSpades = Bridge::Card.for(suits: [Bridge::Strain::Spade], ranks: [Bridge::Rank::Two]).first
+
+  describe "#play" do
+    setup_specific_hand('AKQJ.AKQJ.AKQ.AK')
+    it "places the card in played" do
+      subject.play(aceOfSpades)
+      expect(subject.played).to eq([aceOfSpades])
+    end
+    it "fails for a card he doesn't have" do
+      expect { subject.play(twoOfSpades) }.to raise_error(ArgumentError, /does not have/)
+    end
+    it "fails when the same card is played again" do
+      expect { 2.times { subject.play(aceOfSpades) } }.to raise_error(ArgumentError, /already played/)
+    end
+  end
+
+  describe "#remaining" do
+    setup_specific_hand('AKQJ.AKQJ.AKQ.AK')
+    it "initially has everything remaining" do
+      expect(subject.remaining).to eq(cards)
+    end
+    it "has the remainder after a play" do
+      subject.play(aceOfSpades)
+      expect(subject.remaining).to eq(cards - [aceOfSpades])
     end
   end
 end

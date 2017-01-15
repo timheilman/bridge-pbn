@@ -31,8 +31,8 @@ module Bridge
       cards - Array(played)
     end
 
-    def long_points
-      @long_points ||= begin
+    def length_points
+      @length_points ||= begin
                          by_suit = cards.group_by(&:suit)
                          by_suit.values.reduce(0) do |memo,suit|
                            memo + [suit.length - 4, 0].max
@@ -40,7 +40,7 @@ module Bridge
                        end
     end
 
-    def short_points trump=nil
+    def shortness_points trump=nil
       by_suit = cards.group_by(&:suit)
 
       Strain.suits.reduce(0) do |memo, suit|

@@ -39,7 +39,10 @@ module Bridge
       @all
     end
 
-    def self.rankForLetter letter
+    #intent: match PBN import format. Pro: convenience Con: import format strewn
+    #todo: Move this method into composed Rank field? Inject that singleton object (class?) into all domain classes
+    #requiring PBN import?
+    def self.forLetter letter
       case letter
         when 'T'
           Bridge::Rank::Ten

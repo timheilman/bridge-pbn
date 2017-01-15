@@ -8,11 +8,13 @@ end
 
 def setup_specific_hand(pbnHandNotation)
   let(:cards) do
+    #todo: split out this body to production code, potentially (for the practice) into object which passes suit
+    #to a fellow member function; this will be involved in PBN import
     pbnHandNotation.split(/\./).reduce([]) do |memo, hand|
       suit = Bridge::Strain.suits[-memo.length-1]
 
       memo << hand.split(//).reduce([]) do |innermemo, rankOfSuit|
-        innermemo << Bridge::Card.for(ranks: [Bridge::Rank.rankForLetter(rankOfSuit)], suits: [suit])
+        innermemo << Bridge::Card.for(ranks: [Bridge::Rank.forLetter(rankOfSuit)], suits: [suit])
       end
     end.flatten
   end

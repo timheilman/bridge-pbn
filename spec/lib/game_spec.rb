@@ -4,9 +4,9 @@ require 'spec_helper'
 RSpec.describe Bridge::Game do
   subject(:game) { described_class.random }
   describe ".random" do
-    # it "generates a new game" do
-    #   expect(described_class.random).to be_a Bridge::Game
-    # end
+    it 'has four members' do
+      expect(game.length).to eq(4);
+    end
   end
 
 end

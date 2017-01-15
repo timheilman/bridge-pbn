@@ -39,9 +39,8 @@ module Bridge
       @all
     end
 
-    #intent: match PBN import format. Pro: convenience Con: import format strewn
-    #todo: Move this method into composed Rank field? Inject that singleton object (class?) into all domain classes
-    #requiring PBN import?
+    #intent: match PBN import format. Pro: convenience Con: import format strewn across domain classes.
+    # Still, reflection makes it a pain to move this outside this class.  Maybe still move to Pbn?
     def self.forLetter letter
       case letter
         when 'T'

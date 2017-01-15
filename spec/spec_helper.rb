@@ -1,4 +1,5 @@
 require 'bridge'
+require 'simplecov'
 
 RSpec.configure do |config|
 
@@ -18,3 +19,5 @@ RSpec.configure do |config|
   config.order = :random
   config.alias_it_should_behave_like_to :it_has_behaviour, 'has behavior'
 end
+
+SimpleCov.start

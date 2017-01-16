@@ -5,4 +5,5 @@ module Bridge
   autoload :Rank,   File.expand_path('../bridge/rank',   __FILE__)
   autoload :Hand,   File.expand_path('../bridge/hand',   __FILE__)
   autoload :Player, File.expand_path('../bridge/player', __FILE__)
+  autoload :Handler, File.expand_path('../bridge/handler', __FILE__)
 end

@@ -31,9 +31,9 @@ module Bridge
 
     def self.each_game(io)
       record = ''
-      comment_open = false
+      comment_is_open = false
       io.each do |line|
-        if comment_open
+        if comment_is_open
           record << line
         elsif line =~ SEMI_EMPTY_LINE
           yield record
@@ -41,22 +41,28 @@ module Bridge
         else
           record << line
         end
-        comment_open = comment_open_after_end_of_line line, comment_open
+        comment_is_open = comment_open_after_end_of_line? line, comment_is_open
       end
       yield record unless record.empty?
     end
 
     private
 
-    def self.comment_open_after_end_of_line(line, comment_open)
-      #todo: at writing, known incorrect; see todos in spec, but law 3 of TDD is satisfied now
-      if line =~ MULTILINE_COMMENT_OPEN
-        return true
+    def self.comment_open_after_end_of_line?(line, comment_is_open)
+      is_first_char_of_line = true
+      last_char = nil
+      line.split(//).each do |char|
+        # see section 3.8 "Commentary"
+        if char == '{' && (is_first_char_of_line == true || last_char == ' ')
+          comment_is_open = true
+        end
+        if char == '}'
+          comment_is_open = false
+        end
+        is_first_char_of_line = false
+        last_char = char
       end
-      if line =~ MULTILINE_COMMENT_CLOSE
-        return false
-      end
-      return comment_open
+      return comment_is_open
     end
 
     def self.hand_index_for_pgn_character(firstPosition)

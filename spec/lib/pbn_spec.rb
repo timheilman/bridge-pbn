@@ -79,6 +79,8 @@ RSpec.describe Bridge::Pbn do
 
   THREE_TEST_RECORDS_FILE = 'spec/resource/three_test_records.pbn'
   EMPTY_LINE_IN_COMMENT_FILE = 'spec/resource/test_record_with_empty_line_in_comment.pbn'
+  SINGLE_CURLY_COMMENT_FILE = 'spec/resource/test_record_with_single_line_curly_comment.pbn'
+  LOTS_OF_CURLIES_FILE = 'spec/resource/test_record_with_single_line_curly_comment.pbn'
   describe '.each_game' do
     context 'with three valid test records and no multiline comments' do
       it 'passes a total of three games to the given block' do
@@ -118,10 +120,20 @@ RSpec.describe Bridge::Pbn do
           described_class.each_game(File.open(EMPTY_LINE_IN_COMMENT_FILE), &block)
         end.to yield_control.once
       end
-
+    context 'with two valid test records, yet one with a single-line curly-comment' do
+      it 'passes two games to the given block' do
+        expect do |block|
+          described_class.each_game(File.open(SINGLE_CURLY_COMMENT_FILE), &block)
+        end.to yield_control.exactly(2).times
+      end
     end
-    #todo: don't forget to test situations like a line with { {} { on it
-    #maybe break it down to testing comment_open_after_end_of_line
-    #and with "{ foo"; and "foo }"; now the foo is dropped
+      context 'with two valid test records, yet with lots of curlies for good measure' do
+        it 'passes two games to the given block' do
+          expect do |block|
+            described_class.each_game(File.open(LOTS_OF_CURLIES_FILE), &block)
+          end.to yield_control.exactly(2).times
+        end
+      end
+    end
   end
 end

@@ -34,15 +34,15 @@ module Bridge
         else
           record << line
         end
-        comment_is_open = comment_open_after_end_of_line? line, comment_is_open
+        comment_is_open = comment_open_after_eol? line, comment_is_open
       end
       yield record unless record.empty?
     end
 
     private
 
-    def self.hand_index_for_pgn_character(firstPosition)
-      case firstPosition
+    def self.hand_index_for_pgn_character(first_position)
+      case first_position
         when 'N'
           0
         when 'E'
@@ -51,13 +51,15 @@ module Bridge
           2
         when 'W'
           3
+        else
+          raise ArgumentException('bad "first" character for pgn deal string')
       end
     end
 
-    def self.make_array_of_hands(hands, startingHandIndex)
+    def self.make_array_of_hands(hands, starting_hand_index)
       hands.split(' ').reduce([]) do |array_of_hands, pbn_hand_string|
         array_of_hands << (pbn_hand_string == '-' ? nil : Pbn.hand(pbn_hand_string))
-      end.rotate(startingHandIndex)
+      end.rotate(starting_hand_index)
     end
 
     def self.cards_for_single_suit(ranks_string, suit)
@@ -66,7 +68,7 @@ module Bridge
       end
     end
 
-    def self.comment_open_after_end_of_line?(line, comment_is_open)
+    def self.comment_open_after_eol?(line, comment_is_open)
       is_first_char_of_line = true
       last_char = nil
       line.split(//).each do |char|

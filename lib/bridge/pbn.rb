@@ -5,7 +5,7 @@ module Bridge
     def self.deal(pbn_deal_string)
       pbn_deal_string.split(':').reduce(-1) do |startingHandIndex, firstOrHands|
         if startingHandIndex == -1
-          hand_index_for_pgn_character(firstOrHands)
+          hand_index_for_first_character(firstOrHands)
         else
           make_array_of_hands(firstOrHands, startingHandIndex)
         end
@@ -19,14 +19,28 @@ module Bridge
       end.flatten
     end
 
-    # see section 3 "Game layout" and section 3.8 "Commentary"
-    SEMI_EMPTY_LINE = /^[\t ]*$/
+    def self.import_games(io)
+      # games = []
+      # each_game_string(io) do |pbn_game_string|
+      #   # lex first!
+      #   #game_parser = Bridge::PbnGameParser.new(DealTagHandler.new)
+      #   #games << pbn_game_string.each_line do |pbn_game_line|
+      #     #game_parser.handle(pbn_game_line)
+      #   #end
+      # end
+    end
 
-    def self.each_game(io)
+    # see sections 2.4 "Escape Mechanism", 3 "Game layout", and 3.8 "Commentary"
+    SEMI_EMPTY_LINE = /^[\t ]*$/
+    PBN_ESCAPED_LINE = /^%/ # see section 2.4; do not confuse with Commentary from section 3.8
+    def self.each_game_string(io)
       record = ''
       comment_is_open = false
       io.each do |line|
-        if comment_is_open
+        if line =~ PBN_ESCAPED_LINE
+          # potential site for processing of future directives in exported PBN files from this project
+          next
+        elsif comment_is_open
           record << line
         elsif line =~ SEMI_EMPTY_LINE
           yield record
@@ -41,7 +55,7 @@ module Bridge
 
     private
 
-    def self.hand_index_for_pgn_character(first_position)
+    def self.hand_index_for_first_character(first_position)
       case first_position
         when 'N'
           0

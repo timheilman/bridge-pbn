@@ -10,7 +10,7 @@ def cards_for(*cards)
   result
 end
 
-def letExpectedHands
+def let_expected_hands
   let(:expectedNHand) {
     cards_for('6H', '3H',
               'AD', 'KD', 'QD', '9D', '8D', '7D',
@@ -35,7 +35,7 @@ end
 RSpec.describe Bridge::Pbn do
 
   describe '.hand' do
-    letExpectedHands
+    let_expected_hands
     let(:hand) { '.63.AKQ987.A9732' }
     it 'returns the hand we expect' do
       expect(Bridge::Pbn.hand(hand)).to eq(expectedNHand)
@@ -43,7 +43,7 @@ RSpec.describe Bridge::Pbn do
   end
 
   describe '.deal' do
-    letExpectedHands
+    let_expected_hands
     context 'with N first' do
       let(:deal) { 'N:.63.AKQ987.A9732 A8654.KQ5.T.QJT6 J973.J98742.3.K4 KQT2.AT.J6542.85' }
 
@@ -85,18 +85,21 @@ RSpec.describe Bridge::Pbn do
     context 'with three valid test records and no multiline comments' do
       it 'passes a total of three games to the given block' do
         expect do |block|
-          described_class.each_game(File.open(THREE_TEST_RECORDS_FILE), &block)
+          described_class.each_game_string(File.open(THREE_TEST_RECORDS_FILE), &block)
         end.to yield_control.exactly(3).times
       end
       subject(:games) do
         result = []
-        described_class.each_game(File.open(THREE_TEST_RECORDS_FILE)) { |game| result << game }
+        described_class.each_game_string(File.open(THREE_TEST_RECORDS_FILE)) { |game| result << game }
         result
+      end
+      it 'discards all escaped lines' do
+        games.each {|game| game.each_line {|line| expect(line).not_to match(/^%/)}}
       end
       it 'has the first line of the first game' do
         first_line = nil
-        games[0].each_line { |line| first_line = line if first_line == nil }
-        expect(first_line).to eq("% PBN 2.1\n")
+        games[0].each_line { |line| first_line = line; break }
+        expect(first_line).to eq("[Event \"\"]\n")
       end
       it 'has the last line of the first game' do
         last_line = nil
@@ -105,7 +108,7 @@ RSpec.describe Bridge::Pbn do
       end
       it 'has the first line of the last game' do
         first_line = nil
-        games[2].each_line { |line| first_line = line if first_line == nil }
+        games[2].each_line { |line| first_line = line; break }
         expect(first_line).to eq("[Event \"\"]\n")
       end
       it 'has the last line of the last game' do
@@ -117,20 +120,20 @@ RSpec.describe Bridge::Pbn do
     context 'with one valid test records a multiline comment containing empty lines' do
       it 'passes exactly one game to the given block' do
         expect do |block|
-          described_class.each_game(File.open(EMPTY_LINE_IN_COMMENT_FILE), &block)
+          described_class.each_game_string(File.open(EMPTY_LINE_IN_COMMENT_FILE), &block)
         end.to yield_control.once
       end
       context 'with two valid test records, yet one with a single-line curly-comment' do
         it 'passes two games to the given block' do
           expect do |block|
-            described_class.each_game(File.open(SINGLE_CURLY_COMMENT_FILE), &block)
+            described_class.each_game_string(File.open(SINGLE_CURLY_COMMENT_FILE), &block)
           end.to yield_control.exactly(2).times
         end
       end
       context 'with two valid test records, yet with lots of curlies for good measure' do
         it 'passes two games to the given block' do
           expect do |block|
-            described_class.each_game(File.open(LOTS_OF_CURLIES_FILE), &block)
+            described_class.each_game_string(File.open(LOTS_OF_CURLIES_FILE), &block)
           end.to yield_control.exactly(2).times
         end
       end

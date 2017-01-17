@@ -83,12 +83,12 @@ RSpec.describe Bridge::Pbn do
     context 'with three valid test records and no multiline comments' do
       it 'passes a total of three games to the given block' do
         expect do |block|
-          described_class.each_game(THREE_TEST_RECORDS_FILE, &block)
+          described_class.each_game(File.open(THREE_TEST_RECORDS_FILE), &block)
         end.to yield_control.exactly(3).times
       end
       subject(:games) do
         result = []
-        described_class.each_game(THREE_TEST_RECORDS_FILE) { |game| result << game }
+        described_class.each_game(File.open(THREE_TEST_RECORDS_FILE)) { |game| result << game }
         result
       end
       it 'has the first line of the first game' do
@@ -115,7 +115,7 @@ RSpec.describe Bridge::Pbn do
     context 'with one valid test records a multiline comment containing empty lines' do
       it 'passes exactly one game to the given block' do
         expect do |block|
-          described_class.each_game(EMPTY_LINE_IN_COMMENT_FILE, &block)
+          described_class.each_game(File.open(EMPTY_LINE_IN_COMMENT_FILE), &block)
         end.to yield_control.once
       end
 

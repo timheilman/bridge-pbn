@@ -1,8 +1,11 @@
 module Bridge
   class Handler
-    attr_accessor :successor
     def initialize(successor)
       @successor = successor
+    end
+
+    def defer(*args, &block)
+      @successor.handle(*args, &block)
     end
   end
 

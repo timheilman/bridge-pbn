@@ -7,7 +7,7 @@ class ConcreteHandler < Bridge::Handler
   end
 
   def handle(handle_arg)
-    handle_arg == @initialization_arg ? :requestHandledSuccessfully : successor.handle(handle_arg)
+    handle_arg == @initialization_arg ? :requestHandledSuccessfully : defer(handle_arg)
   end
 end
 

@@ -120,13 +120,13 @@ RSpec.describe Bridge::Pbn do
           described_class.each_game(File.open(EMPTY_LINE_IN_COMMENT_FILE), &block)
         end.to yield_control.once
       end
-    context 'with two valid test records, yet one with a single-line curly-comment' do
-      it 'passes two games to the given block' do
-        expect do |block|
-          described_class.each_game(File.open(SINGLE_CURLY_COMMENT_FILE), &block)
-        end.to yield_control.exactly(2).times
+      context 'with two valid test records, yet one with a single-line curly-comment' do
+        it 'passes two games to the given block' do
+          expect do |block|
+            described_class.each_game(File.open(SINGLE_CURLY_COMMENT_FILE), &block)
+          end.to yield_control.exactly(2).times
+        end
       end
-    end
       context 'with two valid test records, yet with lots of curlies for good measure' do
         it 'passes two games to the given block' do
           expect do |block|

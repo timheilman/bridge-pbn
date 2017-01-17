@@ -1,0 +1,79 @@
+% PBN 2.1
+% EXPORT
+%Content-type: text/x-pbn; charset=ISO-8859-1
+%Creator: BridgeComposer Version 5.50
+%Created: 08/12/14 08:57:46 Pacific Daylight Time
+%BCOptions Center GutterH GutterV STBorder STShade
+%BidAndCardSpacing Thin
+%BoardsPerPage 18
+%CardTableColors #008000,#ffffff,#aaaaaa
+%EventSpacing 0
+%Font:CardTable "Arial",11,400,0
+%Font:Commentary "Times New Roman",12,400,0
+%Font:Diagram "Times New Roman",12,400,0
+%Font:Event "Times New Roman",12,400,0
+%Font:FixedPitch "Courier New",10,400,0
+%Font:HandRecord "Arial",11,400,0
+%GutterSize 500,500
+%HRTitleDate 2014.08.11
+%HRTitleEvent "Friday Bridge @ the Ladd "
+%HRTitleSetID "ZW-2014-1223-0010"
+%HRTitleSetIDPrefix "ZW"
+%HRTitleSite "Boards 17-36,5 (Test)"
+%HtmlClubs entity,"http://bridgecomposer.com/suitimg/c.gif"
+%HtmlDiamonds entity,"http://bridgecomposer.com/suitimg/d.gif"
+%HtmlHearts entity,"http://bridgecomposer.com/suitimg/h.gif"
+%HtmlNavBar 0.75,#cfe2f3
+%HtmlSpades entity,"http://bridgecomposer.com/suitimg/s.gif"
+%Margins 250,250,250,470
+%PaperSize 1,0,0
+%ParaIndent 0
+%PipColors #000000,#ff0000,#ff0000,#000000
+%PipFont "Symbol","Symbol",2,0xAA,0xA9,0xA8,0xA7
+%ScoreTableColors #e6e6e6,#000000
+%ShowBoardLabels 2
+%ShowCardTable 2
+[Event ""]
+[Site ""]
+[Date ""]
+[Board "1"]
+[West ""]
+[North ""]
+[East ""]
+[South ""]
+[Dealer "N"]
+[Vulnerable "None"]
+[Deal "N:Q.AKJT9873..QJT4 AJ98543.4.AK85.8 K76..643.AK96532 T2.Q652.QJT972.7"]
+{ {} {  comment is open
+
+{ {{{ }[CommentIsClosed ""]
+
+[Scoring ""]
+[Declarer ""]
+[Contract ""]
+[Result ""]
+[BCFlags "1f"]
+[DoubleDummyTricks "63b3c63b3c492a0492a0"]
+[Generator "BridgeComposer Version 5.50"]
+[OptimumScore "EW -300"]
+[OptimumResultTable "Declarer;Denomination\2R;Result\2R"]
+N NT  6
+N  S  3
+N  H 11
+N  D  3
+N  C 12
+S NT  6
+S  S  3
+S  H 11
+S  D  3
+S  C 12
+E NT  4
+E  S  9
+E  H  2
+E  D 10
+E  C  0
+W NT  4
+W  S  9
+W  H  2
+W  D 10
+W  C  0

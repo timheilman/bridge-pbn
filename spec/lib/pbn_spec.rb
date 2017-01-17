@@ -70,10 +70,44 @@ RSpec.describe Bridge::Pbn do
       end
     end
     context 'with hyphens for some hands' do
-      let(:deal) { 'N:- A8654.KQ5.T.QJT6 - KQT2.AT.J6542.85'}
+      let(:deal) { 'N:- A8654.KQ5.T.QJT6 - KQT2.AT.J6542.85' }
       it 'returns nils for hands not specified' do
         expect(Bridge::Pbn.deal deal).to eq([nil, expectedEHand, nil, expectedWHand])
       end
+    end
+  end
+
+  FILENAME = 'spec/resource/three_test_records.pbn'
+  describe '.each_game' do
+    it 'passes a total of three games to the given block' do
+      expect do |block|
+        Bridge::Pbn.each_game('spec/resource/three_test_records.pbn', &block)
+      end.to yield_control.exactly(3).times
+    end
+    subject(:games) do
+      result = []
+      described_class.each_game(FILENAME) { |game| result << game }
+      result
+    end
+    it 'has the first line of the first game' do
+      first_line = nil
+      games[0].each_line { |line| first_line = line if first_line == nil}
+      expect(first_line).to eq("% PBN 2.1\n")
+    end
+    it 'has the last line of the first game' do
+      last_line = nil
+      games[0].each_line { |line| last_line = line }
+      expect(last_line).to eq("W  C  0\n")
+    end
+    it 'has the first line of the last game' do
+      first_line = nil
+      games[2].each_line { |line| first_line = line if first_line == nil}
+      expect(first_line).to eq("[Event \"\"]\n")
+    end
+    it 'has the last line of the last game' do
+      last_line = nil
+      games[2].each_line { |line| last_line = line }
+      expect(last_line).to eq("W  C 11\n")
     end
   end
 end

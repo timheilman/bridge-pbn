@@ -24,6 +24,20 @@ module Bridge
       end.flatten
     end
 
+    def self.each_game(filename)
+      record = ''
+      File.open(filename).each do |line|
+        # see section 3 for regexp
+        if line =~ /^[\t ]*$/
+          yield record
+          record = ''
+        else
+          record << line
+        end
+      end
+      yield record unless record.empty?
+    end
+
     private
 
     def self.hand_index_for_pgn_character(firstPosition)

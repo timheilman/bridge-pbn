@@ -24,18 +24,37 @@ module Bridge
       end.flatten
     end
 
+    # see section 3 "Game layout" and section 3.8 "Commentary"
+    SEMI_EMPTY_LINE = /^[\t ]*$/
+    MULTILINE_COMMENT_OPEN = / {|^{/
+    MULTILINE_COMMENT_CLOSE = /}/
+
     def self.each_game(filename)
       record = ''
+      comment_open = false
       File.open(filename).each do |line|
-        # see section 3 for regexp
-        if line =~ /^[\t ]*$/
+        if comment_open
+          record << line
+        elsif line =~ SEMI_EMPTY_LINE
           yield record
           record = ''
         else
           record << line
         end
+        comment_open = comment_open_after_end_of_line line, comment_open
       end
       yield record unless record.empty?
+    end
+
+    def self.comment_open_after_end_of_line(line, comment_open)
+      #todo: at writing, known incorrect; see todos in spec, but law 3 of TDD is satisfied now
+      if line =~ MULTILINE_COMMENT_OPEN
+        return true
+      end
+      if line =~ MULTILINE_COMMENT_CLOSE
+        return false
+      end
+      return comment_open
     end
 
     private

@@ -31,6 +31,15 @@ RSpec.describe Bridge::Strain do
     end
   end
 
+  describe ".forLetter" do
+    it "gives NoTrump for NT" do
+      expect(described_class.forString('NT')).to eq(Bridge::Strain::NoTrump)
+    end
+    it "gives an error for a bad string" do
+      expect {described_class.forString('not a strain string')}.to raise_error(ArgumentError, /unidentifiable/)
+    end
+  end
+
   describe "#>" do
     described_class.all.each do |strain|
       context "with #{strain} as the receiver" do

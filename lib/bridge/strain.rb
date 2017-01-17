@@ -11,13 +11,13 @@ module Bridge
     end
 
 
-    Club    = new(0, :club     ).freeze
-    Diamond = new(1, :diamond  ).freeze
-    Heart   = new(2, :heart    ).freeze
-    Spade   = new(3, :spade    ).freeze
-    NoTrump = new(4, :no_trump ).freeze
+    Club = new(0, :club).freeze
+    Diamond = new(1, :diamond).freeze
+    Heart = new(2, :heart).freeze
+    Spade = new(3, :spade).freeze
+    NoTrump = new(4, :no_trump).freeze
 
-    @all = [Club,Diamond,Heart,Spade,NoTrump].sort.freeze
+    @all = [Club, Diamond, Heart, Spade, NoTrump].sort.freeze
     @suits = (@all - [NoTrump]).freeze
 
     def self.all
@@ -30,6 +30,23 @@ module Bridge
 
     def initialize(*args)
       raise NoMethodError, "Cannot initialize a new suit"
+    end
+
+    def self.forString strain_string
+      case strain_string
+        when 'C'
+          Bridge::Strain::Club
+        when 'D'
+          Bridge::Strain::Diamond
+        when 'H'
+          Bridge::Strain::Heart
+        when 'S'
+          Bridge::Strain::Spade
+        when 'NT'
+          Bridge::Strain::NoTrump
+        else
+          raise ArgumentError.new 'Got unidentifiable strain strain_string: `' + strain_string + "'"
+      end
     end
   end
 end

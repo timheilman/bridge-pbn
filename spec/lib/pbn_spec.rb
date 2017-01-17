@@ -1,26 +1,11 @@
 require 'spec_helper'
 
-def suit_for(suit)
-  case suit
-    when 'C'
-      Bridge::Strain::Club
-    when 'D'
-      Bridge::Strain::Diamond
-    when 'H'
-      Bridge::Strain::Heart
-    when 'S'
-      Bridge::Strain::Spade
-    else
-      raise ArgumentError.new 'Got unidentifiable suit letter: `' + suit + "'"
-  end
-end
-
 def cards_for(*cards)
   result = []
   cards.each do |rankAndSuit|
     rank = rankAndSuit.split(//)[0]
     suit = rankAndSuit.split(//)[1]
-    result << Bridge::Card.for(suits: [suit_for(suit)], ranks: [Bridge::Rank.forLetter(rank)]).first
+    result << Bridge::Card.for(suits: [Bridge::Strain.forString(suit)], ranks: [Bridge::Rank.forLetter(rank)]).first
   end
   result
 end

@@ -1,26 +1,21 @@
 module Bridge
   # see http://www.tistis.nl/pbn/
   class Pbn
-    # see spec from url at top, section 3.4.11
+    # see section 3.4.11
     def self.deal(pbn_deal_string)
       pbn_deal_string.split(':').reduce(-1) do |startingHandIndex, firstOrHands|
         if startingHandIndex == -1
           hand_index_for_pgn_character(firstOrHands)
         else
-          firstOrHands.split(' ').reduce([]) do |memo, pbn_hand_string|
-            memo << (pbn_hand_string == '-' ? nil : Pbn.hand(pbn_hand_string))
-          end.rotate(startingHandIndex)
+          make_array_of_hands(firstOrHands, startingHandIndex)
         end
       end
     end
 
     def self.hand(pbn_hand_string)
-      pbn_hand_string.split(/\./).reduce([]) do |memo, hand|
-        suit = Bridge::Strain.suits[-memo.length-1]
-
-        memo << hand.split(//).reduce([]) do |innermemo, rankOfSuit|
-          innermemo << Bridge::Card.for(ranks: [Bridge::Rank.forLetter(rankOfSuit)], suits: [suit])
-        end
+      pbn_hand_string.split(/\./).reduce([]) do |cards_per_suit, ranks_string|
+        suit = Bridge::Strain.suits[-cards_per_suit.length-1]
+        cards_per_suit << cards_for_single_suit(ranks_string, suit)
       end.flatten
     end
 
@@ -77,5 +72,18 @@ module Bridge
           3
       end
     end
+
+    def self.make_array_of_hands(hands, startingHandIndex)
+      hands.split(' ').reduce([]) do |array_of_hands, pbn_hand_string|
+        array_of_hands << (pbn_hand_string == '-' ? nil : Pbn.hand(pbn_hand_string))
+      end.rotate(startingHandIndex)
+    end
+
+    def self.cards_for_single_suit(ranks_string, suit)
+      ranks_string.split(//).reduce([]) do |cards, rankOfSuit|
+        cards << Bridge::Card.for(ranks: [Bridge::Rank.forLetter(rankOfSuit)], suits: [suit])
+      end
+    end
+
   end
 end

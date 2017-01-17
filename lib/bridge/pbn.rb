@@ -21,8 +21,6 @@ module Bridge
 
     # see section 3 "Game layout" and section 3.8 "Commentary"
     SEMI_EMPTY_LINE = /^[\t ]*$/
-    MULTILINE_COMMENT_OPEN = / {|^{/
-    MULTILINE_COMMENT_CLOSE = /}/
 
     def self.each_game(io)
       record = ''
@@ -42,23 +40,6 @@ module Bridge
     end
 
     private
-
-    def self.comment_open_after_end_of_line?(line, comment_is_open)
-      is_first_char_of_line = true
-      last_char = nil
-      line.split(//).each do |char|
-        # see section 3.8 "Commentary"
-        if char == '{' && (is_first_char_of_line == true || last_char == ' ')
-          comment_is_open = true
-        end
-        if char == '}'
-          comment_is_open = false
-        end
-        is_first_char_of_line = false
-        last_char = char
-      end
-      return comment_is_open
-    end
 
     def self.hand_index_for_pgn_character(firstPosition)
       case firstPosition
@@ -85,5 +66,21 @@ module Bridge
       end
     end
 
+    def self.comment_open_after_end_of_line?(line, comment_is_open)
+      is_first_char_of_line = true
+      last_char = nil
+      line.split(//).each do |char|
+        # see section 3.8 "Commentary"
+        if char == '{' && (is_first_char_of_line == true || last_char == ' ')
+          comment_is_open = true
+        end
+        if char == '}'
+          comment_is_open = false
+        end
+        is_first_char_of_line = false
+        last_char = char
+      end
+      return comment_is_open
+    end
   end
 end

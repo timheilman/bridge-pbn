@@ -53,5 +53,17 @@ RSpec.describe Bridge::PbnGameParser do
         end.to yield_with_args(expected_arg)
       end
     end
+    context('with backslash in the event name') do
+      subject(:pbn_game_string) {
+        %.[Event "event \\\\with a backslash"].
+      }
+      expected_arg = Bridge::PbnGameParser::Subgame.new(
+          [], ['Event', 'event \\with a backslash'], [], nil)
+      it('handles escaped backslashes properly') do
+        expect do |block|
+          described_class.new.each_subgame(pbn_game_string, &block)
+        end.to yield_with_args(expected_arg)
+      end
+    end
   end
 end

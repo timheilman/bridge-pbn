@@ -111,11 +111,11 @@ module Bridge
       until cur_char.nil?
         case cur_char
           when '\\'
-            escaped = true
+            tag_value << '\\' if escaped
+            escaped = !escaped
             inc_char
           when /[^"]/
             escaped = false
-            tag_value << '\\' if escaped
             tag_value << cur_char
             inc_char
           when '"'

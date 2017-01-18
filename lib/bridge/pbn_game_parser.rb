@@ -1,17 +1,19 @@
 module Bridge
   class PbnGameParser
     class Subgame < Struct.new(:beginningComments, :tagPair, :followingComments, :section)
-
+      def inspect
+        return 'bc: ' + @beginningComments.to_s +
+            ' tp: ' + @tagPair.to_s +
+            ' fc: ' + @followingComments.to_s +
+            ' s: ' + section
+      end
     end
 
     def each_subgame(pbn_game_string, &block)
       @pbn_game_string = pbn_game_string
       @char_index = 0
       @state = :beforeFirstTag
-      @preceding_comments = []
-      @tag_pair = []
-      @following_comments = []
-      @section = []
+      clear
       process(&block)
     end
 
@@ -43,11 +45,15 @@ module Bridge
     def do_yield(&block)
       if @tag_pair.length == 2 || @state == :done
         block.yield Subgame.new(@preceding_comments, @tag_pair, @following_comments, @section)
-        @preceding_comments = []
-        @tag_pair = []
-        @following_comments = []
-        @section = []
+        clear
       end
+    end
+
+    def clear
+      @preceding_comments = []
+      @tag_pair = []
+      @following_comments = []
+      @section = ''
     end
 
     def process_comments
@@ -76,7 +82,6 @@ module Bridge
           add_comment(comment)
           inc_char
         when '['
-          # this ugly point is where we know the section from the preceding subgame is now done
           @state = :beforeTagName
           inc_char
         when /[^\[\]{\};%]/
@@ -175,26 +180,16 @@ module Bridge
 
 
     def process_section
-      section_token = ''
+      # we must return the section untokenized, since newlines hold special meaning for ;-comments
+      # and are permitted to appear in Auction and Play sections
+      section_in_entirety = ''
       until cur_char.nil?
         case cur_char
-          when /[ \t\v\r\n]/
-            @section << section_token unless section_token.empty?
-            section_token = ''
+          when /[^\[\]%]/ # curly braces and semicolons must be allowed through for commentary in play and auction blocks
+            section_in_entirety << cur_char
             inc_char
-          when /[^\[\]{\}%;"]/
-            section_token << cur_char
-            inc_char
-          when '"'
-            inc_char
-            @section << section_token unless section_token.empty?
-            section_token = ''
-            process_string do |string|
-              @section << string
-              @state = :inSection
-            end
           when '['
-            @section << section_token unless section_token.empty?
+            @section << section_in_entirety unless section_in_entirety.empty?
             inc_char
             @state = :beforeTagName
             return
@@ -203,7 +198,7 @@ module Bridge
         end
       end
       @state = :done
-      @section << section_token unless section_token.empty?
+      @section << section_in_entirety unless section_in_entirety.empty?
     end
 
     def raise_exception

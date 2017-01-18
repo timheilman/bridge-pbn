@@ -95,5 +95,25 @@ RSpec.describe Bridge::PbnGameParser do
                Bridge::PbnGameParser::Subgame.new([], ['Site', ''], [], []))
       end
     end
+
+    context('with two very simple tag pairs with comments') do
+      subject(:pbn_game_string) {";before\n[Event \"\"] {after-event} [Site \"\"] ;after-site \n"}
+      it('yields twice with the structures including their commentary') do
+        expect do |block|
+          described_class.new.each_subgame(pbn_game_string, &block)
+        end.to yield_successive_args(Bridge::PbnGameParser::Subgame.new(['before'], ['Event', ''], ['after-event'], []),
+               Bridge::PbnGameParser::Subgame.new([], ['Site', ''], ['after-site '], []))
+      end
+    end
+
+    context('with two very simple tag pairs with comments and sections') do
+      subject(:pbn_game_string) {"{b1};b2\n[E \"\"] {a-e} \"s d\" [S \"m\"] ;a-s \ns2 d2"}
+      it('yields twice with the structures including their commentary and section data') do
+        expect do |block|
+          described_class.new.each_subgame(pbn_game_string, &block)
+        end.to yield_successive_args(Bridge::PbnGameParser::Subgame.new(%w(b1 b2), ['E', ''], ['a-e'], ['s d']),
+               Bridge::PbnGameParser::Subgame.new([], %w(S m), ['a-s '], %w(s2 d2)))
+      end
+    end
   end
 end

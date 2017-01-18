@@ -118,27 +118,33 @@ module Bridge
     end
 
     def process_tag_value
-      tag_value = ''
+      process_string do |string|
+        @tag_pair << string
+        @state = :beforeTagClose
+      end
+    end
+
+    def process_string
+      string = ''
       escaped = false
       until cur_char.nil?
         case cur_char
           when '\\'
-            tag_value << '\\' if escaped
+            string << '\\' if escaped
             escaped = !escaped
             inc_char
           when /[^"]/
             escaped = false
-            tag_value << cur_char
+            string << cur_char
             inc_char
           when '"'
             if escaped
               escaped = false
-              tag_value << '"'
+              string << '"'
               inc_char
             else
-              @tag_pair << tag_value
               inc_char
-              @state = :beforeTagClose
+              yield string
               break
             end
           else
@@ -171,6 +177,14 @@ module Bridge
           when /[^\[\]{\}%;"]/
             section_token << cur_char
             inc_char
+          when '"'
+            inc_char
+            @section << section_token unless section_token.empty?
+            section_token = ''
+            process_string do |string|
+              @section << string
+              @state = :inSection
+            end
           when '['
             @section << section_token unless section_token.empty?
             inc_char

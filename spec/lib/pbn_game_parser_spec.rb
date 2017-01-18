@@ -77,5 +77,13 @@ RSpec.describe Bridge::PbnGameParser do
         expect_first_yield_with_arg(expected_arg)
       end
     end
+
+    context('with comment before, one tag pair, comment after, and a section with both section and string tokens') do
+      expected_arg = setup_single_subgame(";commentBefore\n[E \"e\" ]\t\n{comment\nAfter}\nsome \"\\\\tok ens\\\"\"\n",
+                                          ['commentBefore'], %w(E e), ["comment\nAfter"], ['some', "\\tok ens\""])
+      it('yields the single complete record accurately') do
+        expect_first_yield_with_arg(expected_arg)
+      end
+    end
   end
 end

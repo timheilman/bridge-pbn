@@ -11,7 +11,7 @@ module Bridge
       @preceding_comments = []
       @tag_pair = []
       @following_comments = []
-      @section = nil
+      @section = []
       process
       block.yield Subgame.new(@preceding_comments, @tag_pair, @following_comments, @section)
     end
@@ -32,6 +32,15 @@ module Bridge
       while @state == :inTagValue
         process_tag_value
       end
+      while @state == :beforeTagClose
+        get_out_of_tag
+      end
+      while @state == :outOfTag
+        process_comments
+      end
+      while @state == :inSection
+        process_section
+      end
     end
 
     def process_comments
@@ -39,7 +48,7 @@ module Bridge
         when nil
           @state = :done
           return
-        when /[ \t\v]/
+        when /[ \t\v\r\n]/
           inc_char
         when ';'
           inc_char
@@ -62,6 +71,9 @@ module Bridge
         when '['
           @state = :beforeTagName
           inc_char
+        when /[^\[\]{\};%]/
+          raise_exception if @state == :beforeFirstTag
+          @state = :inSection
         else
           raise_exception
       end
@@ -69,7 +81,7 @@ module Bridge
 
     def get_into_tag_name
       case cur_char
-        when /[ \t\v]/
+        when /[ \t\v\r\n]/
           inc_char
         when /[A-Za-z0-9_]/
           @state = :inTagName
@@ -95,7 +107,7 @@ module Bridge
 
     def get_into_tag_value
       case cur_char
-        when /[ \t\v]/
+        when /[ \t\v\r\n]/
           inc_char
         when '"'
           inc_char
@@ -126,13 +138,50 @@ module Bridge
             else
               @tag_pair << tag_value
               inc_char
-              @state = :beforeSection
+              @state = :beforeTagClose
               break
             end
           else
             raise_exception
         end
       end
+    end
+
+    def get_out_of_tag
+      case cur_char
+        when /[ \t\v\r\n]/
+          inc_char
+        when ']'
+          inc_char
+          @state = :outOfTag
+        else
+          raise_exception
+      end
+    end
+
+
+    def process_section
+      section_token = ''
+      until cur_char.nil?
+        case cur_char
+          when /[ \t\v\r\n]/
+            @section << section_token unless section_token.empty?
+            section_token = ''
+            inc_char
+          when /[^\[\]{\}%;"]/
+            section_token << cur_char
+            inc_char
+          when '['
+            @section << section_token unless section_token.empty?
+            inc_char
+            @state = :beforeTagName
+            return
+          else
+            raise_exception
+        end
+      end
+      @state = :done
+      @section << section_token unless section_token.empty?
     end
 
     def raise_exception

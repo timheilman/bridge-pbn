@@ -12,34 +12,41 @@ module Bridge
       @tag_pair = []
       @following_comments = []
       @section = []
-      process
-      block.yield Subgame.new(@preceding_comments, @tag_pair, @following_comments, @section)
+      process(&block)
     end
 
-    def process
-      while @state == :beforeFirstTag
-        process_comments
+    def process(&block)
+      while @state != :done
+        case @state
+          when :beforeFirstTag
+            process_comments
+          when :beforeTagName
+            do_yield(&block)
+            get_into_tag_name
+          when :inTagName
+            process_tag_name
+          when :beforeTagValue
+            get_into_tag_value
+          when :inTagValue
+            process_tag_value
+          when :beforeTagClose
+            get_out_of_tag
+          when :outOfTag
+            process_comments
+          when :inSection
+            process_section
+        end
       end
-      while @state == :beforeTagName
-        get_into_tag_name
-      end
-      while @state == :inTagName
-        process_tag_name
-      end
-      while @state == :beforeTagValue
-        get_into_tag_value
-      end
-      while @state == :inTagValue
-        process_tag_value
-      end
-      while @state == :beforeTagClose
-        get_out_of_tag
-      end
-      while @state == :outOfTag
-        process_comments
-      end
-      while @state == :inSection
-        process_section
+      do_yield(&block)
+    end
+
+    def do_yield(&block)
+      if @tag_pair.length == 2 || @state == :done
+        block.yield Subgame.new(@preceding_comments, @tag_pair, @following_comments, @section)
+        @preceding_comments = []
+        @tag_pair = []
+        @following_comments = []
+        @section = []
       end
     end
 
@@ -69,6 +76,7 @@ module Bridge
           add_comment(comment)
           inc_char
         when '['
+          # this ugly point is where we know the section from the preceding subgame is now done
           @state = :beforeTagName
           inc_char
         when /[^\[\]{\};%]/

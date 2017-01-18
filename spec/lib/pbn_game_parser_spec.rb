@@ -85,5 +85,15 @@ RSpec.describe Bridge::PbnGameParser do
         expect_first_yield_with_arg(expected_arg)
       end
     end
+
+    context('with two very simple tag pairs') do
+      subject(:pbn_game_string) {"[Event \"\"]\n[Site \"\"]"}
+      it('yields twice with the minimal structures') do
+        expect do |block|
+          described_class.new.each_subgame(pbn_game_string, &block)
+        end.to yield_successive_args(Bridge::PbnGameParser::Subgame.new([], ['Event', ''], [], []),
+               Bridge::PbnGameParser::Subgame.new([], ['Site', ''], [], []))
+      end
+    end
   end
 end

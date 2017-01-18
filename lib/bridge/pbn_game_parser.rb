@@ -107,18 +107,28 @@ module Bridge
 
     def process_tag_value
       tag_value = ''
-      # escaped = false
+      escaped = false
       until cur_char.nil?
         case cur_char
-          #todo: need escaping for double-quotes in strings
+          when '\\'
+            escaped = true
+            inc_char
           when /[^"]/
+            escaped = false
+            tag_value << '\\' if escaped
             tag_value << cur_char
             inc_char
           when '"'
-            @tag_pair << tag_value
-            inc_char
-            @state = :beforeSection
-            break
+            if escaped
+              escaped = false
+              tag_value << '"'
+              inc_char
+            else
+              @tag_pair << tag_value
+              inc_char
+              @state = :beforeSection
+              break
+            end
           else
             raise_exception
         end

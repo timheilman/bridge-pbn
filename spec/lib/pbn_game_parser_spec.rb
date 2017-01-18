@@ -30,5 +30,28 @@ RSpec.describe Bridge::PbnGameParser do
         end.to yield_with_args(expected_arg)
       end
     end
+    context('with a mixture of opening comments') do
+      subject(:pbn_game_string) {
+        ";this is a single-line comment\n  {  { this is a \nmultiline comment } ;with more commentary\n [Event \"eventName\"]\n" }
+      expected_arg = Bridge::PbnGameParser::Subgame.new(
+          ['this is a single-line comment', "  { this is a \nmultiline comment ", 'with more commentary'], %w(Event eventName), [], nil)
+      it('provides multiple comments in the structure') do
+        expect do |block|
+          described_class.new.each_subgame(pbn_game_string, &block)
+        end.to yield_with_args(expected_arg)
+      end
+    end
+    context('with double-quotes in the event name') do
+      subject(:pbn_game_string) {
+        %.[Event "event \\"with a double quote"].
+      }
+      expected_arg = Bridge::PbnGameParser::Subgame.new(
+          [], ['Event', 'event "with a double quote'], [], nil)
+      it('handles escaped double-quotes properly') do
+        expect do |block|
+          described_class.new.each_subgame(pbn_game_string, &block)
+        end.to yield_with_args(expected_arg)
+      end
+    end
   end
 end

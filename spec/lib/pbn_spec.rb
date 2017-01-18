@@ -81,6 +81,7 @@ RSpec.describe Bridge::Pbn do
   EMPTY_LINE_IN_COMMENT_FILE = 'spec/resource/test_record_with_empty_line_in_comment.pbn'
   SINGLE_CURLY_COMMENT_FILE = 'spec/resource/test_record_with_single_line_curly_comment.pbn'
   LOTS_OF_CURLIES_FILE = 'spec/resource/test_record_with_single_line_curly_comment.pbn'
+  ESCAPE_IN_COMMENT_FILE = 'spec/resource/test_record_with_escape_in_comment.pbn'
   describe '.each_game' do
     context 'with three valid test records and no multiline comments' do
       it 'passes a total of three games to the given block' do
@@ -135,6 +136,13 @@ RSpec.describe Bridge::Pbn do
           expect do |block|
             described_class.each_game_string(File.open(LOTS_OF_CURLIES_FILE), &block)
           end.to yield_control.exactly(2).times
+        end
+      end
+      context 'within a comment, an escape character' do
+        it 'does not consider the escape character to actually-escape' do
+          expect do |block|
+            described_class.each_game_string(File.open(ESCAPE_IN_COMMENT_FILE), &block)
+          end.to yield_with_args("[Event \"\"]\n{\n%\n}")
         end
       end
     end

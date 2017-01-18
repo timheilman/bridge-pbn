@@ -37,11 +37,11 @@ module Bridge
       record = ''
       comment_is_open = false
       io.each do |line|
-        if line =~ PBN_ESCAPED_LINE
+        if comment_is_open
+          record << line
+        elsif line =~ PBN_ESCAPED_LINE
           # potential site for processing of future directives in exported PBN files from this project
           next
-        elsif comment_is_open
-          record << line
         elsif line =~ SEMI_EMPTY_LINE
           yield record
           record = ''

@@ -7,6 +7,5 @@ module Bridge
   autoload :Player, File.expand_path('../bridge/player', __FILE__)
   autoload :Handler, File.expand_path('../bridge/handler', __FILE__)
   autoload :Pbn,    File.expand_path('../bridge/pbn', __FILE__)
-  autoload :PbnGameLexer, File.expand_path('../bridge/pbn_game_lexer', __FILE__)
   autoload :PbnGameParser, File.expand_path('../bridge/pbn_game_parser', __FILE__)
 end

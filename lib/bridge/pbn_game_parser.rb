@@ -11,19 +11,21 @@ module Bridge
 
     def each_subgame(pbn_game_string, &block)
       @pbn_game_string = pbn_game_string
-      @char_index = 0
       @state = :beforeFirstTag
       clear
       process(&block)
     end
 
     def process(&block)
+      @char_iter = @pbn_game_string.split(//).each_with_index
+      inc_char
+
       while @state != :done
         case @state
           when :beforeFirstTag
             process_comments
           when :beforeTagName
-            do_yield(&block)
+            yield_when_proper(&block)
             get_into_tag_name
           when :inTagName
             process_tag_name
@@ -39,10 +41,10 @@ module Bridge
             process_section
         end
       end
-      do_yield(&block)
+      yield_when_proper(&block)
     end
 
-    def do_yield(&block)
+    def yield_when_proper(&block)
       if @tag_pair.length == 2 || @state == :done
         block.yield Subgame.new(@preceding_comments, @tag_pair, @following_comments, @section)
         clear
@@ -58,24 +60,21 @@ module Bridge
 
     def process_comments
       case cur_char
-        when nil
-          @state = :done
-          return
         when /[ \t\v\r\n]/
           inc_char
         when ';'
           inc_char
           comment = ''
-          while !cur_char.nil? && cur_char != "\n"
+          while cur_char != "\n" && @state != :done
             comment << cur_char
             inc_char
           end
           add_comment(comment)
-          inc_char unless cur_char.nil?
+          inc_char
         when '{'
           inc_char
           comment = ''
-          while cur_char != '}'
+          while cur_char != '}' && @state != :done
             comment << cur_char
             inc_char
           end
@@ -105,17 +104,12 @@ module Bridge
 
     def process_tag_name
       tag_name = ''
-      until cur_char.nil?
-        case cur_char
-          when /[A-Za-z0-9_]/
-            tag_name << cur_char
-            inc_char
-          else
-            @tag_pair << tag_name
-            @state = :beforeTagValue
-            break
-        end
+      until @state == :done || cur_char !~ /[A-Za-z0-9_]/
+        tag_name << cur_char
+        inc_char
       end
+      @tag_pair << tag_name
+      @state = :beforeTagValue unless @state == :done
     end
 
     def get_into_tag_value
@@ -123,8 +117,8 @@ module Bridge
         when /[ \t\v\r\n]/
           inc_char
         when '"'
-          inc_char
           @state = :inTagValue
+          inc_char
         else
           raise_exception
       end
@@ -140,7 +134,7 @@ module Bridge
     def process_string
       string = ''
       escaped = false
-      until cur_char.nil?
+      until @state == :done
         case cur_char
           when '\\'
             string << '\\' if escaped
@@ -156,8 +150,8 @@ module Bridge
               string << '"'
               inc_char
             else
-              inc_char
               yield string
+              inc_char
               break
             end
           else
@@ -171,8 +165,8 @@ module Bridge
         when /[ \t\v\r\n]/
           inc_char
         when ']'
-          inc_char
           @state = :outOfTag
+          inc_char
         else
           raise_exception
       end
@@ -183,27 +177,26 @@ module Bridge
       # we must return the section untokenized, since newlines hold special meaning for ;-comments
       # and are permitted to appear in Auction and Play sections
       section_in_entirety = ''
-      until cur_char.nil?
+      until @state == :done
         case cur_char
           when /[^\[\]%]/ # curly braces and semicolons must be allowed through for commentary in play and auction blocks
             section_in_entirety << cur_char
             inc_char
           when '['
             @section << section_in_entirety unless section_in_entirety.empty?
-            inc_char
             @state = :beforeTagName
+            inc_char
             return
           else
             raise_exception
         end
       end
-      @state = :done
       @section << section_in_entirety unless section_in_entirety.empty?
     end
 
     def raise_exception
       raise ArgumentError.new('state: ' + @state.to_s + '; string: `' +
-                                  @pbn_game_string + '\'; char_index: ' + @char_index.to_s)
+                                  @pbn_game_string + '\'; char_index: ' + @cur_char_index.to_s)
     end
 
     def add_comment(comment)
@@ -211,11 +204,15 @@ module Bridge
     end
 
     def inc_char
-      @char_index += 1
+      begin
+        @cur_char, @cur_char_index = @char_iter.next
+      rescue StopIteration
+        @state = :done
+      end
     end
 
     def cur_char
-      @pbn_game_string[@char_index]
+      @cur_char
     end
   end
 end

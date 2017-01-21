@@ -19,9 +19,6 @@ RSpec.describe Bridge::PbnGameParser do
     context('with an opening single-line comment alone') do
       expected_arg = setup_single_subgame("; just a comment\n",
                                           [' just a comment'], [], [], '')
-      it('yields control once') do
-        expect { |block| described_class.new.each_subgame(pbn_game_string, &block) }.to yield_control.once
-      end
       it('provides a structure with opening comment, no tag, no following comment, and no section') do
         expect_first_yield_with_arg(expected_arg)
       end

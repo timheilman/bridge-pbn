@@ -14,10 +14,14 @@ def expect_first_yield_with_arg(expected_arg)
 end
 
 RSpec.describe Bridge::PbnGameParser do
+  NEWLINE = "\n"
+  TAB = "\t"
+  BACKSLASH = '\\'
+  DOUBLE_QUOTE = '"'
   describe('#each_subgame') do
 
     context('with an opening single-line comment alone') do
-      expected_arg = setup_single_subgame("; just a comment\n",
+      expected_arg = setup_single_subgame("; just a comment#{NEWLINE}",
                                           [' just a comment'], [], [], '')
       it('provides a structure with opening comment, no tag, no following comment, and no section') do
         expect_first_yield_with_arg(expected_arg)
@@ -25,13 +29,9 @@ RSpec.describe Bridge::PbnGameParser do
     end
 
     context('with an opening multi-line comment followed by event tag on the same line') do
-      expected_arg = setup_single_subgame("  { this is a \nmultiline comment } [Event \"eventName\"]\n",
-                                          [" this is a \nmultiline comment "], %w(Event eventName), [], '')
-      it('yields control once') do
-        expect do |block|
-          described_class.new.each_subgame(pbn_game_string, &block)
-        end.to yield_control.once
-      end
+      expected_arg = setup_single_subgame(
+          "  { multiline #{NEWLINE} comment } [TagName #{DOUBLE_QUOTE}TagValue#{DOUBLE_QUOTE}]#{NEWLINE}",
+          [" multiline #{NEWLINE} comment "], %w(TagName TagValue), [], '')
       it('provides a structure with the newline-containing comment, the tag pair, no following comment, no section') do
         expect_first_yield_with_arg(expected_arg)
       end
@@ -39,77 +39,95 @@ RSpec.describe Bridge::PbnGameParser do
 
     context('with a mixture of opening comments') do
       expected_arg = setup_single_subgame(
-          ";this is a single-line comment\n" +
-              "{  { this is a \n" +
-              "multiline comment } ;with more commentary\n"+
-              " [Event \"eventName\"]\n",
-          ['this is a single-line comment', "  { this is a \nmultiline comment ", 'with more commentary'],
-          %w(Event eventName), [], '')
+          ";one-liner#{NEWLINE}" +
+              "{{{;;;multiline #{NEWLINE}" +
+              "comment} ;with more commentary#{NEWLINE} " +
+              " [TagName #{DOUBLE_QUOTE}TagValue#{DOUBLE_QUOTE}]#{NEWLINE}",
+          ['one-liner', "{{;;;multiline #{NEWLINE}comment", 'with more commentary'],
+          %w(TagName TagValue), [], '')
       it('provides multiple comments in the structure') do
         expect_first_yield_with_arg(expected_arg)
       end
     end
 
-    context('with double-quotes in the event name') do
+    context('with double-quotes in the tag value') do
       expected_arg = setup_single_subgame(
-          %.[Event "event \\"with a double quote"].,
-          [], ['Event', 'event "with a double quote'], [], '')
+          "[TagName #{DOUBLE_QUOTE}Tag#{BACKSLASH}#{DOUBLE_QUOTE}Value#{DOUBLE_QUOTE}]",
+          [], %w(TagName Tag"Value), [], '')
       it('handles escaped double-quotes properly') do
         expect_first_yield_with_arg(expected_arg)
       end
     end
 
-    context('with backslash in the event name') do
-      expected_arg = setup_single_subgame(%.[Event "event \\\\with a backslash"].,
-                                          [], ['Event', 'event \\with a backslash'], [], '')
+    context('with backslash in the tag value') do
+      expected_arg = setup_single_subgame("[TagName #{DOUBLE_QUOTE}Tag#{BACKSLASH}#{BACKSLASH}Value#{DOUBLE_QUOTE}]",
+                                          [], ['TagName', "Tag#{BACKSLASH}Value"], [], '')
       it('handles escaped backslashes properly') do
         expect_first_yield_with_arg(expected_arg)
       end
     end
 
-    context('with no comments, one tag pair, and a section with only section tokens') do
-      expected_arg = setup_single_subgame("[Event \"event\"]\nsome section tokens\n",
-                                          [], %w(Event event), [], "some section tokens\n")
-      it('yields the tag pair and the section tokens individually') do
+    context('with no comments, one tag pair, and a section') do
+      expected_arg = setup_single_subgame("[TagName #{DOUBLE_QUOTE}TagValue#{DOUBLE_QUOTE}]#{NEWLINE}" +
+                                              "three section tokens#{DOUBLE_QUOTE}and a string#{DOUBLE_QUOTE}#{NEWLINE}",
+                                          [], %w(TagName TagValue), [],
+                                          "three section tokens#{DOUBLE_QUOTE}and a string#{DOUBLE_QUOTE}#{NEWLINE}")
+      it('yields the tag pair and the section unprocessed, including quotes and newlines') do
         expect_first_yield_with_arg(expected_arg)
       end
     end
 
-    context('with comment before, one tag pair, comment after, and a section with both section and string tokens') do
-      expected_arg = setup_single_subgame(";commentBefore\n[E \"e\" ]\t\n{comment\nAfter}\nsome \"\\\\tok ens\\\"\"\n",
-                                          ['commentBefore'], %w(E e), ["comment\nAfter"], "some \"\\\\tok ens\\\"\"\n")
+    context('with comment before, one tag pair, comment after, and a section') do
+      expected_arg = setup_single_subgame(
+          ";comment1#{NEWLINE}" +
+              "[TagName \"TagValue\" ]#{TAB}#{NEWLINE}" +
+              "{comment2#{NEWLINE}" +
+              "comment2 second line}#{NEWLINE}" +
+              "verbatim section#{NEWLINE}",
+          ['comment1'],
+          %w(TagName TagValue),
+          ["comment2#{NEWLINE}comment2 second line"],
+          "verbatim section#{NEWLINE}")
       it('yields the single complete record accurately') do
         expect_first_yield_with_arg(expected_arg)
       end
     end
 
     context('with two very simple tag pairs') do
-      subject(:pbn_game_string) {"[Event \"\"]\n[Site \"\"]"}
+      subject(:pbn_game_string) { "[Event #{DOUBLE_QUOTE}#{DOUBLE_QUOTE}]#{NEWLINE}[Site #{DOUBLE_QUOTE}#{DOUBLE_QUOTE}]" }
       it('yields twice with the minimal structures') do
         expect do |block|
           described_class.new.each_subgame(pbn_game_string, &block)
         end.to yield_successive_args(Bridge::PbnGameParser::Subgame.new([], ['Event', ''], [], ''),
-               Bridge::PbnGameParser::Subgame.new([], ['Site', ''], [], ''))
+                                     Bridge::PbnGameParser::Subgame.new([], ['Site', ''], [], ''))
       end
     end
 
     context('with two very simple tag pairs with comments') do
-      subject(:pbn_game_string) {";before\n[Event \"\"] {after-event} [Site \"\"] ;after-site \n"}
+      subject(:pbn_game_string) { ";preceding comment#{NEWLINE}" +
+          "[Event #{DOUBLE_QUOTE}#{DOUBLE_QUOTE}] {comment following event} [Site #{DOUBLE_QUOTE}#{DOUBLE_QUOTE}] " +
+          ";comment following site#{NEWLINE}" }
       it('yields twice with the structures including their commentary') do
         expect do |block|
           described_class.new.each_subgame(pbn_game_string, &block)
-        end.to yield_successive_args(Bridge::PbnGameParser::Subgame.new(['before'], ['Event', ''], ['after-event'], ''),
-               Bridge::PbnGameParser::Subgame.new([], ['Site', ''], ['after-site '], ''))
+        end.to yield_successive_args(Bridge::PbnGameParser::Subgame.new(['preceding comment'], ['Event', ''],
+                                                                        ['comment following event'], ''),
+                                     Bridge::PbnGameParser::Subgame.new([], ['Site', ''],
+                                                                        ['comment following site'], ''))
       end
     end
 
     context('with two very simple tag pairs with comments and sections') do
-      subject(:pbn_game_string) {"{b1};b2\n[E \"\"] {a-e} \"s d\" [S \"m\"] ;a-s \ns2 d2\nt2 e2\n"}
+      subject(:pbn_game_string) { "{a1};a2#{NEWLINE}" +
+          "[a3 \"\"] {a4} \"a5\" [b1 \"\"] ;b2 #{NEWLINE}" +
+          "b3 b4#{NEWLINE}" +
+          "b5 b6#{NEWLINE}" }
       it('yields twice with the structures including their commentary and section data') do
         expect do |block|
           described_class.new.each_subgame(pbn_game_string, &block)
-        end.to yield_successive_args(Bridge::PbnGameParser::Subgame.new(%w(b1 b2), ['E', ''], ['a-e'], '"s d" '),
-               Bridge::PbnGameParser::Subgame.new([], %w(S m), ['a-s '], "s2 d2\nt2 e2\n"))
+        end.to yield_successive_args(Bridge::PbnGameParser::Subgame.new(%w(a1 a2), ['a3', ''], ['a4'], '"a5" '),
+                                     Bridge::PbnGameParser::Subgame.new([], ['b1', ''], ['b2 '],
+                                                                        "b3 b4#{NEWLINE}b5 b6#{NEWLINE}"))
       end
     end
   end

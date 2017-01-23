@@ -1,10 +1,13 @@
 module Bridge
   # see http://www.tistis.nl/pbn/
   class Pbn
+    COLON = ':'
+    PRE_COLON_INDICATOR = -1
+    PERIOD = '.'
     # see section 3.4.11
     def self.deal(pbn_deal_string)
-      pbn_deal_string.split(':').reduce(-1) do |startingHandIndex, firstOrHands|
-        if startingHandIndex == -1
+      pbn_deal_string.split(COLON).reduce(PRE_COLON_INDICATOR) do |startingHandIndex, firstOrHands|
+        if startingHandIndex == PRE_COLON_INDICATOR
           hand_index_for_first_character(firstOrHands)
         else
           make_array_of_hands(firstOrHands, startingHandIndex)
@@ -12,11 +15,17 @@ module Bridge
       end
     end
 
+
     def self.hand(pbn_hand_string)
-      pbn_hand_string.split(/\./).reduce([]) do |cards_per_suit, ranks_string|
-        suit = Bridge::Strain.suits[-cards_per_suit.length-1]
+      pbn_hand_string.split(PERIOD).reduce([]) do |cards_per_suit, ranks_string|
+        suit = Bridge::Strain.suits[suit_index_for_output_length(cards_per_suit.length)]
         cards_per_suit << cards_for_single_suit(ranks_string, suit)
       end.flatten
+    end
+
+    # readability method
+    def self.suit_index_for_output_length(output_length)
+      -output_length-1
     end
 
     def self.import_games(io)
@@ -70,30 +79,33 @@ module Bridge
       end
     end
 
+    SPACE = ' '
+    HYPHEN = '-'
+    EMPTY_REGEXP = //
     def self.make_array_of_hands(hands, starting_hand_index)
-      hands.split(' ').reduce([]) do |array_of_hands, pbn_hand_string|
-        array_of_hands << (pbn_hand_string == '-' ? nil : Pbn.hand(pbn_hand_string))
+      hands.split(SPACE).reduce([]) do |array_of_hands, pbn_hand_string|
+        array_of_hands << (pbn_hand_string == HYPHEN ? nil : Pbn.hand(pbn_hand_string))
       end.rotate(starting_hand_index)
     end
 
     def self.cards_for_single_suit(ranks_string, suit)
-      ranks_string.split(//).reduce([]) do |cards, rankOfSuit|
+      ranks_string.split(EMPTY_REGEXP).reduce([]) do |cards, rankOfSuit|
         cards << Bridge::Card.for(ranks: [Bridge::Rank.forLetter(rankOfSuit)], suits: [suit])
       end
     end
 
+    OPEN_CURLY = '{'
+    CLOSE_CURLY = '}'
     def self.comment_open_after_eol?(line, comment_is_open)
-      is_first_char_of_line = true
       last_char = nil
-      line.split(//).each do |char|
+      line.split(EMPTY_REGEXP).each do |char|
         # see section 3.8 "Commentary"
-        if char == '{' && (is_first_char_of_line == true || last_char == ' ')
+        if char == OPEN_CURLY && (last_char.nil? || last_char == SPACE)
           comment_is_open = true
         end
-        if char == '}'
+        if char == CLOSE_CURLY
           comment_is_open = false
         end
-        is_first_char_of_line = false
         last_char = char
       end
       return comment_is_open

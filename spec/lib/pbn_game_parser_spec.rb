@@ -14,6 +14,7 @@ def expect_first_yield_with_arg(expected_arg)
 end
 
 RSpec.describe Bridge::PbnGameParser do
+  # intent: to maximize human readability for complicated quoting situations, use constants for all difficult characters
   NEWLINE = "\n"
   TAB = "\t"
   BACKSLASH = '\\'

@@ -7,8 +7,10 @@ module Bridge
       process(&block)
     end
 
+    EMPTY_REGEXP = //
+
     def process(&block)
-      @char_iter = @pbn_game_string.split(//).each_with_index
+      @char_iter = @pbn_game_string.split(EMPTY_REGEXP).each_with_index
       inc_char
 
       while @state != :done
@@ -49,32 +51,44 @@ module Bridge
       @section = ''
     end
 
+    #TODO: enforce 255 char cap
+    ALLOWED_WHITESPACE_CHARS = /[ \t\v\r\n]/
+    SEMICOLON = ';'
+    NEWLINE_CHARACTERS = "\n" # TODO: make this configurable to be less Mac-centric
+    OPEN_CURLY = '{'
+    CLOSE_CURLY = '}'
+    OPEN_BRACKET = '['
+    SECTION_STARTING_TOKENS = /[^\[\]{\};%]/ # uh oh.  an opening square bracket within a Play section comment
+    # will cause an error.  todo: TDD-fix "[ in section" bug (parse sections incl. comments)
+
+
+
     def process_comments
       case cur_char
-        when /[ \t\v\r\n]/
+        when ALLOWED_WHITESPACE_CHARS
           inc_char
-        when ';'
+        when SEMICOLON
           inc_char
           comment = ''
-          while cur_char != "\n" && @state != :done
+          while cur_char != NEWLINE_CHARACTERS && @state != :done
             comment << cur_char
             inc_char
           end
           add_comment(comment)
           inc_char
-        when '{'
+        when OPEN_CURLY
           inc_char
           comment = ''
-          while cur_char != '}' && @state != :done
+          while cur_char != CLOSE_CURLY && @state != :done
             comment << cur_char
             inc_char
           end
           add_comment(comment)
           inc_char
-        when '['
+        when OPEN_BRACKET
           @state = :beforeTagName
           inc_char
-        when /[^\[\]{\};%]/
+        when SECTION_STARTING_TOKENS
           raise_exception if @state == :beforeFirstTag
           @state = :inSection
         else
@@ -82,11 +96,13 @@ module Bridge
       end
     end
 
+    ALLOWED_NAME_CHARS = /[A-Za-z0-9_]/
+
     def get_into_tag_name
       case cur_char
-        when /[ \t\v\r\n]/
+        when ALLOWED_WHITESPACE_CHARS
           inc_char
-        when /[A-Za-z0-9_]/
+        when ALLOWED_NAME_CHARS
           @state = :inTagName
         else
           raise_exception
@@ -95,7 +111,7 @@ module Bridge
 
     def process_tag_name
       tag_name = ''
-      until @state == :done || cur_char !~ /[A-Za-z0-9_]/
+      until @state == :done || cur_char !~ ALLOWED_NAME_CHARS
         tag_name << cur_char
         inc_char
       end
@@ -103,11 +119,12 @@ module Bridge
       @state = :beforeTagValue unless @state == :done
     end
 
+    DOUBLE_QUOTE = '"'
     def get_into_tag_value
       case cur_char
-        when /[ \t\v\r\n]/
+        when ALLOWED_WHITESPACE_CHARS
           inc_char
-        when '"'
+        when DOUBLE_QUOTE
           @state = :inTagValue
           inc_char
         else
@@ -122,23 +139,26 @@ module Bridge
       end
     end
 
+    BACKSLASH = '\\'
+    NOT_DOUBLE_QUOTE = /[^"]/
+
     def process_string
       string = ''
       escaped = false
       until @state == :done
         case cur_char
-          when '\\'
-            string << '\\' if escaped
+          when BACKSLASH
+            string << BACKSLASH if escaped
             escaped = !escaped
             inc_char
-          when /[^"]/
+          when NOT_DOUBLE_QUOTE
             escaped = false
             string << cur_char
             inc_char
-          when '"'
+          when DOUBLE_QUOTE
             if escaped
               escaped = false
-              string << '"'
+              string << DOUBLE_QUOTE
               inc_char
             else
               yield string
@@ -151,11 +171,12 @@ module Bridge
       end
     end
 
+    CLOSE_BRACKET = ']'
     def get_out_of_tag
       case cur_char
-        when /[ \t\v\r\n]/
+        when ALLOWED_WHITESPACE_CHARS
           inc_char
-        when ']'
+        when CLOSE_BRACKET
           @state = :outOfTag
           inc_char
         else
@@ -173,7 +194,7 @@ module Bridge
           when /[^\[\]%]/ # curly braces and semicolons must be allowed through for commentary in play and auction blocks
             section_in_entirety << cur_char
             inc_char
-          when '['
+          when OPEN_BRACKET
             @section << section_in_entirety unless section_in_entirety.empty?
             @state = :beforeTagName
             inc_char

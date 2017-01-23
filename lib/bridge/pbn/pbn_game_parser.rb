@@ -1,14 +1,5 @@
 module Bridge
   class PbnGameParser
-    class Subgame < Struct.new(:beginningComments, :tagPair, :followingComments, :section)
-      def inspect
-        return 'bc: ' + @beginningComments.to_s +
-            ' tp: ' + @tagPair.to_s +
-            ' fc: ' + @followingComments.to_s +
-            ' s: ' + section
-      end
-    end
-
     def each_subgame(pbn_game_string, &block)
       @pbn_game_string = pbn_game_string
       @state = :beforeFirstTag
@@ -46,7 +37,7 @@ module Bridge
 
     def yield_when_proper(&block)
       if @tag_pair.length == 2 || @state == :done
-        block.yield Subgame.new(@preceding_comments, @tag_pair, @following_comments, @section)
+        block.yield PbnSubgame.new(@preceding_comments, @tag_pair, @following_comments, @section)
         clear
       end
     end

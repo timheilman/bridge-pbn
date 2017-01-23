@@ -25,7 +25,7 @@ RSpec.describe Bridge::PbnSubgameMarshaller do
 
     it 'invokes the proper subgame handler' do
       marshaller = described_class.new(EventHandler.new(Bridge::ErrorRaisingHandler.new(nil), game_to_build))
-      marshaller.marshal(Bridge::PbnGameParser::Subgame.new([], ['Event', ''], [], ''))
+      marshaller.marshal(Bridge::PbnSubgame.new([], ['Event', ''], [], ''))
       expect(game_to_build).to have_received(:setEvent).with('')
     end
   end

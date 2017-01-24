@@ -30,8 +30,8 @@ module Bridge
             get_out_of_tag
           when :outOfTag
             process_comments
-          when :inSection
-            process_section
+          when :inSupplementalSection
+            process_supplemental_section
         end
       end
       yield_when_proper(&block)
@@ -90,7 +90,13 @@ module Bridge
           inc_char
         when SECTION_STARTING_TOKENS
           raise_exception if @state == :beforeFirstTag
-          @state = :inSection
+          @state = if @tag_pair[0] == 'Play'
+                     :inPlaySection
+                   elsif @tag_pair[0] == 'Auction'
+                     :inAuctionSection
+                   else
+                     :inSupplementalSection
+                   end
         else
           raise_exception
       end
@@ -185,7 +191,7 @@ module Bridge
     end
 
 
-    def process_section
+    def process_supplemental_section
       # we must return the section untokenized, since newlines hold special meaning for ;-comments
       # and are permitted to appear in Auction and Play sections
       section_in_entirety = ''

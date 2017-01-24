@@ -1,16 +1,20 @@
 module Bridge
   class PbnGameParser
     attr_accessor :state # temporary, hopefully
+    require 'bridge/pbn/parser_states/constants'
+    include Bridge::PbnParserConstants
+
     def each_subgame(pbn_game_string, &block)
       @pbn_game_string = pbn_game_string
       @state = :beforeFirstTag
+      @block = block
       clear
-      process(&block)
+      process
     end
 
     EMPTY_REGEXP = //
 
-    def process(&block)
+    def process
       @char_iter = @pbn_game_string.split(EMPTY_REGEXP).each_with_index
       inc_char
 
@@ -19,8 +23,7 @@ module Bridge
           when :beforeFirstTag
             Bridge::BeforeFirstTag.new(self).process_chars
           when :beforeTagName
-            yield_when_proper(&block)
-            get_into_tag_name
+            Bridge::BeforeTagName.new(self).process_chars
           when :inTagName
             process_tag_name
           when :beforeTagValue
@@ -35,12 +38,12 @@ module Bridge
             process_supplemental_section
         end
       end
-      yield_when_proper(&block)
+      yield_when_proper
     end
 
-    def yield_when_proper(&block)
+    def yield_when_proper
       if @tag_pair.length == 2 || @state == :done
-        block.yield PbnSubgame.new(@preceding_comments, @tag_pair, @following_comments, @section)
+        @block.yield PbnSubgame.new(@preceding_comments, @tag_pair, @following_comments, @section)
         clear
       end
     end
@@ -65,18 +68,6 @@ module Bridge
 
     def tag_name
       @tag_pair[0]
-    end
-    ALLOWED_NAME_CHARS = /[A-Za-z0-9_]/
-
-    def get_into_tag_name
-      case cur_char
-        when ALLOWED_WHITESPACE_CHARS
-          inc_char
-        when ALLOWED_NAME_CHARS
-          @state = :inTagName
-        else
-          raise_exception
-      end
     end
 
     def process_tag_name

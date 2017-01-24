@@ -2,13 +2,7 @@ module Bridge
   class BeforeFirstTag < PbnParserState
     require 'bridge/pbn/parser_states/constants'
     include Bridge::PbnParserConstants
-
-    attr_reader :parser
-
-    def initialize(parser)
-      @parser = parser
-    end
-
+    include Bridge::PbnParserDelegate
 
     def process_chars()
       case parser.cur_char

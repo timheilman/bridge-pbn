@@ -25,7 +25,7 @@ module Bridge
           when :beforeTagName
             Bridge::BeforeTagName.new(self).process_chars
           when :inTagName
-            process_tag_name
+            Bridge::InTagName.new(self).process_chars
           when :beforeTagValue
             get_into_tag_value
           when :inTagValue
@@ -56,13 +56,6 @@ module Bridge
     end
 
     #TODO: enforce 255 char cap
-    ALLOWED_WHITESPACE_CHARS = /[ \t\v\r\n]/
-    SEMICOLON = ';'
-    NEWLINE_CHARACTERS = "\n" # TODO: make this configurable to be less Mac-centric
-    OPEN_CURLY = '{'
-    CLOSE_CURLY = '}'
-    OPEN_BRACKET = '['
-    SECTION_STARTING_TOKENS = /[^\[\]{\};%]/ # uh oh.  an opening square bracket within a Play section comment
     # will cause an error.  todo: TDD-fix "[ in section" bug (parse sections incl. comments)
 
 
@@ -70,14 +63,8 @@ module Bridge
       @tag_pair[0]
     end
 
-    def process_tag_name
-      tag_name = ''
-      until @state == :done || cur_char !~ ALLOWED_NAME_CHARS
-        tag_name << cur_char
-        inc_char
-      end
-      @tag_pair << tag_name
-      @state = :beforeTagValue unless @state == :done
+    def add_tag_item tag_item
+      @tag_pair << tag_item
     end
 
     DOUBLE_QUOTE = '"'

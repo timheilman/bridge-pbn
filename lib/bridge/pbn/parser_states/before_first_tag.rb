@@ -4,7 +4,7 @@ module Bridge
     include Bridge::PbnParserConstants
     include Bridge::PbnParserDelegate
 
-    def process_chars()
+    def process_chars
       case parser.cur_char
         when ALLOWED_WHITESPACE_CHARS
           parser.inc_char

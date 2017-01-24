@@ -1,5 +1,6 @@
 module Bridge
   class PbnGameParser
+    attr_accessor :state # temporary, hopefully
     def each_subgame(pbn_game_string, &block)
       @pbn_game_string = pbn_game_string
       @state = :beforeFirstTag
@@ -16,7 +17,7 @@ module Bridge
       while @state != :done
         case @state
           when :beforeFirstTag
-            process_comments
+            Bridge::PbnState::BeforeFirstTag.new(self).process_chars
           when :beforeTagName
             yield_when_proper(&block)
             get_into_tag_name
@@ -29,7 +30,7 @@ module Bridge
           when :beforeTagClose
             get_out_of_tag
           when :outOfTag
-            process_comments
+            Bridge::PbnState::BeforeFirstTag.new(self).process_chars
           when :inSupplementalSection
             process_supplemental_section
         end
@@ -62,46 +63,9 @@ module Bridge
     # will cause an error.  todo: TDD-fix "[ in section" bug (parse sections incl. comments)
 
 
-
-    def process_comments
-      case cur_char
-        when ALLOWED_WHITESPACE_CHARS
-          inc_char
-        when SEMICOLON
-          inc_char
-          comment = ''
-          while cur_char != NEWLINE_CHARACTERS && @state != :done
-            comment << cur_char
-            inc_char
-          end
-          add_comment(comment)
-          inc_char
-        when OPEN_CURLY
-          inc_char
-          comment = ''
-          while cur_char != CLOSE_CURLY && @state != :done
-            comment << cur_char
-            inc_char
-          end
-          add_comment(comment)
-          inc_char
-        when OPEN_BRACKET
-          @state = :beforeTagName
-          inc_char
-        when SECTION_STARTING_TOKENS
-          raise_exception if @state == :beforeFirstTag
-          @state = if @tag_pair[0] == 'Play'
-                     :inPlaySection
-                   elsif @tag_pair[0] == 'Auction'
-                     :inAuctionSection
-                   else
-                     :inSupplementalSection
-                   end
-        else
-          raise_exception
-      end
+    def tag_name
+      @tag_pair[0]
     end
-
     ALLOWED_NAME_CHARS = /[A-Za-z0-9_]/
 
     def get_into_tag_name

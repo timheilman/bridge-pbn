@@ -8,6 +8,7 @@ module Bridge
     OPEN_BRACKET = '['
     SECTION_STARTING_TOKENS = /[^\[\]{\};%]/
     ALLOWED_NAME_CHARS = /[A-Za-z0-9_]/
+    DOUBLE_QUOTE = '"'
   end
 
   module PbnParserDelegate

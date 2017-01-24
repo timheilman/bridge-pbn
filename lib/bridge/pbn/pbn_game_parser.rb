@@ -27,7 +27,7 @@ module Bridge
           when :inTagName
             Bridge::InTagName.new(self).process_chars
           when :beforeTagValue
-            get_into_tag_value
+            Bridge::BeforeTagValue.new(self).process_chars
           when :inTagValue
             process_tag_value
           when :beforeTagClose
@@ -67,18 +67,6 @@ module Bridge
       @tag_pair << tag_item
     end
 
-    DOUBLE_QUOTE = '"'
-    def get_into_tag_value
-      case cur_char
-        when ALLOWED_WHITESPACE_CHARS
-          inc_char
-        when DOUBLE_QUOTE
-          @state = :inTagValue
-          inc_char
-        else
-          raise_exception
-      end
-    end
 
     def process_tag_value
       process_string do |string|

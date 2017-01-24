@@ -17,7 +17,7 @@ module Bridge
       while @state != :done
         case @state
           when :beforeFirstTag
-            Bridge::PbnState::BeforeFirstTag.new(self).process_chars
+            Bridge::BeforeFirstTag.new(self).process_chars
           when :beforeTagName
             yield_when_proper(&block)
             get_into_tag_name
@@ -30,7 +30,7 @@ module Bridge
           when :beforeTagClose
             get_out_of_tag
           when :outOfTag
-            Bridge::PbnState::BeforeFirstTag.new(self).process_chars
+            Bridge::BeforeFirstTag.new(self).process_chars
           when :inSupplementalSection
             process_supplemental_section
         end

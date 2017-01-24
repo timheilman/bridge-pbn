@@ -10,7 +10,6 @@ module Bridge
   autoload :PbnSubgame, File.expand_path('../bridge/pbn/pbn_subgame', __FILE__)
   autoload :PbnGameParser, File.expand_path('../bridge/pbn/pbn_game_parser', __FILE__)
   autoload :PbnSubgameMarshaller, File.expand_path('../bridge/pbn/pbn_subgame_marshaller', __FILE__)
-  module PbnState
-    autoload :BeforeFirstTag, File.expand_path('../bridge/pbn/parser_states/before_first_tag', __FILE__)
-  end
+  autoload :PbnParserState, File.expand_path('../bridge/pbn/parser_states/pbn_parser_state', __FILE__)
+  autoload :BeforeFirstTag, File.expand_path('../bridge/pbn/parser_states/before_first_tag', __FILE__)
 end

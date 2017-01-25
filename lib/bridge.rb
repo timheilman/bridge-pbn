@@ -12,7 +12,7 @@ module Bridge
     autoload :GameParser, File.expand_path('../bridge/pbn/game_parser', __FILE__)
     autoload :SubgameMarshaller, File.expand_path('../bridge/pbn/subgame_marshaller', __FILE__)
     autoload :PbnParserState, File.expand_path('../bridge/pbn/parser_states/pbn_parser_state', __FILE__)
-    autoload :OutsideTagAndSection, File.expand_path('../bridge/pbn/parser_states/outside_tag_and_section', __FILE__)
+    autoload :OutsideTagAndSectionTemplate, File.expand_path('../bridge/pbn/parser_states/outside_tag_and_section_template', __FILE__)
     autoload :BeforeFirstTag, File.expand_path('../bridge/pbn/parser_states/before_first_tag', __FILE__)
     autoload :BeforeTagName, File.expand_path('../bridge/pbn/parser_states/before_tag_name', __FILE__)
     autoload :InTagName, File.expand_path('../bridge/pbn/parser_states/in_tag_name', __FILE__)

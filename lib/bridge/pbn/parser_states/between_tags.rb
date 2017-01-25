@@ -1,6 +1,6 @@
 module Bridge
   module Pbn
-    class BetweenTags < OutsideTagAndSection
+    class BetweenTags < OutsideTagAndSectionTemplate
       def add_comment(comment)
         parser.add_following_comment comment
       end

@@ -27,10 +27,10 @@ module Bridge
             @comment << char
             return self
         end
-        # todo: fix this for multicharacter EOL
       end
 
       def perhaps_emit_cr
+        # spec allows literally any character in comments, including CR
         if @prev_char_was_cr
           @comment << CARRIAGE_RETURN
         end

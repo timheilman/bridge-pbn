@@ -18,7 +18,6 @@ module Bridge
           @state = @state.process_char(char)
         end
         @state.finalize
-        # todo: verify that @state is a proper value and raise an exception otherwise
         yield_subgame
       end
 
@@ -34,8 +33,8 @@ module Bridge
         @section = ''
       end
 
-      #TODO: enforce 255 char cap
-      # will cause an error.  todo: TDD-fix "[ in section" bug (parse suppl. sections incl. strings)
+      # TODO: enforce 255 char cap on line width
+      # todo: TDD-fix "[ in section" bug (parse suppl. sections incl. strings)
 
 
       def tag_name

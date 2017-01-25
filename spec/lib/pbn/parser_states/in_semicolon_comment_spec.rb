@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Bridge::Pbn::InCurlyComment do
+RSpec.describe Bridge::Pbn::InSemicolonComment do
   describe('#process_char') do
     let(:parser) { double }
     let(:described_object) { described_class.new(parser) }

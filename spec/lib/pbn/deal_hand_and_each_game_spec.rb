@@ -99,6 +99,11 @@ RSpec.describe Bridge::Pbn::DealHandAndEachGame do
         described_class.each_game_string(File.open(THREE_TEST_RECORDS_FILE)) { |game| result << game }
         result
       end
+      it 'yields all the block arguments in UTF-8 encoding for internal processing' do
+        games.each do |game|
+          expect(game.encoding).to be Encoding::UTF_8
+        end
+      end
       it 'discards all escaped lines' do
         games.each {|game| game.each_line {|line| expect(line).not_to match(/^%/)}}
       end

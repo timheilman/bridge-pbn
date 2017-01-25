@@ -38,7 +38,9 @@ module Bridge
       def self.each_game_string(io)
         record = ''
         comment_is_open = false
-        io.set_encoding(Encoding::ISO_8859_1) # unfortunate but that's the spec!
+        # unfortunately the spec requires Latin-1.  Internal processing, since record's encoding is UTF-8,
+        # will be in UTF-8.  Export to PBN will need to set the encoding on the export IO back to ISO_8859_1
+        io.set_encoding(Encoding::ISO_8859_1)
         io.each do |line|
           if comment_is_open
             record << line

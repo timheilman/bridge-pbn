@@ -16,5 +16,6 @@ module Bridge
     autoload :BeforeTagName, File.expand_path('../bridge/pbn/parser_states/before_tag_name', __FILE__)
     autoload :InTagName, File.expand_path('../bridge/pbn/parser_states/in_tag_name', __FILE__)
     autoload :BeforeTagValue, File.expand_path('../bridge/pbn/parser_states/before_tag_value', __FILE__)
+    autoload :InTagValue, File.expand_path('../bridge/pbn/parser_states/in_tag_value', __FILE__)
   end
 end

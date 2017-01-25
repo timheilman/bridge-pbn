@@ -30,7 +30,7 @@ module Bridge
             when :beforeTagValue
               Bridge::Pbn::BeforeTagValue.new(self).process_chars
             when :inTagValue
-              process_tag_value
+              Bridge::Pbn::InTagValue.new(self).process_chars
             when :beforeTagClose
               get_out_of_tag
             when :outOfTag
@@ -70,10 +70,6 @@ module Bridge
 
 
       def process_tag_value
-        process_string do |string|
-          @tag_pair << string
-          @state = :beforeTagClose
-        end
       end
 
       BACKSLASH = '\\'

@@ -10,7 +10,7 @@ module Bridge
         @escaped = false
       end
 
-      def process_char char
+      def process_char(char)
         case char
           when BACKSLASH
             @string << BACKSLASH if @escaped

@@ -16,7 +16,7 @@ module Bridge
 
     @all.freeze
 
-    def self.for suits: nil, ranks: nil
+    def self.for(suits: nil, ranks: nil)
       @all.select do |card|
         (suits.nil? || suits.include?(card.suit)) && (ranks.nil? || ranks.include?(card.rank))
       end

@@ -5,7 +5,7 @@ module Bridge
       include Bridge::Pbn::ParserConstants
       include Bridge::Pbn::ParserState
 
-      def process_char char
+      def process_char(char)
         case char
           when ALLOWED_WHITESPACE_CHARS
             return self
@@ -18,14 +18,14 @@ module Bridge
             return BeforeTagName.new(parser)
           when SECTION_STARTING_TOKENS
             raise_exception unless section_tokens_allowed
-            sectionState = if parser.tag_name == PLAY_SECTION_TAG_NAME
+            section_state = if parser.tag_name == PLAY_SECTION_TAG_NAME
                              InPlaySection.new(parser)
                            elsif parser.tag_name == AUCTION_SECTION_TAG_NAME
                              InAuctionSection.new(parser)
                            else
                              InSupplementalSection.new(parser)
                            end
-            return sectionState.process_char char
+            return section_state.process_char char
           else
             raise_exception
         end

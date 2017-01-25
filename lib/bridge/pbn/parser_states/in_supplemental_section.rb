@@ -9,7 +9,7 @@ module Bridge
         @section = ''
       end
 
-      def process_char char
+      def process_char(char)
         # we must return the section untokenized, since newlines hold special meaning for ;-comments
         # and are permitted to appear in Auction and Play sections
         case char

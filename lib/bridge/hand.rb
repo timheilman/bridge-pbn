@@ -20,10 +20,10 @@ module Bridge
                             end
     end
 
-    def play card
+    def play(card)
       @played ||= []
-      fail ArgumentError, "hand cannot play a card it does not have" unless cards.include? card
-      fail ArgumentError, "hand cannot play a card it has already played" if @played.include? card
+      fail ArgumentError, 'hand cannot play a card it does not have' unless cards.include? card
+      fail ArgumentError, 'hand cannot play a card it has already played' if @played.include? card
       @played << card
     end
 
@@ -34,20 +34,20 @@ module Bridge
     def length_points
       @length_points ||= begin
                          by_suit = cards.group_by(&:suit)
-                         by_suit.values.reduce(0) do |memo,suit|
-                           memo + [suit.length - 4, 0].max
+                         by_suit.values.reduce(0) do |sum_of_length_points,suit|
+                           sum_of_length_points + [suit.length - 4, 0].max
                          end
                        end
     end
 
-    def shortness_points trump=nil
+    def shortness_points(trump=nil)
       by_suit = cards.group_by(&:suit)
 
-      Strain.suits.reduce(0) do |memo, suit|
+      Strain.suits.reduce(0) do |sum_of_shortness_points, suit|
         if suit == trump # don't count short in trump
-          memo
+          sum_of_shortness_points
         else
-          memo + Hash.new(0).merge({ 0 => 5, 1 => 3, 2 => 1 })[Array(by_suit[suit]).length]
+          sum_of_shortness_points + Hash.new(0).merge({0 => 5, 1 => 3, 2 => 1})[Array(by_suit[suit]).length]
         end
       end
     end

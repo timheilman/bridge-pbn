@@ -3,24 +3,24 @@ module Bridge
   class Rank < Struct.new(:order, :succ)
     include Comparable
 
-    def <=> other
+    def <=>(other)
       order <=> other.order
     end
 
     NAME_MAP = {
-      14 => "ace",
-      13 => "king",
-      12 => "queen",
-      11 => "jack",
-      10 => "ten",
-      9 => "nine",
-      8 => "eight",
-      7 => "seven",
-      6 => "six",
-      5 => "five",
-      4 => "four",
-      3 => "three",
-      2 => "two"
+      14 => 'ace',
+      13 => 'king',
+      12 => 'queen',
+      11 => 'jack',
+      10 => 'ten',
+      9 => 'nine',
+      8 => 'eight',
+      7 => 'seven',
+      6 => 'six',
+      5 => 'five',
+      4 => 'four',
+      3 => 'three',
+      2 => 'two'
     }
 
     @all = []
@@ -41,8 +41,8 @@ module Bridge
 
     #intent: match PBN import format. Pro: convenience Con: import format strewn across domain classes.
     # Still, reflection makes it a pain to move this outside this class.  Maybe still move to Pbn?
-    def self.forLetter letter
-      case letter
+    def self.for_char(char)
+      case char
         when 'T'
           Bridge::Rank::Ten
         when 'J'
@@ -54,15 +54,15 @@ module Bridge
         when 'A'
           Bridge::Rank::Ace
         else
-          const_get(NAME_MAP[letter.to_i].capitalize.to_sym)
+          const_get(NAME_MAP[char.to_i].capitalize.to_sym)
       end
     end
 
     def initialize(*args)
-      raise NoMethodError, "Cannot initialize a new rank"
+      raise NoMethodError, 'Cannot initialize a new rank'
     end
 
-    def pretty_print pp
+    def pretty_print(pp)
       pp.pp inspect
     end
 

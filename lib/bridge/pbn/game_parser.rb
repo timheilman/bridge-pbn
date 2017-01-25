@@ -42,7 +42,7 @@ module Bridge
         @tag_pair[0]
       end
 
-      def add_tag_item tag_item
+      def add_tag_item(tag_item)
         @tag_pair << tag_item
       end
 

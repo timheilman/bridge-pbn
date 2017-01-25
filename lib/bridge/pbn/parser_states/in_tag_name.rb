@@ -9,7 +9,7 @@ module Bridge
         @tag_name = ''
       end
 
-      def process_char char
+      def process_char(char)
         case char
           when ALLOWED_NAME_CHARS
             @tag_name << char

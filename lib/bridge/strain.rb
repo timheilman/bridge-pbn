@@ -2,7 +2,7 @@ module Bridge
   class Strain < Struct.new(:order, :key)
     include Comparable
 
-    def <=> other
+    def <=>(other)
       order <=> other&.order
     end
 
@@ -29,10 +29,10 @@ module Bridge
     end
 
     def initialize(*args)
-      raise NoMethodError, "Cannot initialize a new suit"
+      raise NoMethodError, 'Cannot initialize a new suit'
     end
 
-    def self.forString strain_string
+    def self.for_string(strain_string)
       case strain_string
         when 'C'
           Bridge::Strain::Club

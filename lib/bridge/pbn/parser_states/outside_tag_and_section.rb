@@ -14,13 +14,7 @@ module Bridge
             parser.state = InSemicolonComment.new(parser, self)
           when OPEN_CURLY
             parser.inc_char
-            comment = ''
-            while parser.cur_char != CLOSE_CURLY && !parser.state.done? # todo: fix this demeter violation
-              comment << parser.cur_char
-              parser.inc_char
-            end
-            add_comment(comment)
-            parser.inc_char
+            parser.state = InCurlyComment.new(parser, self)
           when OPEN_BRACKET
             parser.state = BeforeTagName.new(parser)
             parser.inc_char

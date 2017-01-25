@@ -1,8 +1,6 @@
 module Bridge
   module Pbn
-    # despite the similarity to InCurlyComment, I'm not merging the classes yet because semicolon comments
-    # need eventually to be able to deal with multicharacter line endings as their terminating symbol
-    class InSemicolonComment < PbnParserState
+    class InCurlyComment < PbnParserState
       require 'bridge/pbn/parser_states/constants'
       include Bridge::Pbn::ParserConstants
       include Bridge::Pbn::ParserDelegate
@@ -13,7 +11,7 @@ module Bridge
 
       def process_chars
         case parser.cur_char
-          when NEWLINE_CHARACTERS
+          when CLOSE_CURLY
             last_state.add_comment(@comment)
             parser.state = last_state
           else

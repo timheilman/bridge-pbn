@@ -19,6 +19,10 @@ module Bridge
             return self
         end
       end
+
+      def finalize
+        parser.raise_error 'end of input within unclosed brace comment'
+      end
     end
   end
 end

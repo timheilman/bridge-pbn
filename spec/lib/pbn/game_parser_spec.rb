@@ -115,6 +115,14 @@ RSpec.describe Bridge::Pbn::GameParser do
       end
     end
 
+    context('with an unclosed curly comment') do
+      setup_single_subgame('{unclosed comment')
+      it('complains about the unclosed comment') do
+        expect {described_class.new.each_subgame(pbn_game_string) {}}.to raise_error(/.*unclosed brace comment.*/)
+      end
+
+    end
+
     context('with two very simple tag pairs') do
       subject(:pbn_game_string) { "[Event #{DOUBLE_QUOTE}#{DOUBLE_QUOTE}]#{NEWLINE}[Site #{DOUBLE_QUOTE}#{DOUBLE_QUOTE}]" }
       it('yields twice with the minimal structures') do

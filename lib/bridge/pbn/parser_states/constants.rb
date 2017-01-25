@@ -13,6 +13,8 @@ module Bridge
       DOUBLE_QUOTE = '"'
       CLOSE_BRACKET = ']'
       SECTION_INCLUDE_COMMENTS_BUGGY_HACK = /[^\[\]%]/
+      PLAY_SECTION_TAG_NAME = 'Play'
+      AUCTION_SECTION_TAG_NAME = 'Auction'
     end
 
     module ParserDelegate

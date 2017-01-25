@@ -3,7 +3,8 @@ module Bridge
     module ParserConstants
       ALLOWED_WHITESPACE_CHARS = /[ \t\v\r\n]/
       SEMICOLON = ';'
-      NEWLINE_CHARACTERS = "\n" # TODO: make this configurable to be less Mac-centric; don't depend on single char
+      CARRIAGE_RETURN = "\r"
+      LINE_FEED = "\n"
       OPEN_CURLY = '{'
       CLOSE_CURLY = '}'
       OPEN_BRACKET = '['

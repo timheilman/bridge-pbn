@@ -13,7 +13,9 @@ module Bridge
 
       def process_char(char)
         case char
-          when NEWLINE_CHARACTERS
+          when CARRIAGE_RETURN
+            return self
+          when LINE_FEED
             finalize
             return next_state
           else

@@ -12,7 +12,7 @@ module Bridge
           when CLOSE_BRACKET
             return BetweenTags.new(parser)
           else
-            parser.raise_error
+            parser.raise_error "Unexpected char other than whitespace or closing bracket: `#{char}'"
         end
       end
     end

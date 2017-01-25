@@ -4,7 +4,7 @@ def setup_single_subgame(pbn_game_string, *subgame_fields)
   subject(:pbn_game_string) {
     pbn_game_string
   }
-  Bridge::PbnSubgame.new(*subgame_fields)
+  Bridge::Pbn::Subgame.new(*subgame_fields)
 end
 
 def expect_first_yield_with_arg(expected_arg)
@@ -13,7 +13,7 @@ def expect_first_yield_with_arg(expected_arg)
   end.to yield_with_args(expected_arg)
 end
 
-RSpec.describe Bridge::PbnGameParser do
+RSpec.describe Bridge::Pbn::GameParser do
   # intent: to maximize human readability for complicated quoting situations, use constants for all difficult characters
   NEWLINE = "\n"
   TAB = "\t"
@@ -99,8 +99,8 @@ RSpec.describe Bridge::PbnGameParser do
       it('yields twice with the minimal structures') do
         expect do |block|
           described_class.new.each_subgame(pbn_game_string, &block)
-        end.to yield_successive_args(Bridge::PbnSubgame.new([], ['Event', ''], [], ''),
-                                     Bridge::PbnSubgame.new([], ['Site', ''], [], ''))
+        end.to yield_successive_args(Bridge::Pbn::Subgame.new([], ['Event', ''], [], ''),
+                                     Bridge::Pbn::Subgame.new([], ['Site', ''], [], ''))
       end
     end
 
@@ -111,10 +111,10 @@ RSpec.describe Bridge::PbnGameParser do
       it('yields twice with the structures including their commentary') do
         expect do |block|
           described_class.new.each_subgame(pbn_game_string, &block)
-        end.to yield_successive_args(Bridge::PbnSubgame.new(['preceding comment'], ['Event', ''],
-                                                                        ['comment following event'], ''),
-                                     Bridge::PbnSubgame.new([], ['Site', ''],
-                                                                        ['comment following site'], ''))
+        end.to yield_successive_args(Bridge::Pbn::Subgame.new(['preceding comment'], ['Event', ''],
+                                                         ['comment following event'], ''),
+                                     Bridge::Pbn::Subgame.new([], ['Site', ''],
+                                                         ['comment following site'], ''))
       end
     end
 
@@ -126,9 +126,9 @@ RSpec.describe Bridge::PbnGameParser do
       it('yields twice with the structures including their commentary and section data') do
         expect do |block|
           described_class.new.each_subgame(pbn_game_string, &block)
-        end.to yield_successive_args(Bridge::PbnSubgame.new(%w(a1 a2), ['a3', ''], ['a4'], '"a5" '),
-                                     Bridge::PbnSubgame.new([], ['b1', ''], ['b2 '],
-                                                                        "b3 b4#{NEWLINE}b5 b6#{NEWLINE}"))
+        end.to yield_successive_args(Bridge::Pbn::Subgame.new(%w(a1 a2), ['a3', ''], ['a4'], '"a5" '),
+                                     Bridge::Pbn::Subgame.new([], ['b1', ''], ['b2 '],
+                                                         "b3 b4#{NEWLINE}b5 b6#{NEWLINE}"))
       end
     end
   end

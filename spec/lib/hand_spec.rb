@@ -8,7 +8,7 @@ end
 
 def setup_specific_hand(pbnHandNotation)
   let(:cards) do
-    Bridge::Pbn.hand pbnHandNotation
+    Bridge::Pbn::DealHandAndEach.hand pbnHandNotation
   end
 end
 

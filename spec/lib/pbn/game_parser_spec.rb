@@ -78,6 +78,13 @@ RSpec.describe Bridge::Pbn::GameParser do
       end
     end
 
+    context('with an unclosed tag') do
+      setup_single_subgame("[TagName #{DOUBLE_QUOTE}TagValue#{DOUBLE_QUOTE}")
+      it('complains') do
+        expect { described_class.new.each_subgame(pbn_game_string) {} }.to raise_error(/.*unclosed tag.*/)
+      end
+    end
+
     context('with comment before, one tag pair, comment after, and a section') do
       expected_arg = setup_single_subgame(
           ";comment1#{NEWLINE}" +

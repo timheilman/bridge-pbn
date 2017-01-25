@@ -35,7 +35,7 @@ module Bridge
       end
 
       #TODO: enforce 255 char cap
-      # will cause an error.  todo: TDD-fix "[ in section" bug (parse sections incl. comments)
+      # will cause an error.  todo: TDD-fix "[ in section" bug (parse suppl. sections incl. strings)
 
 
       def tag_name
@@ -47,7 +47,7 @@ module Bridge
       end
 
 
-      def add_section(section)
+      def set_section(section)
         @section = section
       end
 

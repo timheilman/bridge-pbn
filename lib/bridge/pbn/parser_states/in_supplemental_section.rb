@@ -27,7 +27,7 @@ module Bridge
       end
 
       def finalize
-        parser.add_section(@section) unless @section.empty?
+        parser.set_section(@section) unless @section.empty?
       end
     end
   end

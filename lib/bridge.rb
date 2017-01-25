@@ -7,7 +7,7 @@ module Bridge
   autoload :Player, File.expand_path('../bridge/player', __FILE__)
   autoload :Handler, File.expand_path('../bridge/handler', __FILE__)
   module Pbn
-    autoload :DealHandAndEach, File.expand_path('../bridge/pbn/deal_hand_and_each', __FILE__)
+    autoload :DealHandAndEachGame, File.expand_path('../bridge/pbn/deal_hand_and_each_game', __FILE__)
     autoload :Subgame, File.expand_path('../bridge/pbn/subgame', __FILE__)
     autoload :GameParser, File.expand_path('../bridge/pbn/game_parser', __FILE__)
     autoload :OutsideTagAndSectionTemplate, File.expand_path('../bridge/pbn/parser_states/outside_tag_and_section_template', __FILE__)

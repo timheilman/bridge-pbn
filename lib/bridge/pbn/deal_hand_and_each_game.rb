@@ -1,7 +1,7 @@
 module Bridge
   module Pbn
     # see http://www.tistis.nl/pbn/
-    class DealHandAndEach
+    class DealHandAndEachGame
       COLON = ':'
       PRE_COLON_INDICATOR = -1
       PERIOD = '.'
@@ -30,14 +30,6 @@ module Bridge
       end
 
       def self.import_games(io)
-        # games = []
-        # each_game_string(io) do |pbn_game_string|
-        #   # lex first!
-        #   #game_parser = Bridge::PbnGameParser.new(DealTagHandler.new)
-        #   #games << pbn_game_string.each_line do |pbn_game_line|
-        #     #game_parser.handle(pbn_game_line)
-        #   #end
-        # end
       end
 
       # see sections 2.4 "Escape Mechanism", 3 "Game layout", and 3.8 "Commentary"
@@ -46,6 +38,7 @@ module Bridge
       def self.each_game_string(io)
         record = ''
         comment_is_open = false
+        io.set_encoding(Encoding::ISO_8859_1) # unfortunate but that's the spec!
         io.each do |line|
           if comment_is_open
             record << line
@@ -85,7 +78,7 @@ module Bridge
 
       def self.make_array_of_hands(hands, starting_hand_index)
         hands.split(SPACE).reduce([]) do |array_of_hands, pbn_hand_string|
-          array_of_hands << (pbn_hand_string == HYPHEN ? nil : DealHandAndEach.hand(pbn_hand_string))
+          array_of_hands << (pbn_hand_string == HYPHEN ? nil : DealHandAndEachGame.hand(pbn_hand_string))
         end.rotate(starting_hand_index)
       end
 

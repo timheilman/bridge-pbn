@@ -31,7 +31,7 @@ def let_expected_hands
               '8C', '5C') }
 end
 
-RSpec.describe Bridge::Pbn::DealHandAndEach do
+RSpec.describe Bridge::Pbn::DealHandAndEachGame do
 
   describe '.hand' do
     let_expected_hands

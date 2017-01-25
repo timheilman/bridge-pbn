@@ -60,7 +60,7 @@ module Bridge
       def process_string
         string = ''
         escaped = false
-        until @state == :done
+        until @state.done?
           case cur_char
             when BACKSLASH
               string << BACKSLASH if escaped

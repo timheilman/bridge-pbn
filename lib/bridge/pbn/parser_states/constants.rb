@@ -19,9 +19,14 @@ module Bridge
 
     module ParserDelegate
       attr_reader :parser
+      attr_reader :last_state
 
-      def initialize(parser)
+      def initialize(parser, last_state = nil)
         @parser = parser
+        @last_state = last_state
+        if self.respond_to? :post_initialize
+          post_initialize
+        end
       end
     end
   end

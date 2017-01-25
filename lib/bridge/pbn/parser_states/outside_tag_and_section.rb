@@ -11,13 +11,7 @@ module Bridge
             parser.inc_char
           when SEMICOLON
             parser.inc_char
-            comment = ''
-            while parser.cur_char != NEWLINE_CHARACTERS && !parser.state.done? # todo: fix this demeter violation
-              comment << parser.cur_char
-              parser.inc_char
-            end
-            add_comment(comment)
-            parser.inc_char
+            parser.state = InSemicolonComment.new(parser, self)
           when OPEN_CURLY
             parser.inc_char
             comment = ''

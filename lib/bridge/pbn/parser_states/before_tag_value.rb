@@ -12,7 +12,7 @@ module Bridge
           when DOUBLE_QUOTE
             return InString.new(parser, BeforeTagClose.new(parser))
           else
-            parser.raise_error
+            parser.raise_error "Unexpected non-whitespace, non-double quote character: `#{char}'"
         end
       end
 

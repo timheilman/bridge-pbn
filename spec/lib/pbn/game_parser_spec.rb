@@ -120,7 +120,14 @@ RSpec.describe Bridge::Pbn::GameParser do
       it('complains about the unclosed comment') do
         expect {described_class.new.each_subgame(pbn_game_string) {}}.to raise_error(/.*unclosed brace comment.*/)
       end
+    end
 
+    context('with a semicolon comment closed by end-of-game') do
+      expected_arg = setup_single_subgame('; comment without trailing newline',
+                                          [' comment without trailing newline'], [], [], '')
+      it('treats end-of-game the same as end-of-line') do
+        expect_first_yield_with_arg(expected_arg)
+      end
     end
 
     context('with two very simple tag pairs') do

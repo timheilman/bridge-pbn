@@ -10,18 +10,19 @@ module Bridge
       end
 
       def process_char(char)
-        # we must return the section untokenized, since newlines hold special meaning for ;-comments
-        # and are permitted to appear in Auction and Play sections
+        # we are returning the section untokenized for now; potential future direction is to have supplemental
+        # sections parsed specifically and error- or warning-out for unrecognized supplemental sections
+        # todo: fix bug wherein strings containing disallowed characters raise an error
         case char
-          when SECTION_INCLUDE_COMMENTS_BUGGY_HACK # curly braces and semicolons must be allowed through for commentary in play and auction blocks
-            @section << char
-            return self
           when OPEN_BRACKET
             finalize
             parser.yield_subgame
             return BeforeTagName.new(parser)
+          when ORDINARY_SECTION_TOKEN_CHARS
+            @section << char
+            return self
           else
-            parser.raise_error
+            parser.raise_error "Unexpected character within a supplemental section: `#{char}'"
         end
       end
 

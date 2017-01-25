@@ -31,6 +31,10 @@ module Bridge
         self
       end
 
+      def finalize
+        parser.raise_error "end of input in unclosed string"
+      end
+
     end
 
   end

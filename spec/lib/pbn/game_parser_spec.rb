@@ -94,31 +94,10 @@ RSpec.describe Bridge::Pbn::GameParser do
       end
     end
 
-    context('with an unclosed tag') do
-      setup_single_subgame("[TagName #{DOUBLE_QUOTE}TagValue#{DOUBLE_QUOTE}")
-      it('complains about the unclosed tag') do
-        expect { described_class.new.each_subgame(pbn_game_string) {} }.to raise_error(/.*unclosed tag.*/)
-      end
-    end
-
-    context('with a barely-opened tag') do
-      setup_single_subgame("[#{TAB}#{TAB}  ")
-      it('complains about the missing tag name') do
-        expect {described_class.new.each_subgame(pbn_game_string) {}}.to raise_error(/.*tag name.*/)
-      end
-    end
-
-    context('with a tag name but no value') do
-      setup_single_subgame("[#{TAB}#{TAB}  TagName ")
-      it('complains about the missing tag value') do
-        expect {described_class.new.each_subgame(pbn_game_string) {}}.to raise_error(/.*tag value.*/)
-      end
-    end
-
     context('with an unclosed curly comment') do
       setup_single_subgame('{unclosed comment')
       it('complains about the unclosed comment') do
-        expect {described_class.new.each_subgame(pbn_game_string) {}}.to raise_error(/.*unclosed brace comment.*/)
+        expect { described_class.new.each_subgame(pbn_game_string) {} }.to raise_error(/.*unclosed brace comment.*/)
       end
     end
 
@@ -127,6 +106,34 @@ RSpec.describe Bridge::Pbn::GameParser do
                                           [' comment without trailing newline'], [], [], '')
       it('treats end-of-game the same as end-of-line') do
         expect_first_yield_with_arg(expected_arg)
+      end
+    end
+
+    context('with a barely-opened tag') do
+      setup_single_subgame("[#{TAB}#{TAB}  ")
+      it('complains about the missing tag name') do
+        expect { described_class.new.each_subgame(pbn_game_string) {} }.to raise_error(/.*tag name.*/)
+      end
+    end
+
+    context('with a tag name but no value') do
+      setup_single_subgame("[#{TAB}#{TAB}  TagName ")
+      it('complains about the missing tag value') do
+        expect { described_class.new.each_subgame(pbn_game_string) {} }.to raise_error(/.*tag value.*/)
+      end
+    end
+
+    context('with an unclosed tag value') do
+      setup_single_subgame("[#{TAB}#{TAB}  TagName #{DOUBLE_QUOTE}TagVal ")
+      it('complains about the unclosed string') do
+        expect { described_class.new.each_subgame(pbn_game_string) {} }.to raise_error(/.*unclosed string.*/)
+      end
+    end
+
+    context('with an unclosed tag') do
+      setup_single_subgame("[TagName #{DOUBLE_QUOTE}TagValue#{DOUBLE_QUOTE}")
+      it('complains about the unclosed tag') do
+        expect { described_class.new.each_subgame(pbn_game_string) {} }.to raise_error(/.*unclosed tag.*/)
       end
     end
 

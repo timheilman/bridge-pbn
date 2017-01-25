@@ -19,7 +19,7 @@ module Bridge
           else
             @comment << parser.cur_char
         end
-        parser.inc_char
+        parser.inc_char # todo: fix this for multicharacter EOL
       end
     end
   end

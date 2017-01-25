@@ -15,7 +15,8 @@ module Bridge
           when ALLOWED_WHITESPACE_CHARS
             parser.inc_char
           when ALLOWED_NAME_CHARS
-            parser.state = InTagName.new(parser)
+            in_tag_name = InTagName.new(parser)
+            parser.state = in_tag_name # will make the call directly here since no inc
           else
             parser.raise_exception
         end

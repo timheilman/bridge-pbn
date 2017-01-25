@@ -26,7 +26,7 @@ module Bridge
               @string << DOUBLE_QUOTE
               parser.inc_char
             else
-              parser.add_tag_item(@string) # todo: fix this for strings in sections
+              parser.add_tag_item(@string) # todo: fix this for strings in supplemental sections
               parser.inc_char
               parser.state = next_state
             end

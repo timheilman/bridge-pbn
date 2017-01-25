@@ -20,13 +20,15 @@ module Bridge
             parser.inc_char
           when SECTION_STARTING_TOKENS
             raise_exception if parser.state == BeforeFirstTag.new(parser)
-            parser.state = if parser.tag_name == PLAY_SECTION_TAG_NAME
-                             InPlaySection.new(parser)
-                           elsif parser.tag_name == AUCTION_SECTION_TAG_NAME
-                             InAuctionSection.new(parser)
-                           else
-                             InSupplementalSection.new(parser)
-                           end
+            sectionState = if parser.tag_name == PLAY_SECTION_TAG_NAME
+                     InPlaySection.new(parser)
+                   elsif parser.tag_name == AUCTION_SECTION_TAG_NAME
+                     InAuctionSection.new(parser)
+                   else
+                     InSupplementalSection.new(parser)
+                   end
+            parser.state = sectionState # need to call directly on this since no inc
+
           else
             raise_exception
         end

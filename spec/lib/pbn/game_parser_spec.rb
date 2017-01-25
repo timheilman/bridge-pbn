@@ -112,9 +112,9 @@ RSpec.describe Bridge::Pbn::GameParser do
         expect do |block|
           described_class.new.each_subgame(pbn_game_string, &block)
         end.to yield_successive_args(Bridge::Pbn::Subgame.new(['preceding comment'], ['Event', ''],
-                                                         ['comment following event'], ''),
+                                                              ['comment following event'], ''),
                                      Bridge::Pbn::Subgame.new([], ['Site', ''],
-                                                         ['comment following site'], ''))
+                                                              ['comment following site'], ''))
       end
     end
 
@@ -128,7 +128,20 @@ RSpec.describe Bridge::Pbn::GameParser do
           described_class.new.each_subgame(pbn_game_string, &block)
         end.to yield_successive_args(Bridge::Pbn::Subgame.new(%w(a1 a2), ['a3', ''], ['a4'], '"a5" '),
                                      Bridge::Pbn::Subgame.new([], ['b1', ''], ['b2 '],
-                                                         "b3 b4#{NEWLINE}b5 b6#{NEWLINE}"))
+                                                              "b3 b4#{NEWLINE}b5 b6#{NEWLINE}"))
+      end
+    end
+
+    context('when asked to raise an error') do
+      let(:parser) { double }
+      let(:described_object) do
+        temp = described_class.new
+        temp.instance_variable_set(:@state, Bridge::Pbn::BeforeFirstTag.new(parser))
+        temp.instance_variable_set(:@cur_char_index, 17)
+        temp
+      end
+      it('Provides the state, char index, and given message') do
+        expect { described_object.raise_error 'foobar' }.to raise_error(/.*BeforeFirstTag.*17.*foobar.*/)
       end
     end
   end

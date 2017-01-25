@@ -82,7 +82,6 @@ module Bridge
 
       SPACE = ' '
       HYPHEN = '-'
-      EMPTY_REGEXP = //
 
       def self.make_array_of_hands(hands, starting_hand_index)
         hands.split(SPACE).reduce([]) do |array_of_hands, pbn_hand_string|
@@ -91,7 +90,7 @@ module Bridge
       end
 
       def self.cards_for_single_suit(ranks_string, suit)
-        ranks_string.split(EMPTY_REGEXP).reduce([]) do |cards, rankOfSuit|
+        ranks_string.each_char.reduce([]) do |cards, rankOfSuit|
           cards << Bridge::Card.for(ranks: [Bridge::Rank.forLetter(rankOfSuit)], suits: [suit])
         end
       end
@@ -101,7 +100,7 @@ module Bridge
 
       def self.comment_open_after_eol?(line, comment_is_open)
         last_char = nil
-        line.split(EMPTY_REGEXP).each do |char|
+        line.each_char do |char|
           # see section 3.8 "Commentary"
           if char == OPEN_CURLY && (last_char.nil? || last_char == SPACE)
             comment_is_open = true

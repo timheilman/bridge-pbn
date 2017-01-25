@@ -1,6 +1,7 @@
 module Bridge
   module Pbn
     module ParserConstants
+      EMPTY_REGEXP = //
       ALLOWED_WHITESPACE_CHARS = /[ \t\v\r\n]/
       SEMICOLON = ';'
       NEWLINE_CHARACTERS = "\n" # TODO: make this configurable to be less Mac-centric; don't depend on single char
@@ -11,6 +12,7 @@ module Bridge
       ALLOWED_NAME_CHARS = /[A-Za-z0-9_]/
       DOUBLE_QUOTE = '"'
       CLOSE_BRACKET = ']'
+      SECTION_INCLUDE_COMMENTS_BUGGY_HACK = /[^\[\]%]/
     end
 
     module ParserDelegate

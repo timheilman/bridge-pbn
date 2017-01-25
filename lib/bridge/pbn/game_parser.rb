@@ -13,8 +13,6 @@ module Bridge
         process
       end
 
-      EMPTY_REGEXP = //
-
       def process
         @char_iter = @pbn_game_string.split(EMPTY_REGEXP).each_with_index
         inc_char
@@ -36,7 +34,7 @@ module Bridge
             when :outOfTag
               Bridge::Pbn::BeforeFirstTag.new(self).process_chars
             when :inSupplementalSection
-              process_supplemental_section
+              Bridge::Pbn::InSupplementalSection.new(self).process_chars
           end
         end
         yield_when_proper
@@ -69,7 +67,8 @@ module Bridge
       end
 
 
-      def process_tag_value
+      def add_section(section)
+        @section = section
       end
 
       BACKSLASH = '\\'
@@ -102,27 +101,6 @@ module Bridge
               raise_exception
           end
         end
-      end
-
-      def process_supplemental_section
-        # we must return the section untokenized, since newlines hold special meaning for ;-comments
-        # and are permitted to appear in Auction and Play sections
-        section_in_entirety = ''
-        until @state == :done
-          case cur_char
-            when /[^\[\]%]/ # curly braces and semicolons must be allowed through for commentary in play and auction blocks
-              section_in_entirety << cur_char
-              inc_char
-            when OPEN_BRACKET
-              @section << section_in_entirety unless section_in_entirety.empty?
-              @state = :beforeTagName
-              inc_char
-              return
-            else
-              raise_exception
-          end
-        end
-        @section << section_in_entirety unless section_in_entirety.empty?
       end
 
       def raise_exception

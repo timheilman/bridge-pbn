@@ -108,6 +108,13 @@ RSpec.describe Bridge::Pbn::GameParser do
       end
     end
 
+    context('with a tag name but no value') do
+      setup_single_subgame("[#{TAB}#{TAB}  TagName ")
+      it('complains about the missing tag value') do
+        expect {described_class.new.each_subgame(pbn_game_string) {}}.to raise_error(/.*tag value.*/)
+      end
+    end
+
     context('with two very simple tag pairs') do
       subject(:pbn_game_string) { "[Event #{DOUBLE_QUOTE}#{DOUBLE_QUOTE}]#{NEWLINE}[Site #{DOUBLE_QUOTE}#{DOUBLE_QUOTE}]" }
       it('yields twice with the minimal structures') do

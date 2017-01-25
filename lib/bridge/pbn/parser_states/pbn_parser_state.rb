@@ -1,8 +1,7 @@
 module Bridge
   module Pbn
     class PbnParserState
-      def done? #override for single Done state
-        false
+      def finalize
       end
     end
   end

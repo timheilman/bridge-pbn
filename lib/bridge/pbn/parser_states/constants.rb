@@ -1,7 +1,6 @@
 module Bridge
   module Pbn
     module ParserConstants
-      EMPTY_REGEXP = //
       ALLOWED_WHITESPACE_CHARS = /[ \t\v\r\n]/
       SEMICOLON = ';'
       NEWLINE_CHARACTERS = "\n" # TODO: make this configurable to be less Mac-centric; don't depend on single char

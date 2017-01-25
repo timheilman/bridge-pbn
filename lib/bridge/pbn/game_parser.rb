@@ -1,7 +1,6 @@
 module Bridge
   module Pbn
     class GameParser
-      attr_accessor :state # temporary, hopefully
       require 'bridge/pbn/parser_states/constants'
       include Bridge::Pbn::ParserConstants
 
@@ -14,20 +13,18 @@ module Bridge
       end
 
       def process
-        @char_iter = @pbn_game_string.split(EMPTY_REGEXP).each_with_index
-        inc_char
-
-        until @state.done?
-          @state.process_chars
+        @pbn_game_string.each_char do |char, index|
+          @cur_char_index = index
+          @state = @state.process_char(char)
         end
-        yield_when_proper
+        @state.finalize
+        # todo: verify that @state is a proper value and raise an exception otherwise
+        yield_subgame
       end
 
-      def yield_when_proper
-        if @tag_pair.length == 2 || @state.done?
-          @block.yield Subgame.new(@preceding_comments, @tag_pair, @following_comments, @section)
-          clear
-        end
+      def yield_subgame
+        @block.yield Subgame.new(@preceding_comments, @tag_pair, @following_comments, @section)
+        clear
       end
 
       def clear
@@ -65,18 +62,6 @@ module Bridge
 
       def add_following_comment(comment)
         @following_comments << comment
-      end
-
-      def inc_char
-        begin
-          @cur_char, @cur_char_index = @char_iter.next
-        rescue StopIteration
-          @state = Bridge::Pbn::Done.new
-        end
-      end
-
-      def cur_char
-        @cur_char
       end
     end
   end

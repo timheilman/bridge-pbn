@@ -5,7 +5,7 @@ module Bridge
       include Bridge::Pbn::ParserConstants
       include Bridge::Pbn::ParserState
 
-      def process_chars
+      def process_char char
         parser.raise_exception 'Auction sections are complicated and not yet implemented!'
       end
     end

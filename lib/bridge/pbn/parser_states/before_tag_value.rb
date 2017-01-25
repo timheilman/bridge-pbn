@@ -5,13 +5,12 @@ module Bridge
       include Bridge::Pbn::ParserConstants
       include Bridge::Pbn::ParserState
 
-      def process_chars
-        case parser.cur_char
+      def process_char(char)
+        case char
           when ALLOWED_WHITESPACE_CHARS
-            parser.inc_char
+            return self
           when DOUBLE_QUOTE
-            parser.state = InString.new(parser, BeforeTagClose.new(parser))
-            parser.inc_char
+            return InString.new(parser, BeforeTagClose.new(parser))
           else
             parser.raise_exception
         end

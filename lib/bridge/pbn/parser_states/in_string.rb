@@ -10,29 +10,26 @@ module Bridge
         @escaped = false
       end
 
-      def process_chars
-        case parser.cur_char
+      def process_char char
+        case char
           when BACKSLASH
             @string << BACKSLASH if @escaped
             @escaped = !@escaped
-            parser.inc_char
           when NOT_DOUBLE_QUOTE
             @escaped = false
-            @string << parser.cur_char
-            parser.inc_char
+            @string << char
           when DOUBLE_QUOTE
             if @escaped
               @escaped = false
               @string << DOUBLE_QUOTE
-              parser.inc_char
             else
               parser.add_tag_item(@string) # todo: fix this for strings in supplemental sections
-              parser.inc_char
-              parser.state = next_state
+              return next_state
             end
           else
             raise_exception
         end
+        self
       end
 
     end

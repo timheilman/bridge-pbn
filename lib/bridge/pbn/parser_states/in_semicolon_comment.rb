@@ -11,15 +11,20 @@ module Bridge
         @comment = ''
       end
 
-      def process_chars
-        case parser.cur_char
+      def process_char(char)
+        case char
           when NEWLINE_CHARACTERS
-            next_state.add_comment(@comment)
-            parser.state = next_state
+            finalize
+            return next_state
           else
-            @comment << parser.cur_char
+            @comment << char
+            return self
         end
-        parser.inc_char # todo: fix this for multicharacter EOL
+        # todo: fix this for multicharacter EOL
+      end
+
+      def finalize
+        next_state.add_comment(@comment)
       end
     end
   end

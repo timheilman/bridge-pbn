@@ -9,21 +9,23 @@ module Bridge
         @section = ''
       end
 
-      def process_chars
+      def process_char char
         # we must return the section untokenized, since newlines hold special meaning for ;-comments
         # and are permitted to appear in Auction and Play sections
-        case parser.cur_char
+        case char
           when SECTION_INCLUDE_COMMENTS_BUGGY_HACK # curly braces and semicolons must be allowed through for commentary in play and auction blocks
-            @section << parser.cur_char
-            parser.inc_char
+            @section << char
+            return self
           when OPEN_BRACKET
-            parser.add_section(@section) unless @section.empty?
-            parser.state = BeforeTagName.new(parser)
-            parser.inc_char
-            return
+            finalize
+            parser.yield_subgame
+            return BeforeTagName.new(parser)
           else
             parser.raise_exception
         end
+      end
+
+      def finalize
         parser.add_section(@section) unless @section.empty?
       end
     end

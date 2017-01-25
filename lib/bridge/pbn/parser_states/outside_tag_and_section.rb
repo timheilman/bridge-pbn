@@ -5,30 +5,27 @@ module Bridge
       include Bridge::Pbn::ParserConstants
       include Bridge::Pbn::ParserState
 
-      def process_chars
-        case parser.cur_char
+      def process_char char
+        case char
           when ALLOWED_WHITESPACE_CHARS
-            parser.inc_char
+            return self
           when SEMICOLON
-            parser.inc_char
-            parser.state = InSemicolonComment.new(parser, self)
+            return InSemicolonComment.new(parser, self)
           when OPEN_CURLY
-            parser.inc_char
-            parser.state = InCurlyComment.new(parser, self)
+            return InCurlyComment.new(parser, self)
           when OPEN_BRACKET
-            parser.state = BeforeTagName.new(parser)
-            parser.inc_char
+            perhaps_yield
+            return BeforeTagName.new(parser)
           when SECTION_STARTING_TOKENS
-            raise_exception if parser.state == BeforeFirstTag.new(parser)
+            raise_exception unless section_tokens_allowed
             sectionState = if parser.tag_name == PLAY_SECTION_TAG_NAME
-                     InPlaySection.new(parser)
-                   elsif parser.tag_name == AUCTION_SECTION_TAG_NAME
-                     InAuctionSection.new(parser)
-                   else
-                     InSupplementalSection.new(parser)
-                   end
-            parser.state = sectionState # need to call directly on this since no inc
-
+                             InPlaySection.new(parser)
+                           elsif parser.tag_name == AUCTION_SECTION_TAG_NAME
+                             InAuctionSection.new(parser)
+                           else
+                             InSupplementalSection.new(parser)
+                           end
+            return sectionState.process_char char
           else
             raise_exception
         end

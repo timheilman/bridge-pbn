@@ -9,15 +9,15 @@ module Bridge
         @comment = ''
       end
 
-      def process_chars
-        case parser.cur_char
+      def process_char char
+        case char
           when CLOSE_CURLY
             next_state.add_comment(@comment)
-            parser.state = next_state
+            return next_state
           else
-            @comment << parser.cur_char
+            @comment << char
+            return self
         end
-        parser.inc_char
       end
     end
   end

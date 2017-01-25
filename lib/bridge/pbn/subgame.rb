@@ -8,10 +8,10 @@ module Bridge
     # the section, thus requiring newlines to remain in the section at this level of abstraction
     # so that those comments can be parsed in a Tag-dependent manner at the next level of abstraction
     class Subgame < Struct.new(:beginningComments, :tagPair, :followingComments, :section)
-      def inspect
-        return 'bc: ' + @beginningComments.inspect +
-            ' tp: ' + @tagPair.inspect +
-            ' fc: ' + @followingComments.inspect +
+      def to_s
+        return 'bc: ' + @beginningComments.join('|') +
+            ' tp: ' + @tagPair.join('|') +
+            ' fc: ' + @followingComments.join('|') +
             ' s: `' + section + '\''
       end
     end

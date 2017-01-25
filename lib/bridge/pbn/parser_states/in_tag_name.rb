@@ -9,15 +9,15 @@ module Bridge
         @tag_name = ''
       end
 
-      def process_chars
-        case parser.cur_char
+      def process_char char
+        case char
           when ALLOWED_NAME_CHARS
-            @tag_name << parser.cur_char
+            @tag_name << char
+            return self
           else
             parser.add_tag_item(@tag_name)
-            parser.state = BeforeTagValue.new(parser, self)
+            return BeforeTagValue.new(parser, self)
         end
-        parser.inc_char
       end
     end
   end

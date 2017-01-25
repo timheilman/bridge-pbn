@@ -3,7 +3,7 @@ module Bridge
     class InCurlyComment < PbnParserState
       require 'bridge/pbn/parser_states/constants'
       include Bridge::Pbn::ParserConstants
-      include Bridge::Pbn::ParserDelegate
+      include Bridge::Pbn::ParserState
 
       def post_initialize
         @comment = ''

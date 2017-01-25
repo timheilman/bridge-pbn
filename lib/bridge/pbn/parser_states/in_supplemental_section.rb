@@ -3,7 +3,7 @@ module Bridge
     class InSupplementalSection < PbnParserState
       require 'bridge/pbn/parser_states/constants'
       include Bridge::Pbn::ParserConstants
-      include Bridge::Pbn::ParserDelegate
+      include Bridge::Pbn::ParserState
 
       def process_chars
         # we must return the section untokenized, since newlines hold special meaning for ;-comments

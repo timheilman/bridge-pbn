@@ -17,7 +17,7 @@ module Bridge
       AUCTION_SECTION_TAG_NAME = 'Auction'
     end
 
-    module ParserDelegate
+    module ParserState
       attr_reader :parser
       attr_reader :last_state
 

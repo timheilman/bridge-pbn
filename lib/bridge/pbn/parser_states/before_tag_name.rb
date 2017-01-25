@@ -3,7 +3,7 @@ module Bridge
     class BeforeTagName < PbnParserState
       require 'bridge/pbn/parser_states/constants'
       include Bridge::Pbn::ParserConstants
-      include Bridge::Pbn::ParserDelegate
+      include Bridge::Pbn::ParserState
 
       def process_chars
         parser.yield_when_proper

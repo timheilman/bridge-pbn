@@ -3,7 +3,7 @@ module Bridge
     class BeforeTagClose < PbnParserState
       require 'bridge/pbn/parser_states/constants'
       include Bridge::Pbn::ParserConstants
-      include Bridge::Pbn::ParserDelegate
+      include Bridge::Pbn::ParserState
       def process_chars
         case parser.cur_char
           when ALLOWED_WHITESPACE_CHARS

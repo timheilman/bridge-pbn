@@ -12,7 +12,7 @@ module Bridge
           when ALLOWED_NAME_CHARS
             return InTagName.new(parser).process_char(char)
           else
-            parser.raise_exception
+            parser.raise_error "Unexpected non-whitespace, non-name token character: `#{char}'"
         end
       end
 

@@ -21,7 +21,7 @@ module Bridge
             parser.yield_subgame
             return BeforeTagName.new(parser)
           else
-            parser.raise_exception
+            parser.raise_error
         end
       end
 

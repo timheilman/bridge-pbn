@@ -27,7 +27,7 @@ module Bridge
               return next_state
             end
           else
-            raise_exception
+            raise_error
         end
         self
       end

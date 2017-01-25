@@ -12,7 +12,7 @@ module Bridge
           when DOUBLE_QUOTE
             return InString.new(parser, BeforeTagClose.new(parser))
           else
-            parser.raise_exception
+            parser.raise_error
         end
       end
 

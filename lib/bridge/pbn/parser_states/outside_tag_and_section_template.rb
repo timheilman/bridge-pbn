@@ -17,7 +17,7 @@ module Bridge
             perhaps_yield
             return BeforeTagName.new(parser)
           when SECTION_STARTING_TOKENS
-            raise_exception unless section_tokens_allowed
+            parser.raise_error unless section_tokens_allowed
             section_state = if parser.tag_name == PLAY_SECTION_TAG_NAME
                              InPlaySection.new(parser)
                            elsif parser.tag_name == AUCTION_SECTION_TAG_NAME
@@ -27,7 +27,7 @@ module Bridge
                            end
             return section_state.process_char char
           else
-            raise_exception
+            parser.raise_error
         end
       end
 

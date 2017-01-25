@@ -12,7 +12,7 @@ module Bridge
           when CLOSE_BRACKET
             return BetweenTags.new(parser)
           else
-            parser.raise_exception
+            parser.raise_error
         end
       end
     end

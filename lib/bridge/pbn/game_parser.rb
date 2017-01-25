@@ -51,7 +51,7 @@ module Bridge
         @section = section
       end
 
-      def raise_exception(message = nil)
+      def raise_error(message = nil)
         raise ArgumentError.new("state: #{@state.to_s}; string: `#{@pbn_game_string}'; " +
                                     "char_index: #{@cur_char_index.to_s}; message: #{message}")
       end

@@ -10,7 +10,7 @@ module Bridge
           when ALLOWED_WHITESPACE_CHARS
             parser.inc_char
           when DOUBLE_QUOTE
-            parser.state = :inTagValue
+            parser.state = InTagValue.new(parser)
             parser.inc_char
           else
             parser.raise_exception

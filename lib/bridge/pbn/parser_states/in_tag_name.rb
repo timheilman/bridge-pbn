@@ -7,12 +7,12 @@ module Bridge
 
       def process_chars
         tag_name = ''
-        until parser.state == :done || parser.cur_char !~ ALLOWED_NAME_CHARS
+        until parser.state.done? || parser.cur_char !~ ALLOWED_NAME_CHARS # todo: fix this demeter violation
           tag_name << parser.cur_char
           parser.inc_char
         end
         parser.add_tag_item tag_name
-        parser.state = :beforeTagValue unless parser.state == :done
+        parser.state = BeforeTagValue.new(parser) unless parser.state.done? # todo: fix this demeter violation
       end
     end
   end

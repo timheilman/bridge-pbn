@@ -9,7 +9,7 @@ module Bridge
           when ALLOWED_WHITESPACE_CHARS
             parser.inc_char
           when CLOSE_BRACKET
-            parser.state = :outOfTag
+            parser.state = BetweenTags.new(parser)
             parser.inc_char
           else
             parser.raise_exception

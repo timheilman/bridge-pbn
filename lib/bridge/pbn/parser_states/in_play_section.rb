@@ -1,16 +1,12 @@
 module Bridge
   module Pbn
-    class InTagValue < PbnParserState
+    class InPlaySection < PbnParserState
       require 'bridge/pbn/parser_states/constants'
       include Bridge::Pbn::ParserConstants
       include Bridge::Pbn::ParserDelegate
 
       def process_chars
-        parser.process_string do |string|
-          parser.add_tag_item(string)
-          parser.state = BeforeTagClose.new(parser)
-        end
-
+        parser.raise_exception 'Play sections are complicated and not yet implemented!'
       end
     end
   end

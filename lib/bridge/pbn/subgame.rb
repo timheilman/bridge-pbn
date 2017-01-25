@@ -9,9 +9,9 @@ module Bridge
     # so that those comments can be parsed in a Tag-dependent manner at the next level of abstraction
     class Subgame < Struct.new(:beginningComments, :tagPair, :followingComments, :section)
       def inspect
-        return 'bc: ' + @beginningComments.to_s +
-            ' tp: ' + @tagPair.to_s +
-            ' fc: ' + @followingComments.to_s +
+        return 'bc: ' + @beginningComments.inspect +
+            ' tp: ' + @tagPair.inspect +
+            ' fc: ' + @followingComments.inspect +
             ' s: `' + section + '\''
       end
     end

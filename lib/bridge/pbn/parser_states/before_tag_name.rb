@@ -15,7 +15,7 @@ module Bridge
           when ALLOWED_WHITESPACE_CHARS
             parser.inc_char
           when ALLOWED_NAME_CHARS
-            parser.state = :inTagName
+            parser.state = InTagName.new(parser)
           else
             parser.raise_exception
         end

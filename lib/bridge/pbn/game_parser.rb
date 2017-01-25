@@ -7,7 +7,7 @@ module Bridge
 
       def each_subgame(pbn_game_string, &block)
         @pbn_game_string = pbn_game_string
-        @state = :beforeFirstTag
+        @state = Bridge::Pbn::BeforeFirstTag.new(self)
         @block = block
         clear
         process
@@ -17,31 +17,14 @@ module Bridge
         @char_iter = @pbn_game_string.split(EMPTY_REGEXP).each_with_index
         inc_char
 
-        while @state != :done
-          case @state
-            when :beforeFirstTag
-              Bridge::Pbn::BeforeFirstTag.new(self).process_chars
-            when :beforeTagName
-              Bridge::Pbn::BeforeTagName.new(self).process_chars
-            when :inTagName
-              Bridge::Pbn::InTagName.new(self).process_chars
-            when :beforeTagValue
-              Bridge::Pbn::BeforeTagValue.new(self).process_chars
-            when :inTagValue
-              Bridge::Pbn::InTagValue.new(self).process_chars
-            when :beforeTagClose
-              Bridge::Pbn::BeforeTagClose.new(self).process_chars
-            when :outOfTag
-              Bridge::Pbn::BeforeFirstTag.new(self).process_chars
-            when :inSupplementalSection
-              Bridge::Pbn::InSupplementalSection.new(self).process_chars
-          end
+        until @state.done?
+          @state.process_chars
         end
         yield_when_proper
       end
 
       def yield_when_proper
-        if @tag_pair.length == 2 || @state == :done
+        if @tag_pair.length == 2 || @state.done?
           @block.yield Subgame.new(@preceding_comments, @tag_pair, @following_comments, @section)
           clear
         end
@@ -103,20 +86,24 @@ module Bridge
         end
       end
 
-      def raise_exception
-        raise ArgumentError.new('state: ' + @state.to_s + '; string: `' +
-                                    @pbn_game_string + '\'; char_index: ' + @cur_char_index.to_s)
+      def raise_exception(message = nil)
+        raise ArgumentError.new("state: #{@state.to_s}; string: `#{@pbn_game_string}'; " +
+                                    "char_index: #{@cur_char_index.to_s}; message: #{message}")
       end
 
-      def add_comment(comment)
-        (@state == :beforeFirstTag ? @preceding_comments : @following_comments) << comment
+      def add_preceding_comment(comment)
+        @preceding_comments << comment
+      end
+
+      def add_following_comment(comment)
+        @following_comments << comment
       end
 
       def inc_char
         begin
           @cur_char, @cur_char_index = @char_iter.next
         rescue StopIteration
-          @state = :done
+          @state = Bridge::Pbn::Done.new
         end
       end
 

@@ -1,6 +1,6 @@
 module Bridge
   module Pbn
-    class BeforeFirstTag < PbnParserState
+    class BetweenTags < PbnParserState #todo: fix this blatant copy-paste-tweak of BeforeFirstTag
       require 'bridge/pbn/parser_states/constants'
       include Bridge::Pbn::ParserConstants
       include Bridge::Pbn::ParserDelegate
@@ -16,7 +16,7 @@ module Bridge
               comment << parser.cur_char
               parser.inc_char
             end
-            parser.add_preceding_comment(comment)
+            parser.add_following_comment(comment)
             parser.inc_char
           when OPEN_CURLY
             parser.inc_char
@@ -25,7 +25,7 @@ module Bridge
               comment << parser.cur_char
               parser.inc_char
             end
-            parser.add_preceding_comment(comment)
+            parser.add_following_comment(comment)
             parser.inc_char
           when OPEN_BRACKET
             parser.state = BeforeTagName.new(parser)

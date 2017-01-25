@@ -19,5 +19,9 @@ module Bridge
     autoload :InTagValue, File.expand_path('../bridge/pbn/parser_states/in_tag_value', __FILE__)
     autoload :BeforeTagClose, File.expand_path('../bridge/pbn/parser_states/before_tag_close', __FILE__)
     autoload :InSupplementalSection, File.expand_path('../bridge/pbn/parser_states/in_supplemental_section', __FILE__)
+    autoload :InAuctionSection, File.expand_path('../bridge/pbn/parser_states/in_auction_section', __FILE__)
+    autoload :InPlaySection, File.expand_path('../bridge/pbn/parser_states/in_play_section', __FILE__)
+    autoload :BetweenTags, File.expand_path('../bridge/pbn/parser_states/between_tags', __FILE__)
+    autoload :Done, File.expand_path('../bridge/pbn/parser_states/done', __FILE__)
   end
 end

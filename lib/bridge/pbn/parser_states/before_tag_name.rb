@@ -1,6 +1,6 @@
 module Bridge
   module Pbn
-    class BeforeTagName < PbnParserState
+    class BeforeTagName
       require 'bridge/pbn/parser_states/constants'
       include Bridge::Pbn::ParserConstants
       include Bridge::Pbn::ParserState

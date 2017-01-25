@@ -2,7 +2,7 @@ module Bridge
   module Pbn
     # despite the similarity to InCurlyComment, I'm not merging the classes yet because semicolon comments
     # need eventually to be able to deal with multicharacter line endings as their terminating symbol
-    class InSemicolonComment < PbnParserState
+    class InSemicolonComment
       require 'bridge/pbn/parser_states/constants'
       include Bridge::Pbn::ParserConstants
       include Bridge::Pbn::ParserState

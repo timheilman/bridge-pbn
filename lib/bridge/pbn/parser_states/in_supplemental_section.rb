@@ -1,6 +1,6 @@
 module Bridge
   module Pbn
-    class InSupplementalSection < PbnParserState
+    class InSupplementalSection
       require 'bridge/pbn/parser_states/constants'
       include Bridge::Pbn::ParserConstants
       include Bridge::Pbn::ParserState

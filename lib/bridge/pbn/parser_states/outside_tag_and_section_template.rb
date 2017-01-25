@@ -1,6 +1,6 @@
 module Bridge
   module Pbn
-    class OutsideTagAndSectionTemplate < PbnParserState
+    class OutsideTagAndSectionTemplate
       require 'bridge/pbn/parser_states/constants'
       include Bridge::Pbn::ParserConstants
       include Bridge::Pbn::ParserState
@@ -31,6 +31,10 @@ module Bridge
             err_str = "Unexpected char outside 33-126 or closing brace, closing bracket, or percent sign: `#{char}'"
             parser.raise_error err_str
         end
+      end
+
+      def finalize
+        # no-op
       end
 
     end

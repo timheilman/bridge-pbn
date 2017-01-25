@@ -22,6 +22,8 @@ module Bridge
             finalize
             return next_state
           else
+            perhaps_emit_cr
+            @prev_char_was_cr = false
             @comment << char
             return self
         end

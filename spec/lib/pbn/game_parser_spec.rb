@@ -212,5 +212,13 @@ RSpec.describe Bridge::Pbn::GameParser do
       end
     end
 
+    context('with an opening single-line comment strangely containing CR in the middle of the string') do
+      expected_arg = setup_single_subgame("; just a #{CR}comment#{LF}",
+                                          [" just a #{CR}comment"], [], [], '')
+      it('provides a structure with opening comment including CR, no tag, no following comment, and no section') do
+        expect_first_yield_with_arg(expected_arg)
+      end
+    end
+
   end
 end

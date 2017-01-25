@@ -22,11 +22,6 @@ module Bridge
             finalize
             return next_state
           else
-            char_in_latin_1 = char.encode(Encoding::ISO_8859_1)
-            case char_in_latin_1.ord
-              when 0..8, 12, 13..31, 127..159
-                parser.raise_error "disallowed character in PBN files, decimal code: #{char_in_latin_1.ord}"
-            end
             perhaps_emit_cr
             @prev_char_was_cr = false
             @comment << char

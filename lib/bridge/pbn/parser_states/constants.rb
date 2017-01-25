@@ -18,7 +18,6 @@ module Bridge
       PLAY_SECTION_TAG_NAME = 'Play'
       AUCTION_SECTION_TAG_NAME = 'Auction'
       BACKSLASH = '\\'
-      NOT_DOUBLE_QUOTE = /[^"]/
     end
 
     module ParserState

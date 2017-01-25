@@ -15,6 +15,16 @@ module Bridge
       def process
         @pbn_game_string.each_char do |char, index|
           @cur_char_index = index
+          case (char.ord)
+            # 9 is \t
+            # 10 is \n
+            # 11 is \v
+            # 13 is \r
+            # 32-126 are ASCII printable
+            # 160-255 are non-ASCII printable
+            when 0..8, 12, 14..31, 127..159
+              raise_error "disallowed character in PBN files, decimal code: #{char.ord}"
+          end
           @state = @state.process_char(char)
         end
         @state.finalize

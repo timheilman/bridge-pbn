@@ -18,6 +18,8 @@ RSpec.describe Bridge::Pbn::GameParser do
   CR = "\r"
   CRLF = "\r\n"
   LF = "\n"
+  FF = "\f"
+  VAL_149 = [149].pack('C').force_encoding(Encoding::ISO_8859_1)
   TAB = "\t"
   BACKSLASH = '\\'
   DOUBLE_QUOTE = '"'
@@ -207,7 +209,7 @@ RSpec.describe Bridge::Pbn::GameParser do
     context('with an opening single-line comment strangely containing two CRs then an LF') do
       expected_arg = setup_single_subgame("; just a comment#{CR}#{CRLF}",
                                           [" just a comment#{CR}"], [], [], '')
-      it('provides a structure with opening comment including CR, no tag, no following comment, and no section') do
+      it('includes only the first CR in the string') do
         expect_first_yield_with_arg(expected_arg)
       end
     end
@@ -215,8 +217,30 @@ RSpec.describe Bridge::Pbn::GameParser do
     context('with an opening single-line comment strangely containing CR in the middle of the string') do
       expected_arg = setup_single_subgame("; just a #{CR}comment#{LF}",
                                           [" just a #{CR}comment"], [], [], '')
-      it('provides a structure with opening comment including CR, no tag, no following comment, and no section') do
+      it('includes the CR in the string') do
         expect_first_yield_with_arg(expected_arg)
+      end
+    end
+
+    context('with printable latin-1 characters') do
+      expected_arg = setup_single_subgame("; c'est très bon",
+                                          [" c'est très bon"], [], [], '')
+      it('handles the latin-1 character just fine') do
+        expect_first_yield_with_arg(expected_arg)
+      end
+    end
+
+    context('with control ASCII characters') do
+      setup_single_subgame("[TagName #{DOUBLE_QUOTE}Ta#{FF}gValue#{DOUBLE_QUOTE}")
+      it('refuses the invalid character') do
+        expect {described_class.new.each_subgame(pbn_game_string) {}}.to raise_error(/.*disallowed.*: 12/)
+      end
+    end
+
+    context('with control non-ASCII characters') do
+      setup_single_subgame("[TagName #{DOUBLE_QUOTE}Ta#{VAL_149}gValue#{DOUBLE_QUOTE}")
+      it('refuses the invalid character') do
+        expect {described_class.new.each_subgame(pbn_game_string) {}}.to raise_error(/.*disallowed.*: 149/)
       end
     end
 

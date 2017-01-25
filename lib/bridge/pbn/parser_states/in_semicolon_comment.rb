@@ -9,11 +9,14 @@ module Bridge
 
       def post_initialize
         @comment = ''
+        @prev_char_was_cr = false # fail-to-omit \r when it immediately precedes \n
       end
 
       def process_char(char)
         case char
           when CARRIAGE_RETURN
+            perhaps_emit_cr
+            @prev_char_was_cr = true
             return self
           when LINE_FEED
             finalize
@@ -23,6 +26,12 @@ module Bridge
             return self
         end
         # todo: fix this for multicharacter EOL
+      end
+
+      def perhaps_emit_cr
+        if @prev_char_was_cr
+          @comment << CARRIAGE_RETURN
+        end
       end
 
       def finalize

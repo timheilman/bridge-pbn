@@ -15,14 +15,32 @@ end
 
 RSpec.describe Bridge::Pbn::GameParser do
   # intent: to maximize human readability for complicated quoting situations, use constants for all difficult characters
+  CR = "\r"
   CRLF = "\r\n"
   LF = "\n"
   TAB = "\t"
   BACKSLASH = '\\'
   DOUBLE_QUOTE = '"'
-  describe('#each_subgame') do
 
-    context('with an opening single-line comment alone') do
+  describe('#raise_error') do
+    context('when asked to raise an error') do
+      let(:parser) { double }
+      let(:described_object) do
+        temp = described_class.new
+        temp.instance_variable_set(:@state, Bridge::Pbn::BeforeFirstTag.new(parser))
+        temp.instance_variable_set(:@cur_char_index, 17)
+        temp
+      end
+      it('Provides the state, char index, and given message') do
+        expect { described_object.raise_error 'foobar' }.to raise_error(/.*BeforeFirstTag.*17.*foobar.*/)
+      end
+    end
+  end
+
+  describe('#each_subgame') do
+    #### HAPPY PATHS #####
+
+    context('with an opening single-line comment with LF') do
       expected_arg = setup_single_subgame("; just a comment#{LF}",
                                           [' just a comment'], [], [], '')
       it('provides a structure with opening comment, no tag, no following comment, and no section') do
@@ -95,6 +113,47 @@ RSpec.describe Bridge::Pbn::GameParser do
       end
     end
 
+    context('with two very simple tag pairs') do
+      subject(:pbn_game_string) { "[Event #{DOUBLE_QUOTE}#{DOUBLE_QUOTE}]#{LF}[Site #{DOUBLE_QUOTE}#{DOUBLE_QUOTE}]" }
+      it('yields twice with the minimal structures') do
+        expect do |block|
+          described_class.new.each_subgame(pbn_game_string, &block)
+        end.to yield_successive_args(Bridge::Pbn::Subgame.new([], ['Event', ''], [], ''),
+                                     Bridge::Pbn::Subgame.new([], ['Site', ''], [], ''))
+      end
+    end
+
+    context('with two very simple tag pairs with comments') do
+      subject(:pbn_game_string) { ";preceding comment#{LF}" +
+          "[Event #{DOUBLE_QUOTE}#{DOUBLE_QUOTE}] {comment following event} [Site #{DOUBLE_QUOTE}#{DOUBLE_QUOTE}] " +
+          ";comment following site#{LF}" }
+      it('yields twice with the structures including their commentary') do
+        expect do |block|
+          described_class.new.each_subgame(pbn_game_string, &block)
+        end.to yield_successive_args(Bridge::Pbn::Subgame.new(['preceding comment'], ['Event', ''],
+                                                              ['comment following event'], ''),
+                                     Bridge::Pbn::Subgame.new([], ['Site', ''],
+                                                              ['comment following site'], ''))
+      end
+    end
+
+    context('with two very simple tag pairs with comments, sections, and CRLF line endings') do
+      subject(:pbn_game_string) { "{a1};a2#{CRLF}" +
+          "[a3 \"\"] {a4} \"a5\" [b1 \"\"] ;b2 #{CRLF}" +
+          "b3 b4#{CRLF}" +
+          "b5 b6#{CRLF}" }
+      it('yields twice with the structures including their commentary and section data') do
+        expect do |block|
+          described_class.new.each_subgame(pbn_game_string, &block)
+        end.to yield_successive_args(Bridge::Pbn::Subgame.new(%w(a1 a2), ['a3', ''], ['a4'], '"a5" '),
+                                     Bridge::Pbn::Subgame.new([], ['b1', ''], ['b2 '],
+                                                              "b3 b4#{CRLF}b5 b6#{CRLF}"))
+      end
+    end
+
+    ###### EDGE CASES #########
+
+
     context('with an unclosed curly comment') do
       setup_single_subgame('{unclosed comment')
       it('complains about the unclosed comment') do
@@ -145,55 +204,13 @@ RSpec.describe Bridge::Pbn::GameParser do
       end
     end
 
-    context('with two very simple tag pairs') do
-      subject(:pbn_game_string) { "[Event #{DOUBLE_QUOTE}#{DOUBLE_QUOTE}]#{LF}[Site #{DOUBLE_QUOTE}#{DOUBLE_QUOTE}]" }
-      it('yields twice with the minimal structures') do
-        expect do |block|
-          described_class.new.each_subgame(pbn_game_string, &block)
-        end.to yield_successive_args(Bridge::Pbn::Subgame.new([], ['Event', ''], [], ''),
-                                     Bridge::Pbn::Subgame.new([], ['Site', ''], [], ''))
+    context('with an opening single-line comment strangely containing two CRs then an LF') do
+      expected_arg = setup_single_subgame("; just a comment#{CR}#{CRLF}",
+                                          [" just a comment#{CR}"], [], [], '')
+      it('provides a structure with opening comment including CR, no tag, no following comment, and no section') do
+        expect_first_yield_with_arg(expected_arg)
       end
     end
 
-    context('with two very simple tag pairs with comments') do
-      subject(:pbn_game_string) { ";preceding comment#{LF}" +
-          "[Event #{DOUBLE_QUOTE}#{DOUBLE_QUOTE}] {comment following event} [Site #{DOUBLE_QUOTE}#{DOUBLE_QUOTE}] " +
-          ";comment following site#{LF}" }
-      it('yields twice with the structures including their commentary') do
-        expect do |block|
-          described_class.new.each_subgame(pbn_game_string, &block)
-        end.to yield_successive_args(Bridge::Pbn::Subgame.new(['preceding comment'], ['Event', ''],
-                                                              ['comment following event'], ''),
-                                     Bridge::Pbn::Subgame.new([], ['Site', ''],
-                                                              ['comment following site'], ''))
-      end
-    end
-
-    context('with two very simple tag pairs with comments, sections, and CRLF line endings') do
-      subject(:pbn_game_string) { "{a1};a2#{CRLF}" +
-          "[a3 \"\"] {a4} \"a5\" [b1 \"\"] ;b2 #{CRLF}" +
-          "b3 b4#{CRLF}" +
-          "b5 b6#{CRLF}" }
-      it('yields twice with the structures including their commentary and section data') do
-        expect do |block|
-          described_class.new.each_subgame(pbn_game_string, &block)
-        end.to yield_successive_args(Bridge::Pbn::Subgame.new(%w(a1 a2), ['a3', ''], ['a4'], '"a5" '),
-                                     Bridge::Pbn::Subgame.new([], ['b1', ''], ['b2 '],
-                                                              "b3 b4#{CRLF}b5 b6#{CRLF}"))
-      end
-    end
-
-    context('when asked to raise an error') do
-      let(:parser) { double }
-      let(:described_object) do
-        temp = described_class.new
-        temp.instance_variable_set(:@state, Bridge::Pbn::BeforeFirstTag.new(parser))
-        temp.instance_variable_set(:@cur_char_index, 17)
-        temp
-      end
-      it('Provides the state, char index, and given message') do
-        expect { described_object.raise_error 'foobar' }.to raise_error(/.*BeforeFirstTag.*17.*foobar.*/)
-      end
-    end
   end
 end

@@ -112,7 +112,14 @@ RSpec.describe Bridge::Pbn::GameParser do
     context('with a barely-opened tag') do
       setup_single_subgame("[#{TAB}#{TAB}  ")
       it('complains about the missing tag name') do
-        expect { described_class.new.each_subgame(pbn_game_string) {} }.to raise_error(/.*tag name.*/)
+        expect { described_class.new.each_subgame(pbn_game_string) {} }.to raise_error(/.*prior to tag name.*/)
+      end
+    end
+
+    context('with a tag name followed by end-of-game') do
+      setup_single_subgame("[#{TAB}#{TAB}  TagName")
+      it('complains about an unfinished tag name') do
+        expect { described_class.new.each_subgame(pbn_game_string) {} }.to raise_error(/.*unfinished tag name.*/)
       end
     end
 

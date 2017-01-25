@@ -19,6 +19,10 @@ module Bridge
             return BeforeTagValue.new(parser, self)
         end
       end
+
+      def finalize
+        parser.raise_error 'end of input with unfinished tag name'
+      end
     end
   end
 end

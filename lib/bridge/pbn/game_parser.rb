@@ -32,7 +32,7 @@ module Bridge
             when :inTagValue
               Bridge::Pbn::InTagValue.new(self).process_chars
             when :beforeTagClose
-              get_out_of_tag
+              Bridge::Pbn::BeforeTagClose.new(self).process_chars
             when :outOfTag
               Bridge::Pbn::BeforeFirstTag.new(self).process_chars
             when :inSupplementalSection
@@ -103,21 +103,6 @@ module Bridge
           end
         end
       end
-
-      CLOSE_BRACKET = ']'
-
-      def get_out_of_tag
-        case cur_char
-          when ALLOWED_WHITESPACE_CHARS
-            inc_char
-          when CLOSE_BRACKET
-            @state = :outOfTag
-            inc_char
-          else
-            raise_exception
-        end
-      end
-
 
       def process_supplemental_section
         # we must return the section untokenized, since newlines hold special meaning for ;-comments

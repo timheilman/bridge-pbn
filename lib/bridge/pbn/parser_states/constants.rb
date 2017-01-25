@@ -10,6 +10,7 @@ module Bridge
       SECTION_STARTING_TOKENS = /[^\[\]{\};%]/
       ALLOWED_NAME_CHARS = /[A-Za-z0-9_]/
       DOUBLE_QUOTE = '"'
+      CLOSE_BRACKET = ']'
     end
 
     module ParserDelegate

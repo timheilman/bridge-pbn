@@ -10,7 +10,7 @@ RSpec.describe Bridge::Pbn::BeforeFirstTag do
 
     it('should raise an error for any non-whitespace, non-comment, and non-open-bracket char') do
       error = StandardError.new 'Mock error'
-      error_regexp = /.*whitespace.*semicolon.*open brace.*open bracket.*\^.*/
+      error_regexp = /.*section element starting.*\^.*/
       expect(parser).to receive(:raise_error).with(match error_regexp).and_raise error
       expect { described_object.process_char('^') }.to raise_error StandardError
     end

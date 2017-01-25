@@ -16,8 +16,8 @@ module Bridge
           when OPEN_BRACKET
             perhaps_yield
             return BeforeTagName.new(parser)
-          when SECTION_STARTING_TOKENS
-            err_str = "Unexpected non-whitespace, non-semicolon, non-open brace, non-open bracket character: `#{char}'"
+          when SECTION_STARTING_CHARS
+            err_str = "Unexpected section element starting character (see PBN section 5.1) : `#{char}'"
             parser.raise_error(err_str) unless section_tokens_allowed
             section_state = if parser.tag_name == PLAY_SECTION_TAG_NAME
                              InPlaySection.new(parser)

@@ -78,13 +78,6 @@ RSpec.describe Bridge::Pbn::GameParser do
       end
     end
 
-    context('with an unclosed tag') do
-      setup_single_subgame("[TagName #{DOUBLE_QUOTE}TagValue#{DOUBLE_QUOTE}")
-      it('complains') do
-        expect { described_class.new.each_subgame(pbn_game_string) {} }.to raise_error(/.*unclosed tag.*/)
-      end
-    end
-
     context('with comment before, one tag pair, comment after, and a section') do
       expected_arg = setup_single_subgame(
           ";comment1#{NEWLINE}" +
@@ -98,6 +91,20 @@ RSpec.describe Bridge::Pbn::GameParser do
           "verbatim section#{NEWLINE}")
       it('yields the single complete record accurately') do
         expect_first_yield_with_arg(expected_arg)
+      end
+    end
+
+    context('with an unclosed tag') do
+      setup_single_subgame("[TagName #{DOUBLE_QUOTE}TagValue#{DOUBLE_QUOTE}")
+      it('complains about the unclosed tag') do
+        expect { described_class.new.each_subgame(pbn_game_string) {} }.to raise_error(/.*unclosed tag.*/)
+      end
+    end
+
+    context('with a barely-opened tag') do
+      setup_single_subgame("[#{TAB}#{TAB}  ")
+      it('complains about the missing tag name') do
+        expect {described_class.new.each_subgame(pbn_game_string) {}}.to raise_error(/.*tag name.*/)
       end
     end
 

@@ -16,6 +16,10 @@ module Bridge
         end
       end
 
+      def finalize
+        parser.raise_error 'end of input prior to tag name'
+      end
+
     end
   end
 end

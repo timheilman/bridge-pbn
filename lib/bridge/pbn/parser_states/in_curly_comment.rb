@@ -12,8 +12,8 @@ module Bridge
       def process_chars
         case parser.cur_char
           when CLOSE_CURLY
-            last_state.add_comment(@comment)
-            parser.state = last_state
+            next_state.add_comment(@comment)
+            parser.state = next_state
           else
             @comment << parser.cur_char
         end

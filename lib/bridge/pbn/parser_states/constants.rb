@@ -15,15 +15,17 @@ module Bridge
       SECTION_INCLUDE_COMMENTS_BUGGY_HACK = /[^\[\]%]/
       PLAY_SECTION_TAG_NAME = 'Play'
       AUCTION_SECTION_TAG_NAME = 'Auction'
+      BACKSLASH = '\\'
+      NOT_DOUBLE_QUOTE = /[^"]/
     end
 
     module ParserState
       attr_reader :parser
-      attr_reader :last_state
+      attr_reader :next_state
 
-      def initialize(parser, last_state = nil)
+      def initialize(parser, next_state = nil)
         @parser = parser
-        @last_state = last_state
+        @next_state = next_state
         if self.respond_to? :post_initialize
           post_initialize
         end

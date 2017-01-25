@@ -24,6 +24,7 @@ module Bridge
     autoload :InSemicolonComment, File.expand_path('../bridge/pbn/parser_states/in_semicolon_comment', __FILE__)
     autoload :InCurlyComment, File.expand_path('../bridge/pbn/parser_states/in_curly_comment', __FILE__)
     autoload :InPlaySection, File.expand_path('../bridge/pbn/parser_states/in_play_section', __FILE__)
+    autoload :InString, File.expand_path('../bridge/pbn/parser_states/in_string', __FILE__)
     autoload :BetweenTags, File.expand_path('../bridge/pbn/parser_states/between_tags', __FILE__)
     autoload :Done, File.expand_path('../bridge/pbn/parser_states/done', __FILE__)
   end

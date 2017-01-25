@@ -54,38 +54,6 @@ module Bridge
         @section = section
       end
 
-      BACKSLASH = '\\'
-      NOT_DOUBLE_QUOTE = /[^"]/
-
-      def process_string
-        string = ''
-        escaped = false
-        until @state.done?
-          case cur_char
-            when BACKSLASH
-              string << BACKSLASH if escaped
-              escaped = !escaped
-              inc_char
-            when NOT_DOUBLE_QUOTE
-              escaped = false
-              string << cur_char
-              inc_char
-            when DOUBLE_QUOTE
-              if escaped
-                escaped = false
-                string << DOUBLE_QUOTE
-                inc_char
-              else
-                yield string
-                inc_char
-                break
-              end
-            else
-              raise_exception
-          end
-        end
-      end
-
       def raise_exception(message = nil)
         raise ArgumentError.new("state: #{@state.to_s}; string: `#{@pbn_game_string}'; " +
                                     "char_index: #{@cur_char_index.to_s}; message: #{message}")

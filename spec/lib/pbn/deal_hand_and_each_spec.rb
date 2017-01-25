@@ -74,6 +74,12 @@ RSpec.describe Bridge::Pbn::DealHandAndEach do
         expect(described_class.deal deal).to eq([nil, expectedEHand, nil, expectedWHand])
       end
     end
+    context 'with a bad direction letter' do
+      let(:deal) { 'M:foo' }
+      it 'raises an error' do
+        expect {described_class.deal deal}.to raise_error(/.*first position.*M.*/)
+      end
+    end
   end
 
   THREE_TEST_RECORDS_FILE = 'spec/resource/three_test_records.pbn'

@@ -76,7 +76,7 @@ module Bridge
           when 'W'
             3
           else
-            raise ArgumentException('bad "first" character for pgn deal string')
+            raise ArgumentError.new("bad first position character for pgn deal string: `#{first_position}'")
         end
       end
 

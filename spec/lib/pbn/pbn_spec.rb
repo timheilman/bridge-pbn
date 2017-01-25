@@ -3,8 +3,7 @@ require 'spec_helper'
 def cards_for(*cards)
   result = []
   cards.each do |rankAndSuit|
-    rank = rankAndSuit.split(//)[0]
-    suit = rankAndSuit.split(//)[1]
+    rank, suit = rankAndSuit.split(//)
     result << Bridge::Card.for(suits: [Bridge::Strain.for_string(suit)], ranks: [Bridge::Rank.for_char(rank)]).first
   end
   result

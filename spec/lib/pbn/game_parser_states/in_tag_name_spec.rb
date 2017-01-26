@@ -3,12 +3,13 @@ require 'spec_helper'
 RSpec.describe Bridge::Pbn::InTagName do
   describe('#process_char') do
     let(:parser) { double }
-    let(:described_object) { described_class.new(parser) }
+    let(:builder) { double }
+    let(:described_object) { described_class.new(parser, builder) }
 
     %W(\t \n \v \r).each do |char|
       context("with PBN-permitted ASCII control code #{char.ord}") do
         it('should should disregard the character') do
-          expect(parser).to receive(:add_tag_item)
+          expect(builder).to receive(:add_tag_item)
           expect(described_object.process_char(char)).to be_a Bridge::Pbn::BeforeTagValue
         end
       end

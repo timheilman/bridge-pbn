@@ -3,7 +3,8 @@ require 'spec_helper'
 RSpec.describe Bridge::Pbn::InString do
   describe('#process_char') do
     let(:parser) { double }
-    let(:described_object) { described_class.new(parser) }
+    let(:builder) { double }
+    let(:described_object) { described_class.new(parser, builder) }
 
     %W(\t \n \v \r).each do |char|
       context("with PBN-permitted ASCII control code #{char.ord}") do

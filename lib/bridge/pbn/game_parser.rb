@@ -4,13 +4,13 @@ module Bridge
       require 'bridge/pbn/constants'
       include Bridge::Pbn::ParserConstants
 
-      attr_writer :section
-
+      # TODO: enforce 255 char cap on line width
       def each_subgame(pbn_game_string, &block)
         @pbn_game_string = pbn_game_string
-        @state = Bridge::Pbn::BeforeFirstTag.new(self)
+        @builder = Bridge::Pbn::SubgameBuilder.new
+        @state = Bridge::Pbn::BeforeFirstTag.new(self, @builder)
         @block = block
-        clear
+        @builder.clear
         process
       end
 
@@ -34,25 +34,8 @@ module Bridge
       end
 
       def yield_subgame
-        @block.yield Subgame.new(@preceding_comments, @tag_pair, @following_comments, @section)
-        clear
-      end
-
-      def clear
-        @preceding_comments = []
-        @tag_pair = []
-        @following_comments = []
-        @section = ''
-      end
-
-      # TODO: enforce 255 char cap on line width
-
-      def tag_name
-        @tag_pair[0]
-      end
-
-      def add_tag_item(tag_item)
-        @tag_pair << tag_item
+        @block.yield @builder.build
+        @builder.clear
       end
 
       def raise_error(message = nil)
@@ -60,13 +43,6 @@ module Bridge
                                     "char_index: #{@cur_char_index.to_s}; message: #{message}")
       end
 
-      def add_preceding_comment(comment)
-        @preceding_comments << comment
-      end
-
-      def add_following_comment(comment)
-        @following_comments << comment
-      end
     end
   end
 end

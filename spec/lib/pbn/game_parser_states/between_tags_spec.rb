@@ -3,7 +3,8 @@ require 'spec_helper'
 RSpec.describe Bridge::Pbn::BetweenTags do
   describe('#process_char') do
     let(:parser) { double }
-    let(:described_object) { described_class.new(parser) }
+    let(:builder) { double }
+    let(:described_object) { described_class.new(parser, builder) }
     let(:error) { StandardError.new 'Mock error' }
 
     it('should raise an error for closing brace, closing bracket, or percent sign') do
@@ -14,7 +15,7 @@ RSpec.describe Bridge::Pbn::BetweenTags do
 
     it('should (presently) raise an error for Play and Auction sections') do
       %w(Play Auction).each do |string|
-        allow(parser).to receive(:tag_name).and_return string
+        allow(builder).to receive(:tag_name).and_return string
         expect(parser).to receive(:raise_error).with(Regexp.new(string)).and_raise error
         expect { described_object.process_char('S') }.to raise_error StandardError
       end

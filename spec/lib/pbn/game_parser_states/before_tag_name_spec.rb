@@ -3,7 +3,8 @@ require 'spec_helper'
 RSpec.describe Bridge::Pbn::BeforeTagName do
   describe('#process_char') do
     let(:parser) { double }
-    let(:described_object) { described_class.new(parser) }
+    let(:builder) { double }
+    let(:described_object) { described_class.new(parser, builder) }
     it('should skip whitespace') do
       expect(described_object.process_char("\t")).to be(described_object)
     end

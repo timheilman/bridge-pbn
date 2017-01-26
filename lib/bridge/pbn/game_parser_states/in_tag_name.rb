@@ -14,11 +14,11 @@ module Bridge
             @tag_name << char
             return self
           when ALLOWED_WHITESPACE_CHARS
-            parser.add_tag_item(@tag_name)
-            return BeforeTagValue.new(parser, self)
+            builder.add_tag_item(@tag_name)
+            return BeforeTagValue.new(parser, builder, self)
           when DOUBLE_QUOTE
-            parser.add_tag_item(@tag_name)
-            return InString.new(parser, BeforeTagClose.new(parser))
+            builder.add_tag_item(@tag_name)
+            return InString.new(parser, builder, BeforeTagClose.new(parser, builder))
           else
             parser.raise_error "non-whitespace, non-name character found ending tag name: #{char}"
         end

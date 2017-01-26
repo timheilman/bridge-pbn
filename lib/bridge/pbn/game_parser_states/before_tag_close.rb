@@ -9,7 +9,7 @@ module Bridge
           when ALLOWED_WHITESPACE_CHARS
             return self
           when CLOSE_BRACKET
-            return BetweenTags.new(parser)
+            return BetweenTags.new(parser, builder)
           else
             parser.raise_error "Unexpected char other than whitespace or closing bracket: `#{char}'"
         end
@@ -20,7 +20,7 @@ module Bridge
       end
 
       def add_string string
-        parser.add_tag_item(string)
+        builder.add_tag_item(string)
       end
     end
   end

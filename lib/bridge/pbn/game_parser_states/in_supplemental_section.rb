@@ -15,9 +15,9 @@ module Bridge
           when OPEN_BRACKET
             finalize
             parser.yield_subgame
-            return BeforeTagName.new(parser)
+            return BeforeTagName.new(parser, builder)
           when DOUBLE_QUOTE
-            return InString.new(parser, self)
+            return InString.new(parser, builder, self)
           when ORDINARY_SECTION_TOKEN_CHARS
             @section << char
             return self
@@ -27,7 +27,7 @@ module Bridge
       end
 
       def finalize
-        parser.section = @section unless @section.empty?
+        builder.section = @section unless @section.empty?
       end
 
       def add_string(string)

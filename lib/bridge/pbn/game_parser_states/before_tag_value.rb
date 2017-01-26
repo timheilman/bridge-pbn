@@ -9,7 +9,7 @@ module Bridge
           when ALLOWED_WHITESPACE_CHARS
             return self
           when DOUBLE_QUOTE
-            return InString.new(parser, BeforeTagClose.new(parser))
+            return InString.new(parser, builder, BeforeTagClose.new(parser, builder))
           else
             parser.raise_error "Unexpected non-whitespace, non-double quote character: `#{char}'"
         end

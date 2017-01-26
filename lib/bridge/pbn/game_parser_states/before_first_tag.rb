@@ -2,7 +2,7 @@ module Bridge
   module Pbn
     class BeforeFirstTag < OutsideTagAndSectionTemplate
       def add_comment(comment)
-        parser.add_preceding_comment comment
+        builder.add_preceding_comment comment
       end
       def perhaps_yield
         #no-op

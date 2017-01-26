@@ -11,6 +11,7 @@ module Bridge
     autoload :IoParser, File.expand_path('../bridge/pbn/io_parser', __FILE__)
     autoload :ParserUtil, File.expand_path('../bridge/pbn/parser_util', __FILE__)
     autoload :Subgame, File.expand_path('../bridge/pbn/subgame', __FILE__)
+    autoload :SubgameBuilder, File.expand_path('../bridge/pbn/subgame_builder', __FILE__)
     autoload :GameParser, File.expand_path('../bridge/pbn/game_parser', __FILE__)
     autoload :OutsideTagAndSectionTemplate, File.expand_path('../bridge/pbn/game_parser_states/outside_tag_and_section_template', __FILE__)
     autoload :BeforeFirstTag, File.expand_path('../bridge/pbn/game_parser_states/before_first_tag', __FILE__)

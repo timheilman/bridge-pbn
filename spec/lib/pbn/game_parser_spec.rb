@@ -27,9 +27,10 @@ RSpec.describe Bridge::Pbn::GameParser do
   describe('#raise_error') do
     context('when asked to raise an error') do
       let(:parser) { double }
+      let(:builder) { double }
       let(:described_object) do
         temp = described_class.new
-        temp.instance_variable_set(:@state, Bridge::Pbn::BeforeFirstTag.new(parser))
+        temp.instance_variable_set(:@state, Bridge::Pbn::BeforeFirstTag.new(parser, builder))
         temp.instance_variable_set(:@cur_char_index, 17)
         temp
       end

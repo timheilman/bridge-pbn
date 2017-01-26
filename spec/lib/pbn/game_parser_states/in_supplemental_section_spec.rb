@@ -3,7 +3,8 @@ require 'spec_helper'
 RSpec.describe Bridge::Pbn::InSupplementalSection do
   describe('#process_char') do
     let(:parser) { double }
-    let(:described_object) { described_class.new(parser) }
+    let(:builder) { double }
+    let(:described_object) { described_class.new(parser, builder) }
     %w(] { } ; %).each do |disallowed_symbol|
       it("should raise an error for disallowed symbol #{disallowed_symbol}. " +
              'Bug with ] in comment remains, strings untreated.') do

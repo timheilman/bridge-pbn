@@ -5,6 +5,8 @@ module Bridge
       SEMICOLON = ';'
       CARRIAGE_RETURN = "\r"
       LINE_FEED = "\n"
+      TAB = "\t"
+      VERTICAL_TAB = "\v"
       OPEN_CURLY = '{'
       CLOSE_CURLY = '}'
       OPEN_BRACKET = '['
@@ -14,7 +16,7 @@ module Bridge
       ALLOWED_NAME_CHARS = /[A-Za-z0-9_]/
       DOUBLE_QUOTE = '"'
       CLOSE_BRACKET = ']'
-      ORDINARY_SECTION_TOKEN_CHARS = /[^]{\};%]/
+      ORDINARY_SECTION_TOKEN_CHARS = /[^\]{\};%]/
       PLAY_SECTION_TAG_NAME = 'Play'
       AUCTION_SECTION_TAG_NAME = 'Auction'
       BACKSLASH = '\\'

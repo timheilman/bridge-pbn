@@ -23,6 +23,8 @@ module Bridge
               parser.add_tag_item(@string) # todo: fix this for strings in supplemental sections
               return next_state
             end
+          when TAB, LINE_FEED, VERTICAL_TAB, CARRIAGE_RETURN
+            parser.raise_error "PBN-valid but string-invalid ASCII control character. Decimal code point: #{char.ord}"
           else
             @escaped = false
             @string << char

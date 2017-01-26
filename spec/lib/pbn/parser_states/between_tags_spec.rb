@@ -7,7 +7,7 @@ RSpec.describe Bridge::Pbn::BetweenTags do
     let(:error) { StandardError.new 'Mock error' }
 
     it('should raise an error for closing brace, closing bracket, or percent sign') do
-      error_regexp = /.*33.*126.*closing brace.*closing bracket.*percent sign.*].*/
+      error_regexp = /.*33.*126.*closing brace.*closing bracket.*percent sign.*\].*/
       expect(parser).to receive(:raise_error).with(error_regexp).and_raise error
       expect { described_object.process_char(']') }.to raise_error StandardError
     end

@@ -48,7 +48,7 @@ RSpec.describe Bridge::Pbn::IoParser do
         expect(last_line).to eq("W  C 11\n")
       end
     end
-    context 'with one valid test records a multiline comment containing empty lines' do
+    context 'with one valid test record with a multiline comment containing empty lines' do
       it 'passes exactly one game to the given block' do
         expect do |block|
           described_class.each_game_string(File.open(EMPTY_LINE_IN_COMMENT_FILE), &block)

@@ -19,7 +19,7 @@ module Bridge
               @escaped = false
               @string << DOUBLE_QUOTE
             else
-              parser.add_tag_item(@string) # todo: fix this for strings in supplemental sections
+              next_state.add_string(@string)
               return next_state
             end
           when TAB, LINE_FEED, VERTICAL_TAB, CARRIAGE_RETURN

@@ -18,6 +18,10 @@ module Bridge
       def finalize
         parser.raise_error('Unexpected unclosed tag.')
       end
+
+      def add_string string
+        parser.add_tag_item(string)
+      end
     end
   end
 end

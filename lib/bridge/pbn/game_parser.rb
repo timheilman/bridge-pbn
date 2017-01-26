@@ -15,7 +15,7 @@ module Bridge
       end
 
       def process
-        @pbn_game_string.each_char do |char, index|
+        @pbn_game_string.each_char.with_index do |char, index|
           @cur_char_index = index
           case (char.encode(Encoding::ISO_8859_1).ord)
             # 9 is \t
@@ -46,8 +46,6 @@ module Bridge
       end
 
       # TODO: enforce 255 char cap on line width
-      # todo: TDD-fix "[ in section" bug (parse suppl. sections incl. strings)
-
 
       def tag_name
         @tag_pair[0]

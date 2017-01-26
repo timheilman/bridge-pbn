@@ -253,5 +253,13 @@ RSpec.describe Bridge::Pbn::GameParser do
       end
     end
 
+    context('with a supplemental section containing a string with an open bracket') do
+      expected_arg = setup_single_subgame("[T #{DOUBLE_QUOTE}v#{DOUBLE_QUOTE}]#{DOUBLE_QUOTE}[#{DOUBLE_QUOTE}",
+      [], %w(T v), [], '"["')
+      it('does not consider the bracket to be opening a new tag') do
+        expect_first_yield_with_arg(expected_arg)
+      end
+    end
+
   end
 end

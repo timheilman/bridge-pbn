@@ -81,6 +81,15 @@ RSpec.describe Bridge::Pbn::GameParser do
       end
     end
 
+    context('with tag value smooshed up against the tag name') do
+      expected_arg = setup_single_subgame(
+          "[TagName#{DOUBLE_QUOTE}TagValue#{DOUBLE_QUOTE}]",
+          [], %w(TagName TagValue), [], '')
+      it("doesn't mind the absence of whitespace") do
+        expect_first_yield_with_arg(expected_arg)
+      end
+    end
+
     context('with backslash in the tag value') do
       expected_arg = setup_single_subgame("[TagName #{DOUBLE_QUOTE}Tag#{BACKSLASH}#{BACKSLASH}Value#{DOUBLE_QUOTE}]",
                                           [], ['TagName', "Tag#{BACKSLASH}Value"], [], '')

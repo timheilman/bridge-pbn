@@ -17,6 +17,9 @@ module Bridge
           when ALLOWED_WHITESPACE_CHARS
             parser.add_tag_item(@tag_name)
             return BeforeTagValue.new(parser, self)
+          when DOUBLE_QUOTE
+            parser.add_tag_item(@tag_name)
+            return InString.new(parser, BeforeTagClose.new(parser))
           else
             parser.raise_error "non-whitespace, non-name character found ending tag name: #{char}"
         end

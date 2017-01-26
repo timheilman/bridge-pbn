@@ -2,7 +2,7 @@ module Bridge
   module Pbn
     class IoParser
       # see sections 2.4 "Escape Mechanism", 3 "Game layout", and 3.8 "Commentary"
-      SEMI_EMPTY_LINE = /^[\t ]*$/
+      SEMI_EMPTY_LINE = /^[\t ]*\r?$/
       PBN_ESCAPED_LINE = /^%/ # see section 2.4; do not confuse with Commentary from section 3.8
       def self.each_game_string(io)
         record = ''

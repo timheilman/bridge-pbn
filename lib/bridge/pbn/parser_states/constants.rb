@@ -11,7 +11,7 @@ module Bridge
       CLOSE_CURLY = '}'
       OPEN_BRACKET = '['
       # represents printable ASCII characters except: %;[]{}
-      # note that " (\x22) *can* start a section, by starting a section element string token
+      # note that " (\x22) *can* start a section, by starting a section element that is a string token
       SECTION_STARTING_CHARS = /[\x21-\x24\x26-\x3A\x3C-\x5A\x5C\x5E-\x7A\x7C\x7E]/
       ALLOWED_NAME_CHARS = /[A-Za-z0-9_]/
       DOUBLE_QUOTE = '"'

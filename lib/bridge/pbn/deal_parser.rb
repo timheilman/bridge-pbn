@@ -4,17 +4,11 @@ module Bridge
     class DealParser
 
       COLON = ':'
-      PRE_COLON_INDICATOR = -1
       PERIOD = '.'
       # see section 3.4.11
       def self.deal(pbn_deal_string)
-        pbn_deal_string.split(COLON).reduce(PRE_COLON_INDICATOR) do |startingHandIndex, firstOrHands|
-          if startingHandIndex == PRE_COLON_INDICATOR
-            hand_index_for_first_character(firstOrHands)
-          else
-            make_array_of_hands(firstOrHands, startingHandIndex)
-          end
-        end
+        left_and_right_of_colon = pbn_deal_string.split(COLON)
+        make_array_of_hands(left_and_right_of_colon[1], hand_index_for_first_character(left_and_right_of_colon[0]))
       end
 
 

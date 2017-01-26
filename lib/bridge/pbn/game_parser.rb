@@ -4,6 +4,8 @@ module Bridge
       require 'bridge/pbn/parser_states/constants'
       include Bridge::Pbn::ParserConstants
 
+      attr_writer :section
+
       def each_subgame(pbn_game_string, &block)
         @pbn_game_string = pbn_game_string
         @state = Bridge::Pbn::BeforeFirstTag.new(self)
@@ -53,11 +55,6 @@ module Bridge
 
       def add_tag_item(tag_item)
         @tag_pair << tag_item
-      end
-
-
-      def set_section(section)
-        @section = section
       end
 
       def raise_error(message = nil)

@@ -1,9 +1,8 @@
 module Bridge
   module Pbn
     class InAuctionSection
-      require 'bridge/pbn/parser_states/constants'
-      include Bridge::Pbn::ParserConstants
-      include Bridge::Pbn::ParserState
+      require 'bridge/pbn/game_parser_states/game_parser_state'
+      include Bridge::Pbn::GameParserState
 
       def process_char char
         parser.raise_error 'Auction sections are complicated and not yet implemented!'

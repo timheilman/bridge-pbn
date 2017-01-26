@@ -1,9 +1,8 @@
 module Bridge
   module Pbn
     class OutsideTagAndSectionTemplate
-      require 'bridge/pbn/parser_states/constants'
-      include Bridge::Pbn::ParserConstants
-      include Bridge::Pbn::ParserState
+      require 'bridge/pbn/game_parser_states/game_parser_state'
+      include Bridge::Pbn::GameParserState
 
       def process_char(char)
         case char

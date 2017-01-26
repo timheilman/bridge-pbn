@@ -1,7 +1,7 @@
 module Bridge
   module Pbn
     class GameParser
-      require 'bridge/pbn/parser_states/constants'
+      require 'bridge/pbn/constants'
       include Bridge::Pbn::ParserConstants
 
       attr_writer :section

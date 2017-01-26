@@ -7,6 +7,7 @@ module Bridge
       LINE_FEED = "\n"
       TAB = "\t"
       VERTICAL_TAB = "\v"
+      SPACE = ' '
       OPEN_CURLY = '{'
       CLOSE_CURLY = '}'
       OPEN_BRACKET = '['
@@ -22,17 +23,5 @@ module Bridge
       BACKSLASH = '\\'
     end
 
-    module ParserState
-      attr_reader :parser
-      attr_reader :next_state
-
-      def initialize(parser, next_state = nil)
-        @parser = parser
-        @next_state = next_state
-        if self.respond_to? :post_initialize
-          post_initialize
-        end
-      end
-    end
   end
 end

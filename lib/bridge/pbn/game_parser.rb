@@ -15,7 +15,7 @@ module Bridge
       def process
         @pbn_game_string.each_char do |char, index|
           @cur_char_index = index
-          case (char.ord)
+          case (char.encode(Encoding::ISO_8859_1).ord)
             # 9 is \t
             # 10 is \n
             # 11 is \v

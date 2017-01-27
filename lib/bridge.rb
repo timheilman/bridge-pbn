@@ -26,5 +26,7 @@ module Bridge
     autoload :InPlaySection, File.expand_path('../bridge/pbn/game_parser_states/in_play_section', __FILE__)
     autoload :InString, File.expand_path('../bridge/pbn/game_parser_states/in_string', __FILE__)
     autoload :BetweenTags, File.expand_path('../bridge/pbn/game_parser_states/between_tags', __FILE__)
+    autoload :SubgameParserChainFactory, File.expand_path('../bridge/pbn/subgame_parser_chain_factory', __FILE__)
+    autoload :DealSubgameParser, File.expand_path('../bridge/pbn/subgame_parsers/deal_subgame_parser', __FILE__)
   end
 end

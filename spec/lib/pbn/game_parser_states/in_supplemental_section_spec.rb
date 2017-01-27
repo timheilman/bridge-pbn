@@ -6,8 +6,7 @@ RSpec.describe Bridge::Pbn::InSupplementalSection do
     let(:builder) { double }
     let(:described_object) { described_class.new(parser, builder) }
     %w(] { } ; %).each do |disallowed_symbol|
-      it("should raise an error for disallowed symbol #{disallowed_symbol}. " +
-             'Bug with ] in comment remains, strings untreated.') do
+      it("should raise an error for disallowed symbol #{disallowed_symbol}. ") do
         error = StandardError.new 'Mock error'
         error_regexp = Regexp.new(".*supplemental section.*.*#{disallowed_symbol}")
         expect(parser).to receive(:raise_error).with(match error_regexp).and_raise error

@@ -6,7 +6,7 @@ RSpec.describe Bridge::Pbn::IoParser do
   THREE_TEST_RECORDS_CRLF_FILE = 'spec/resource/three_test_records_crlf.pbn'
   EMPTY_LINE_IN_COMMENT_FILE = 'spec/resource/test_record_with_empty_line_in_comment.pbn'
   SINGLE_CURLY_COMMENT_FILE = 'spec/resource/test_record_with_single_line_curly_comment.pbn'
-  LOTS_OF_CURLIES_FILE = 'spec/resource/test_record_with_single_line_curly_comment.pbn'
+  LOTS_OF_CURLIES_FILE = 'spec/resource/test_record_with_lots_of_curlies.pbn'
   ESCAPE_IN_COMMENT_FILE = 'spec/resource/test_record_with_escape_in_comment.pbn'
   describe '.each_game' do
     context 'with three valid test records and no multiline comments' do

@@ -4,6 +4,7 @@ module Bridge
       require 'bridge/pbn/constants'
       include ParserConstants
 
+      # intent: this same functionality will eventually be needed by PlaySubgameParser and AuctionSubgameParser
       def self.comment_open_after_eol?(line, comment_is_open)
         last_char = nil
         line.each_char do |char|

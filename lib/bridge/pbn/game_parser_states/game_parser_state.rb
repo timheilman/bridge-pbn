@@ -1,7 +1,6 @@
 module Bridge
   module Pbn
     module GameParserState
-      require 'bridge/pbn/constants'
       include ParserConstants
       attr_reader :parser
       attr_reader :builder

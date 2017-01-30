@@ -1,10 +1,7 @@
 module Bridge
   module Pbn
-    # despite the similarity to InCurlyComment, I'm not merging the classes yet because semicolon comments
-    # need eventually to be able to deal with multicharacter line endings as their terminating symbol
     class InSemicolonComment
-      require 'bridge/pbn/game_parser_states/game_parser_state'
-      include Bridge::Pbn::GameParserState
+      include GameParserState
 
       def post_initialize
         @comment = ''

@@ -1,8 +1,7 @@
 module Bridge
   module Pbn
     class BeforeTagClose
-      require 'bridge/pbn/game_parser_states/game_parser_state'
-      include Bridge::Pbn::GameParserState
+      include GameParserState
 
       def process_char char
         case char

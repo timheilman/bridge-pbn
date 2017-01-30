@@ -1,7 +1,6 @@
 module Bridge
   module Pbn
     class ParserUtil
-      require 'bridge/pbn/constants'
       include ParserConstants
 
       # intent: this same functionality will eventually be needed by PlaySubgameParser and AuctionSubgameParser

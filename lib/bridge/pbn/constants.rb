@@ -22,6 +22,5 @@ module Bridge
       AUCTION_SECTION_TAG_NAME = 'Auction'
       BACKSLASH = '\\'
     end
-
   end
 end

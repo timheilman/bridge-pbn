@@ -1,8 +1,7 @@
 module Bridge
   module Pbn
     class GameParser
-      require 'bridge/pbn/constants'
-      include Bridge::Pbn::ParserConstants
+      include ParserConstants
 
       # TODO: enforce 255 char cap on line width
       def each_subgame(pbn_game_string, &block)

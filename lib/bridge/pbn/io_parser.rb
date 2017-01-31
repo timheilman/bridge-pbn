@@ -5,6 +5,7 @@ module Bridge
       SEMI_EMPTY_LINE = /^[\t ]*\r?$/
       PBN_ESCAPED_LINE = /^%/ # see section 2.4; do not confuse with Commentary from section 3.8
       def self.each_game_string(io)
+        return enum_for(:each_game_string, io) unless block_given?
         record = ''
         comment_is_open = false
         # unfortunately the spec requires Latin-1.  Internal processing, since record's encoding is UTF-8,

@@ -5,21 +5,22 @@ module Bridge
 
       def process_char(char)
         case char
-          when ALLOWED_WHITESPACE_CHARS
+          when whitespace_allowed_in_games
             return self
-          when SEMICOLON
+          when semicolon
+            #todo: abstract-factory these news
             return InSemicolonComment.new(parser, builder, self)
-          when OPEN_CURLY
+          when open_curly
             return InCurlyComment.new(parser, builder, self)
-          when OPEN_BRACKET
+          when open_bracket
             perhaps_yield
             return BeforeTagName.new(parser, builder)
-          when SECTION_STARTING_CHARS
+          when initial_supplemental_section_char
             err_str = "Unexpected section element starting character (see PBN section 5.1) : `#{char}'"
-            parser.raise_error(err_str) unless section_tokens_allowed
-            section_state = if builder.tag_name == PLAY_SECTION_TAG_NAME
+            parser.raise_error(err_str) unless section_tokens_allowed?
+            section_state = if builder.tag_name == 'Play'
                              InPlaySection.new(parser, builder)
-                           elsif builder.tag_name == AUCTION_SECTION_TAG_NAME
+                           elsif builder.tag_name == 'Auction'
                              InAuctionSection.new(parser, builder)
                            else
                              InSupplementalSection.new(parser, builder)

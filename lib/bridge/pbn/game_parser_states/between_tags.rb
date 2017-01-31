@@ -7,7 +7,7 @@ module Bridge
       def perhaps_yield
         parser.yield_subgame
       end
-      def section_tokens_allowed
+      def section_tokens_allowed?
         true
       end
     end

@@ -5,9 +5,9 @@ module Bridge
 
       def process_char char
         case char
-          when ALLOWED_WHITESPACE_CHARS
+          when whitespace_allowed_in_games
             return self
-          when CLOSE_BRACKET
+          when close_bracket
             return BetweenTags.new(parser, builder)
           else
             parser.raise_error "Unexpected char other than whitespace or closing bracket: `#{char}'"

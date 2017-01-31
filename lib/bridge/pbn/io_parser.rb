@@ -22,7 +22,7 @@ module Bridge
           else
             record << line
           end
-          comment_is_open = ParserUtil.comment_open_after_eol? line, comment_is_open
+          comment_is_open = ParserUtil.instance.comment_open_after_eol? line, comment_is_open
         end
         yield record unless record.empty?
       end

@@ -10,11 +10,11 @@ module Bridge
 
       def process_char(char)
         case char
-          when CARRIAGE_RETURN
+          when carriage_return
             perhaps_emit_cr
             @prev_char_was_cr = true
             return self
-          when LINE_FEED
+          when line_feed
             finalize
             return next_state
           else
@@ -28,7 +28,7 @@ module Bridge
       def perhaps_emit_cr
         # spec allows literally any character in comments, including CR
         if @prev_char_was_cr
-          @comment << CARRIAGE_RETURN
+          @comment << carriage_return
         end
       end
 

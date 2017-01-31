@@ -1,7 +1,7 @@
 module Bridge
   module Pbn
     module GameParserState
-      include ParserConstants
+      include SingleCharComparisonConstants
       attr_reader :parser
       attr_reader :builder
       attr_reader :next_state

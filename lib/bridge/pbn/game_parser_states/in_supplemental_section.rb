@@ -11,13 +11,13 @@ module Bridge
         # we are returning the section exactly as-provided, in order for custom supplemental sections
         # to be parsed in custom ways
         case char
-          when OPEN_BRACKET
+          when open_bracket
             finalize
             parser.yield_subgame
             return BeforeTagName.new(parser, builder)
-          when DOUBLE_QUOTE
+          when double_quote
             return InString.new(parser, builder, self)
-          when ORDINARY_SECTION_TOKEN_CHARS
+          when continuing_nonstring_supp_sect_char
             @section << char
             return self
           else
@@ -30,9 +30,9 @@ module Bridge
       end
 
       def add_string(string)
-        @section << DOUBLE_QUOTE
+        @section << double_quote
         @section << string
-        @section << DOUBLE_QUOTE
+        @section << double_quote
       end
     end
   end

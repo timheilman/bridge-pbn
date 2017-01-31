@@ -10,18 +10,18 @@ module Bridge
 
       def process_char(char)
         case char
-          when BACKSLASH
-            @string << BACKSLASH if @escaped
+          when backslash
+            @string << backslash if @escaped
             @escaped = !@escaped
-          when DOUBLE_QUOTE
+          when double_quote
             if @escaped
               @escaped = false
-              @string << DOUBLE_QUOTE
+              @string << double_quote
             else
               next_state.add_string(@string)
               return next_state
             end
-          when TAB, LINE_FEED, VERTICAL_TAB, CARRIAGE_RETURN
+          when tab, line_feed, vertical_tab, carriage_return
             parser.raise_error "PBN-valid but string-invalid ASCII control character. Decimal code point: #{char.ord}"
           else
             @escaped = false

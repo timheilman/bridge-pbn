@@ -7,7 +7,7 @@ module Bridge
       def perhaps_yield
         #no-op
       end
-      def section_tokens_allowed
+      def section_tokens_allowed?
         false
       end
     end

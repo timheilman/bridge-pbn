@@ -5,9 +5,9 @@ module Bridge
 
       def process_char(char)
         case char
-          when ALLOWED_WHITESPACE_CHARS
+          when whitespace_allowed_in_games
             return self
-          when ALLOWED_NAME_CHARS
+          when allowed_in_names
             return InTagName.new(parser, builder).process_char(char)
           else
             parser.raise_error "Unexpected non-whitespace, non-name token character: `#{char}'"

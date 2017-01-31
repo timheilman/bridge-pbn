@@ -7,7 +7,7 @@ module Bridge
   autoload :Player, File.expand_path('../bridge/player', __FILE__)
   autoload :Handler, File.expand_path('../bridge/handler', __FILE__)
   module Pbn
-    autoload :ParserConstants, File.expand_path('../bridge/pbn/constants', __FILE__)
+    autoload :SingleCharComparisonConstants, File.expand_path('../bridge/pbn/single_char_comparison_constants', __FILE__)
     autoload :GameParserState, File.expand_path('../bridge/pbn/game_parser_states/game_parser_state', __FILE__)
     autoload :DealParser, File.expand_path('../bridge/pbn/deal_parser', __FILE__)
     autoload :IoParser, File.expand_path('../bridge/pbn/io_parser', __FILE__)

@@ -9,13 +9,13 @@ module Bridge
 
       def process_char(char)
         case char
-          when ALLOWED_NAME_CHARS
+          when allowed_in_names
             @tag_name << char
             return self
-          when ALLOWED_WHITESPACE_CHARS
+          when whitespace_allowed_in_games
             builder.add_tag_item(@tag_name)
             return BeforeTagValue.new(parser, builder, self)
-          when DOUBLE_QUOTE
+          when double_quote
             builder.add_tag_item(@tag_name)
             return InString.new(parser, builder, BeforeTagClose.new(parser, builder))
           else

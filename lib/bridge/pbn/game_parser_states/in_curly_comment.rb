@@ -9,7 +9,7 @@ module Bridge
 
       def process_char(char)
         case char
-          when CLOSE_CURLY
+          when close_curly
             next_state.add_comment(@comment)
             return next_state
           else

@@ -5,9 +5,9 @@ module Bridge
 
       def process_char(char)
         case char
-          when ALLOWED_WHITESPACE_CHARS
+          when whitespace_allowed_in_games
             return self
-          when DOUBLE_QUOTE
+          when double_quote
             return InString.new(parser, builder, BeforeTagClose.new(parser, builder))
           else
             parser.raise_error "Unexpected non-whitespace, non-double quote character: `#{char}'"

@@ -9,7 +9,6 @@ module Bridge
   autoload :Handler, File.expand_path('../bridge/handler', __FILE__)
   module Pbn
     autoload :SingleCharComparisonConstants, File.expand_path('../bridge/pbn/single_char_comparison_constants', __FILE__)
-    autoload :GameParserState, File.expand_path('../bridge/pbn/game_parser_states/game_parser_state', __FILE__)
     autoload :DealParser, File.expand_path('../bridge/pbn/deal_parser', __FILE__)
     autoload :IoParser, File.expand_path('../bridge/pbn/io_parser', __FILE__)
     autoload :ParserUtil, File.expand_path('../bridge/pbn/parser_util', __FILE__)
@@ -18,6 +17,7 @@ module Bridge
     autoload :GameParser, File.expand_path('../bridge/pbn/game_parser', __FILE__)
     autoload :SubgameParserChainFactory, File.expand_path('../bridge/pbn/subgame_parser_chain_factory', __FILE__)
     module GameParserStates
+      autoload :GameParserState, File.expand_path('../bridge/pbn/game_parser_states/game_parser_state', __FILE__)
       autoload :OutsideTagAndSectionTemplate, File.expand_path('../bridge/pbn/game_parser_states/outside_tag_and_section_template', __FILE__)
       autoload :BeforeFirstTag, File.expand_path('../bridge/pbn/game_parser_states/before_first_tag', __FILE__)
       autoload :InSemicolonComment, File.expand_path('../bridge/pbn/game_parser_states/in_semicolon_comment', __FILE__)

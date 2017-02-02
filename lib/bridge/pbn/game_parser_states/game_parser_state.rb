@@ -6,6 +6,7 @@ module Bridge
       attr_reader :builder
       attr_reader :next_state
 
+      #todo: apply Mediator and Builder patterns to eliminate triadic constructor
       def initialize(parser, builder, next_state = nil)
         @parser = parser
         @builder = builder

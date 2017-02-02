@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Bridge::Pbn::BeforeTagClose do
+RSpec.describe Bridge::Pbn::GameParserStates::BeforeTagClose do
   describe('#process_char') do
     let(:parser) { double }
     let(:builder) { double }

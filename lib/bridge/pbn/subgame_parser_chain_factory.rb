@@ -15,7 +15,7 @@ module Bridge
         @logger = logger
       end
       def get_chain
-        DealSubgameParser.new(@game_builder, UnrecognizedSubgameHandler.new(@logger))
+        SubgameParsers::DealSubgameParser.new(@game_builder, UnrecognizedSubgameHandler.new(@logger))
       end
     end
 

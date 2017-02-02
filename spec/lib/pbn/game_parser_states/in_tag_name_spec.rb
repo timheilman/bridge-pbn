@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Bridge::Pbn::InTagName do
+RSpec.describe Bridge::Pbn::GameParserStates::InTagName do
   describe('#process_char') do
     let(:parser) { double }
     let(:builder) { double }
@@ -10,7 +10,7 @@ RSpec.describe Bridge::Pbn::InTagName do
       context("with PBN-permitted ASCII control code #{char.ord}") do
         it('should should disregard the character') do
           expect(builder).to receive(:add_tag_item)
-          expect(described_object.process_char(char)).to be_a Bridge::Pbn::BeforeTagValue
+          expect(described_object.process_char(char)).to be_a Bridge::Pbn::GameParserStates::BeforeTagValue
         end
       end
     end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Bridge::Pbn::BetweenTags do
+RSpec.describe Bridge::Pbn::GameParserStates::BetweenTags do
   describe('#process_char') do
     let(:parser) { double }
     let(:builder) { double }

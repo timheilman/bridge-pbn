@@ -6,8 +6,8 @@ module Bridge
       # TODO: enforce 255 char cap on line width
       def each_subgame(pbn_game_string, &block)
         @pbn_game_string = pbn_game_string
-        @builder = Bridge::Pbn::SubgameBuilder.new
-        @state = Bridge::Pbn::BeforeFirstTag.new(self, @builder)
+        @builder = SubgameBuilder.new
+        @state = GameParserStates::BeforeFirstTag.new(self, @builder)
         @block = block
         @builder.clear
         process
@@ -17,6 +17,7 @@ module Bridge
         @pbn_game_string.each_char.with_index do |char, index|
           @cur_char_index = index
           case (char.encode(Encoding::ISO_8859_1).ord)
+            # intent: couldn't figure out how to do non-ascii by ordinal in a regexp; fell back to this
             # 9 is \t
             # 10 is \n
             # 11 is \v
@@ -26,6 +27,11 @@ module Bridge
             when 0..8, 12, 14..31, 127..159
               raise_error "disallowed character in PBN files, decimal code: #{char.ord}"
           end
+          #todo: eliminate this non-event, non-question, non-transformation monadic form:
+          # @state has an implicit dual responsibility here: the side effects from the event
+          # that a character has been read from the game stream, one side effect of which may or may not be
+          # the alteration of what state is held by GameParser
+          # replace with state update message from the state to the mediator (or parser if not yet mediated)
           @state = @state.process_char(char)
         end
         @state.finalize

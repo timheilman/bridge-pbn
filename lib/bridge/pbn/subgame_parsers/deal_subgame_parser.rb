@@ -6,11 +6,7 @@ module Bridge::Pbn::SubgameParsers
     end
 
     def handle(subgame)
-      #todo: change this to return the deferred called value unless == 'Deal'
-      if subgame.tagPair[0] != 'Deal'
-        defer(subgame)
-        return
-      end
+      return defer(subgame) unless subgame.tagPair[0] == 'Deal'
       Bridge::Pbn::DealParser.deal(subgame.tagPair[1]).each do |hand|
         @game_builder.add_hand(Bridge::Hand.new hand)
       end

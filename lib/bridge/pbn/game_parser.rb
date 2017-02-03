@@ -2,7 +2,9 @@ module Bridge::Pbn
   class GameParser
     include SingleCharComparisonConstants
 
+    # TODO: enforce section continuity (no identification section tags both before and after play/auction/supplemental)
     # TODO: enforce 255 char cap on line width
+    # TODO: Evans feedback on command/query mix here: Make c'tor w/builder or abstract factory pattern for self vars
     def each_subgame(pbn_game_string, &block)
       @pbn_game_string = pbn_game_string
       @builder = SubgameBuilder.new

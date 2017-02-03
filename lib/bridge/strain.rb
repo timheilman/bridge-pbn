@@ -10,7 +10,7 @@ module Bridge
       key.to_s
     end
 
-
+    #TODO: re-establish whitespace for horizontal alignment
     Club = new(0, :club).freeze
     Diamond = new(1, :diamond).freeze
     Heart = new(2, :heart).freeze

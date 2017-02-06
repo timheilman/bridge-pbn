@@ -10,12 +10,11 @@ module Bridge
       key.to_s
     end
 
-    #TODO: re-establish whitespace for horizontal alignment
-    Club = new(0, :club).freeze
-    Diamond = new(1, :diamond).freeze
-    Heart = new(2, :heart).freeze
-    Spade = new(3, :spade).freeze
-    NoTrump = new(4, :no_trump).freeze
+    Club    = new(0, :club     ).freeze
+    Diamond = new(1, :diamond  ).freeze
+    Heart   = new(2, :heart    ).freeze
+    Spade   = new(3, :spade    ).freeze
+    NoTrump = new(4, :no_trump ).freeze
 
     @all = [Club, Diamond, Heart, Spade, NoTrump].sort.freeze
     @suits = (@all - [NoTrump]).freeze

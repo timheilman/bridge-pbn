@@ -1,5 +1,5 @@
 module Bridge::Pbn::SubgameParsers
-  class DealSubgameParser < Bridge::Handler
+  class DealSubgameParser < Bridge::Pbn::Handler
     def initialize(game_builder, successor)
       super(successor)
       @game_builder = game_builder

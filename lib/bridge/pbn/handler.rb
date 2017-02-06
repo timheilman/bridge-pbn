@@ -1,4 +1,4 @@
-module Bridge
+module Bridge::Pbn
   class Handler
     def initialize(successor)
       @successor = successor

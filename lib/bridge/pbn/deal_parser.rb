@@ -54,7 +54,7 @@ module Bridge::Pbn
 
     def self.cards_for_single_suit(ranks_string, suit)
       ranks_string.each_char.reduce([]) do |cards, rankOfSuit|
-        cards << Bridge::Card.for(ranks: [Bridge::Rank.for_char(rankOfSuit)], suits: [suit])
+        cards << Bridge::Card.for(ranks: [Bridge::Rank.forLetter(rankOfSuit)], suits: [suit])
       end
     end
   end

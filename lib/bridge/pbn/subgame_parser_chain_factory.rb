@@ -1,5 +1,5 @@
 module Bridge::Pbn
-  class UnrecognizedSubgameHandler < Bridge::Handler
+  class UnrecognizedSubgameHandler < Bridge::Pbn::Handler
     def initialize logger
       super(nil)
       @logger = logger

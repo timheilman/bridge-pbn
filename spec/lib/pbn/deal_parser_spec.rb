@@ -4,7 +4,7 @@ def cards_for(*cards)
   result = []
   cards.each do |rankAndSuit|
     rank, suit = rankAndSuit.split(//)
-    result << Bridge::Card.for(suits: [Bridge::Strain.for_string(suit)], ranks: [Bridge::Rank.for_char(rank)]).first
+    result << Bridge::Card.for(suits: [Bridge::Strain.suits[{:C=>0,:D=>1,:H=>2,:S=>3}[suit.to_sym]]], ranks: [Bridge::Rank.forLetter(rank)]).first
   end
   result
 end

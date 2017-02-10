@@ -22,6 +22,10 @@ module Bridge::Pbn
       ';'
     end
 
+    def colon
+      ':'
+    end
+
     def carriage_return
       "\r"
     end
@@ -64,6 +68,14 @@ module Bridge::Pbn
 
     def backslash
       '\\'
+    end
+
+    def period
+      '.'
+    end
+
+    def hyphen
+      '-'
     end
   end
 end

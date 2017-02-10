@@ -5,10 +5,12 @@ module Bridge::Pbn::SubgameParsers
       @game_builder = game_builder
     end
 
+    # todo: rejigger this, if we want to keep it, to query responds_to? from the outside, rather than deferring from inside
     def handle(subgame)
       return defer(subgame) unless subgame.tagPair[0] == 'Deal'
-      Bridge::Pbn::DealParser.deal(subgame.tagPair[1]).each do |hand|
-        @game_builder.add_hand(Bridge::Hand.new hand)
+      deal = subgame.tagPair[1]
+      Bridge::Pbn::DealStringParser.new(deal).yield_cards do |direction: direction, rank: rank, suit: suit|
+        @game_builder.with_dealt_card(direction: direction, rank: rank, suit: suit)
       end
     end
   end

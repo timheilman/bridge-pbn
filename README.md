@@ -1,3 +1,5 @@
+# Portable Bridge Notation in Pure Ruby
+
 This project aims to provide parsing and building capabilities for [Portable Bridge Notation] (http://www.tistis.nl/pbn/)
 
 The PBN version targeted is 2.1
@@ -23,7 +25,6 @@ corresponding tag name, "Deal": deal_subgame_parser.rb .
 This structure will allow Play and Auction sections to already-know following referent Note tag values while their
 sections are being parsed, simplifying the required implementation from consumers: with_auction_note alone, rather than
 with_auction_note_ref AND with_note_ref_resolution.  The structure also hopefully provides easy conceptual buckets
-to keep the concerns of the parsing separated and each class narrowly focused, permitting a very high level of
-adherence to the spec without sacrificing maintainability.
+to keep the concerns of the parsing separated and each class narrowly focused in obvious ways.
 
 The inverse of parsing: building, is imagined but not yet approached.

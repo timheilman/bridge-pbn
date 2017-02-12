@@ -11,6 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Pure Ruby Portable Bridge Notation (PBN) parsing and construction for Contract Bridge card game data}
   spec.homepage      = "https://github.com/timheilman/bridge-pbn"
+  spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
@@ -21,5 +22,5 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.13"
   spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "rspec", "~> 3.5.0"
+  spec.add_development_dependency 'rspec', '~> 3.5', '>= 3.5.0'
 end

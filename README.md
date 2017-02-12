@@ -17,14 +17,14 @@ The structure of the parsing code is in three stages, for readability and mainta
   * the tag pair
   * commentary following the tag pair
   * the section (if any)
-3. Parsing of the subgame with a subgame parser selected based upon that subgame's tag name.
+3. Parsing of the subgames with a subgame parser selected based upon that subgame's tag name.
 
 Thus the example message with_card_dealt(direction:, rank:, suit:) is controlled by the subgame parser for the
 corresponding tag name, "Deal": deal_subgame_parser.rb .
 
-This structure will allow Play and Auction sections to already-know following referent Note tag values while their
-sections are being parsed, simplifying the required implementation from consumers: with_auction_note alone, rather than
-with_auction_note_ref AND with_note_ref_resolution.  The structure also hopefully provides easy conceptual buckets
+This structure will eventually allow Play and Auction sections to already-know following referent Note tag values while
+their sections are being parsed, simplifying the required implementation from consumers: with_auction_note alone, rather
+than with_auction_note_ref AND with_note_ref_resolution.  The structure also hopefully provides easy conceptual buckets
 to keep the concerns of the parsing separated and each class narrowly focused in obvious ways.
 
 The inverse of parsing: building, is imagined but not yet approached.

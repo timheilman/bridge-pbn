@@ -4,13 +4,13 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'portable_bridge_notation/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "portable-portable_bridge_notation-notation"
+  spec.name          = "portable_bridge_notation"
   spec.version       = PortableBridgeNotation::VERSION
   spec.authors       = ["Tim Heilman", "Daniel Evans"]
   spec.email         = ["tim@dv8.org", "evans.daniel.n@gmail.com"]
 
   spec.summary       = %q{Pure Ruby Portable Bridge Notation (PBN) parsing and construction for Contract Bridge card game data}
-  spec.homepage      = "https://github.com/timheilman/portable_bridge_notation-pbn"
+  spec.homepage      = "https://github.com/timheilman/bridge-pbn"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})

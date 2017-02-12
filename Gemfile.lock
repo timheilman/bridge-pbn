@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    portable-portable_bridge_notation-notation (0.1.0)
+    portable_bridge_notation (0.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -42,7 +42,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 1.13)
-  portable-portable_bridge_notation-notation!
+  portable_bridge_notation!
   pry
   rake (~> 10.0)
   rb-readline

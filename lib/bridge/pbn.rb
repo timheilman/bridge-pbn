@@ -1,7 +1,5 @@
 #todo: fix this; eliminate usage of frowned-upon autoload; make dependencies explicit and just-in-time?
-module Bridge
-
-end
+module Bridge end
 module Bridge::Pbn
   autoload :Handler, File.expand_path('../pbn/handler', __FILE__)
   autoload :SingleCharComparisonConstants, File.expand_path('../pbn/single_char_comparison_constants', __FILE__)

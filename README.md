@@ -15,7 +15,7 @@ The structure of the parsing code is in three stages, for readability and mainta
   * the tag pair
   * commentary following the tag pair
   * the section (if any)
-3. Parsing of the section within the subgame with a subgame parser selected based upon that subgame's tag name.
+3. Parsing of the subgame with a subgame parser selected based upon that subgame's tag name.
 
 Thus the example message with_card_dealt(direction:, rank:, suit:) is controlled by the subgame parser for the
 corresponding tag name, "Deal": deal_subgame_parser.rb .

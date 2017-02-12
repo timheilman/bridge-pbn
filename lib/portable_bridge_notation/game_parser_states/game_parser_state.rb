@@ -1,6 +1,6 @@
-module Bridge::Pbn::GameParserStates
+module PortableBridgeNotation::GameParserStates
   module GameParserState
-    include Bridge::Pbn::SingleCharComparisonConstants
+    include PortableBridgeNotation::SingleCharComparisonConstants
     attr_reader :parser
     attr_reader :builder
     attr_reader :next_state

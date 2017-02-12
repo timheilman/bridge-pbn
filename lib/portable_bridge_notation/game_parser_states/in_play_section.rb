@@ -1,4 +1,4 @@
-module Bridge::Pbn::GameParserStates
+module PortableBridgeNotation::GameParserStates
   class InPlaySection
     include GameParserState
 

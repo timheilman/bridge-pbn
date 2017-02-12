@@ -1,4 +1,4 @@
-module Bridge::Pbn
+module PortableBridgeNotation
   class GameParser
     include SingleCharComparisonConstants
 

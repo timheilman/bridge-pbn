@@ -1,4 +1,4 @@
-module Bridge::Pbn
+module PortableBridgeNotation
   class IoParser
     # see sections 2.4 "Escape Mechanism", 3 "Game layout", and 3.8 "Commentary"
     SEMI_EMPTY_LINE = /^[\t ]*\r?$/

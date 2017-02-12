@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-RSpec.describe Bridge::Pbn::HandStringParser do
+RSpec.describe PortableBridgeNotation::HandStringParser do
   describe '.hand' do
-    let(:described_object) { Bridge::Pbn::HandStringParser.new(hand) }
+    let(:described_object) { PortableBridgeNotation::HandStringParser.new(hand) }
     context 'provided a valid PBN hand string' do
       let(:hand) { '7.63.AKQJT.A9732' }
       it 'yields the proper suits and ranks' do

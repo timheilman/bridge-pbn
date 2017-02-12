@@ -1,6 +1,6 @@
 require_relative 'hand_string_parser'
-class Bridge::Pbn::DealStringParser
-  include Bridge::Pbn::SingleCharComparisonConstants
+class PortableBridgeNotation::DealStringParser
+  include PortableBridgeNotation::SingleCharComparisonConstants
 
   def initialize(deal_string)
     @deal_string = deal_string
@@ -29,7 +29,7 @@ class Bridge::Pbn::DealStringParser
   end
 
   def yield_hand
-    Bridge::Pbn::HandStringParser.new(hand_string).yield_cards do |suit: suit, rank: rank|
+    PortableBridgeNotation::HandStringParser.new(hand_string).yield_cards do |suit: suit, rank: rank|
       yield direction: direction_char, suit: suit, rank: rank
     end
   end

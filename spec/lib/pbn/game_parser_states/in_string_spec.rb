@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Bridge::Pbn::GameParserStates::InString do
+RSpec.describe PortableBridgeNotation::GameParserStates::InString do
   describe('#process_char') do
     let(:parser) { double }
     let(:builder) { double }

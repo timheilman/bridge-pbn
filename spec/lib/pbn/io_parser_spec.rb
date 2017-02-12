@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 
-RSpec.describe Bridge::Pbn::IoParser do
+RSpec.describe PortableBridgeNotation::IoParser do
   describe '.each_game' do
     let(:games) do
       result = []

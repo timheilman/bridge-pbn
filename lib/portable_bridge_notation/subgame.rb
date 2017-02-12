@@ -1,4 +1,4 @@
-module Bridge::Pbn
+module PortableBridgeNotation
   # terminology from http://www.tistis.nl/pbn/
   # targeting PBN version 2.1
 

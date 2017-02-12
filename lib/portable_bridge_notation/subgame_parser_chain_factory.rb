@@ -1,5 +1,5 @@
-module Bridge::Pbn
-  class UnrecognizedSubgameHandler < Bridge::Pbn::Handler
+module PortableBridgeNotation
+  class UnrecognizedSubgameHandler < PortableBridgeNotation::Handler
     def initialize logger
       super(nil)
       @logger = logger

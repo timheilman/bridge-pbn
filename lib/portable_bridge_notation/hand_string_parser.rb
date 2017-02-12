@@ -1,5 +1,5 @@
-class Bridge::Pbn::HandStringParser
-  include Bridge::Pbn::SingleCharComparisonConstants
+class PortableBridgeNotation::HandStringParser
+  include PortableBridgeNotation::SingleCharComparisonConstants
 
   def initialize(hand_string)
     @hand_string = hand_string

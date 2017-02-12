@@ -1,4 +1,4 @@
-module Bridge::Pbn::GameParserStates
+module PortableBridgeNotation::GameParserStates
   class BeforeFirstTag < OutsideTagAndSectionTemplate
     def add_comment(comment)
       builder.add_preceding_comment comment

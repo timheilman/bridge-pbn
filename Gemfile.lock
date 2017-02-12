@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bridge-pbn (0.1.0)
+    portable-portable_bridge_notation-notation (0.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -41,8 +41,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bridge-pbn!
   bundler (~> 1.13)
+  portable-portable_bridge_notation-notation!
   pry
   rake (~> 10.0)
   rb-readline

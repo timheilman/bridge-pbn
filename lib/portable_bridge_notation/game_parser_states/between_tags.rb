@@ -1,4 +1,4 @@
-module Bridge::Pbn::GameParserStates
+module PortableBridgeNotation::GameParserStates
   class BetweenTags < OutsideTagAndSectionTemplate
     def add_comment(comment)
       builder.add_following_comment comment

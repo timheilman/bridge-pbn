@@ -1,5 +1,5 @@
 require 'singleton'
-module Bridge::Pbn
+module PortableBridgeNotation
   class ParserUtil
     include Singleton
     include SingleCharComparisonConstants

@@ -1,4 +1,4 @@
-module Bridge::Pbn
+module PortableBridgeNotation
   module SingleCharComparisonConstants
     def whitespace_allowed_in_games
       /[ \t\v\r\n]/

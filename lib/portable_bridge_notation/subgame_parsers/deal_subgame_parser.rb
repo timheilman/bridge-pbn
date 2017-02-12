@@ -1,5 +1,5 @@
-module Bridge::Pbn::SubgameParsers
-  class DealSubgameParser < Bridge::Pbn::Handler
+module PortableBridgeNotation::SubgameParsers
+  class DealSubgameParser < PortableBridgeNotation::Handler
     def initialize(game_builder, successor)
       super(successor)
       @game_builder = game_builder
@@ -9,7 +9,7 @@ module Bridge::Pbn::SubgameParsers
     def handle(subgame)
       return defer(subgame) unless subgame.tagPair[0] == 'Deal'
       deal = subgame.tagPair[1]
-      Bridge::Pbn::DealStringParser.new(deal).yield_cards do |direction: direction, rank: rank, suit: suit|
+      PortableBridgeNotation::DealStringParser.new(deal).yield_cards do |direction: direction, rank: rank, suit: suit|
         @game_builder.with_dealt_card(direction: direction, rank: rank, suit: suit)
       end
     end

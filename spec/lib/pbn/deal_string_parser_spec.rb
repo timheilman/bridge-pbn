@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-RSpec.describe Bridge::Pbn::DealStringParser do
+RSpec.describe PortableBridgeNotation::DealStringParser do
   describe '.yield_cards' do
-    let(:described_object) { Bridge::Pbn::DealStringParser.new(deal) }
+    let(:described_object) { PortableBridgeNotation::DealStringParser.new(deal) }
     context 'provided a PBN deal string with only the aces dealt' do
       let(:space_separated_hands) { '..A.A A... ... .A..' }
       context 'starting with N' do

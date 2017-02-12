@@ -1,9 +1,10 @@
 #todo: fix this; eliminate usage of frowned-upon autoload; make dependencies explicit and just-in-time?
-require 'bridge'
+module Bridge end
 module Bridge::Pbn
   autoload :Handler, File.expand_path('../pbn/handler', __FILE__)
   autoload :SingleCharComparisonConstants, File.expand_path('../pbn/single_char_comparison_constants', __FILE__)
-  autoload :DealParser, File.expand_path('../pbn/deal_parser', __FILE__)
+  autoload :HandStringParser, File.expand_path('../pbn/hand_string_parser', __FILE__)
+  autoload :DealStringParser, File.expand_path('../pbn/deal_string_parser', __FILE__)
   autoload :IoParser, File.expand_path('../pbn/io_parser', __FILE__)
   autoload :ParserUtil, File.expand_path('../pbn/parser_util', __FILE__)
   autoload :Subgame, File.expand_path('../pbn/subgame', __FILE__)

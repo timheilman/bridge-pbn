@@ -5,6 +5,7 @@ module Bridge::Pbn
     include SingleCharComparisonConstants
 
     # intent: this same functionality will eventually be needed by PlaySubgameParser and AuctionSubgameParser
+    # todo: thus, make it a mixin; the arity-2 method is less bad than having two separate impls
     def comment_open_after_eol?(line, comment_is_open)
       last_char = nil
       line.each_char do |char|

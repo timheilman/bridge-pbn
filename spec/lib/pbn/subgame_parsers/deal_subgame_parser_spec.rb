@@ -11,13 +11,15 @@ RSpec.describe Bridge::Pbn::SubgameParsers::DealSubgameParser do
         Bridge::Pbn::SubgameBuilder.new.add_tag_item('Deal').add_tag_item(deal).build
       end
       before do
-        allow(game_builder).to receive :add_hand
+        allow(game_builder).to receive :with_dealt_card
       end
       it("doesn't raise an error") do
         expect { described_object.handle subgame }.not_to raise_error
       end
-      it('provides the game builder four hands') do
-        expect(game_builder).to receive(:add_hand).with(instance_of(Bridge::Hand)).exactly(4).times
+      it('provides the game builder fifty-two cards') do
+        expect(game_builder).to receive(:with_dealt_card).
+            with(direction: instance_of(String), rank: instance_of(String), suit: instance_of(String)).
+            exactly(52).times
         described_object.handle subgame
       end
     end

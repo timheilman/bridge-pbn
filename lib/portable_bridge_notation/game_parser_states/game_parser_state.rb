@@ -8,7 +8,6 @@ module PortableBridgeNotation::GameParserStates
     attr_reader :state_factory
 
     #todo: apply Mediator and Builder patterns to eliminate polyadic constructor
-    #todo: make next_state required and use it to fix the issue with states returning their successor
     def initialize(parser, domain_builder, state_factory, next_state = nil)
       @parser = parser
       @builder = domain_builder

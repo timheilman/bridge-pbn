@@ -31,11 +31,6 @@ class PortableBridgeNotation::GameParser
         when 0..8, 12, 14..31, 127..159
           raise_error "disallowed character in PBN files, decimal code: #{char.ord}"
       end
-      #todo: eliminate this non-event, non-question, non-transformation monadic form:
-      # @state has an implicit dual responsibility here: the side effects from the event
-      # that a character has been read from the game stream, one side effect of which may or may not be
-      # the alteration of what state is held by GameParser
-      # replace with state update message from the state to the mediator (or parser if not yet mediated)
       @state = @state.process_char(char)
     end
     @state.finalize

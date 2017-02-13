@@ -1,17 +1,17 @@
 require 'spec_helper'
-require_relative '../../../../lib/portable_bridge_notation/game_parser_states/in_string'
+require_relative '../../../../lib/portable_bridge_notation/game_parser_states/game_parser_state_factory'
 
 RSpec.describe PortableBridgeNotation::GameParserStates::InString do
   describe('#process_char') do
-    let(:parser) { double }
-    let(:builder) { double }
-    let(:state_factory) { double }
-    let(:described_object) { described_class.new(parser, builder, state_factory) }
+    let(:game_parser) { double }
+    let(:domain_builder) { double }
+    let(:described_object) { PortableBridgeNotation::GameParserStates::GameParserStateFactory.new(
+        game_parser, domain_builder).make_state(:InString) }
 
     %W(\t \n \v \r).each do |char|
       context("with PBN-permitted ASCII control code #{char.ord}") do
         it('should raise an error since it is within a string') do
-          expect(parser).to receive(:raise_error).with(match ".*ASCII control.*: #{char.ord}")
+          expect(game_parser).to receive(:raise_error).with(match ".*ASCII control.*: #{char.ord}")
           described_object.process_char(char)
         end
       end

@@ -20,7 +20,7 @@ module PortableBridgeNotation::GameParserStates
             return next_state
           end
         when tab, line_feed, vertical_tab, carriage_return
-          parser.raise_error "PBN-valid but string-invalid ASCII control character. Decimal code point: #{char.ord}"
+          game_parser.raise_error "PBN-valid but string-invalid ASCII control character. Decimal code point: #{char.ord}"
         else
           @escaped = false
           @string << char
@@ -29,7 +29,7 @@ module PortableBridgeNotation::GameParserStates
     end
 
     def finalize
-      parser.raise_error "end of input in unclosed string"
+      game_parser.raise_error "end of input in unclosed string"
     end
 
   end

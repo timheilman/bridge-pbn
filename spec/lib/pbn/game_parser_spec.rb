@@ -1,7 +1,7 @@
 require 'spec_helper'
 require_relative '../../../lib/portable_bridge_notation/subgame'
 require_relative '../../../lib/portable_bridge_notation/game_parser'
-require_relative '../../../lib/portable_bridge_notation/game_parser_states/before_first_tag'
+require_relative '../../../lib/portable_bridge_notation/game_parser_states/game_parser_state_factory'
 
 def expect_first_yield_with_arg
   expect do |block|
@@ -24,13 +24,13 @@ RSpec.describe PortableBridgeNotation::GameParser do
 
   describe('#raise_error') do
     context 'when asked to raise an error' do
-      let(:parser) { double }
-      let(:builder) { double }
-      let(:state_factory) { double }
+      let(:game_parser) { double }
+      let(:domain_builder) { double }
+      let(:game_parser_state_factory) { double }
       let(:described_object) do
         temp = described_class.new
-        temp.instance_variable_set(:@state, PortableBridgeNotation::GameParserStates::BeforeFirstTag.
-            new(parser, builder, state_factory))
+        temp.instance_variable_set(:@state, PortableBridgeNotation::GameParserStates::GameParserStateFactory.
+            new(game_parser, domain_builder).make_state(:BeforeFirstTag))
         temp.instance_variable_set(:@cur_char_index, 17)
         temp
       end

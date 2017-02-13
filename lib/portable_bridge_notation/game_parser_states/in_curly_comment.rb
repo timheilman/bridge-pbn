@@ -17,7 +17,7 @@ module PortableBridgeNotation::GameParserStates
     end
 
     def finalize
-      parser.raise_error 'end of input within unclosed brace comment'
+      game_parser.raise_error 'end of input within unclosed brace comment'
     end
   end
 end

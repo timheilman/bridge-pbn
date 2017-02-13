@@ -21,7 +21,8 @@ The structure of the parsing code is in three stages, for readability of the cod
   * the tag pair
   * commentary following the tag pair
   * the section (if any)
-3. Parsing of the subgames with a subgame parser selected based upon that subgame's tag name.
+3. Parsing of the subgames with a subgame parser selected based upon that subgame's tag name,
+   into the domain objects desired by the client.
 
 Thus the example message with_card_dealt(direction:, rank:, suit:) is controlled by the subgame parser for the
 corresponding tag name, "Deal": deal_subgame_parser.rb .

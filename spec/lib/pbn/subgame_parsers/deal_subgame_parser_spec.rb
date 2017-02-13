@@ -3,10 +3,9 @@ require_relative '../../../../lib/portable_bridge_notation/subgame_builder'
 require_relative '../../../../lib/portable_bridge_notation/subgame_parsers/deal_subgame_parser'
 RSpec.describe PortableBridgeNotation::SubgameParsers::DealSubgameParser do
 
-  describe '#handle_subgame' do
+  describe '#handle' do
     let(:game_builder) { double }
-    let(:successor) { double }
-    let(:described_object) { described_class.new(game_builder, successor) }
+    let(:described_object) { described_class.new(game_builder) }
     context('when asked to handle a Deal subgame') do
       let(:subgame) do
         deal = 'N:.63.AKQ987.A9732 A8654.KQ5.T.QJT6 J973.J98742.3.K4 KQT2.AT.J6542.85'
@@ -30,11 +29,8 @@ RSpec.describe PortableBridgeNotation::SubgameParsers::DealSubgameParser do
       let(:subgame) do
         PortableBridgeNotation::SubgameBuilder.new.add_tag_item('NotDeal').add_tag_item('').build
       end
-      before do
-        allow(successor).to receive(:handle) { :successors_return }
-      end
-      it('Defers to the successor and returns its result') do
-        expect(described_object.handle subgame).to be (:successors_return)
+      it('Complains that it is not the proper handler for this type of subgame') do
+        expect { described_object.handle subgame}.to raise_error(/Incorrect handler/)
       end
     end
   end

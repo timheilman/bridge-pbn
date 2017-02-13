@@ -1,24 +1,22 @@
-require_relative 'handler'
 require_relative 'subgame_parsers/deal_subgame_parser'
 module PortableBridgeNotation
-  class UnrecognizedSubgameHandler < PortableBridgeNotation::Handler
-    def initialize logger
-      super(nil)
+  class SubgameParserChainFactory
+    def initialize(domain_builder, logger)
+      @domain_builder = domain_builder
       @logger = logger
     end
 
     def handle(subgame)
-      @logger.warn("Unrecognized tag name: #{subgame.tagPair[0]}")
-    end
-  end
-  class SubgameParserChainFactory
-    def initialize(game_builder, logger)
-      @game_builder = game_builder
-      @logger = logger
+      begin
+        subgame_parser_class_for_tag_name = SubgameParsers.const_get(subgame.tagPair[0] + 'SubgameParser')
+        subgame_parser_class_for_tag_name.new(@domain_builder).handle(subgame)
+      rescue NameError
+        @logger.warn("Unrecognized tag name; ignoring tag: #{subgame.tagPair[0]}")
+      end
     end
 
     def get_chain
-      SubgameParsers::DealSubgameParser.new(@game_builder, UnrecognizedSubgameHandler.new(@logger))
+      return self
     end
   end
 

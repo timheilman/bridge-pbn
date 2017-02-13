@@ -10,7 +10,6 @@ RSpec.describe PortableBridgeNotation::SubgameParserChainFactory do
       let(:chain) { described_class.new(game_builder, logger).get_chain }
       it('returns a handler') do
         expect(chain).to respond_to :handle
-        expect(chain).to respond_to :defer
       end
       context('and the result is asked to handle a nonsense tag subgame') do
         let(:subgame) do

@@ -19,7 +19,7 @@ class PortableBridgeNotation::Importer
   end
 
   def import(io)
-    PortableBridgeNotation::IoParser.each_game_string(io) do |game|
+    PortableBridgeNotation::IoParser.new(io).each_game_string do |game|
       import_game game
     end
   end

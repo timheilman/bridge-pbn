@@ -3,11 +3,12 @@ require_relative '../../../lib/portable_bridge_notation/io_parser'
 
 RSpec.describe PortableBridgeNotation::IoParser do
   describe '.each_game' do
+    let(:described_object) { described_class.new(file_under_test)}
     let(:games) do
       result = []
       file_under_test.rewind
       # intent: block passing is used to validate behavior; iterator return is then expected to match block passing
-      described_class.each_game_string(file_under_test) { |game| result << game }
+      described_object.each_game_string { |game| result << game }
       result
     end
     context 'with three valid test records and no multiline comments' do
@@ -15,7 +16,7 @@ RSpec.describe PortableBridgeNotation::IoParser do
       context 'when passed a block' do
         it 'passes a total of three games to the given block' do
           expect do |block|
-            described_class.each_game_string(file_under_test, &block)
+            described_object.each_game_string &block
           end.to yield_control.exactly(3).times
         end
         it 'yields all the block arguments in UTF-8 encoding for internal processing' do
@@ -40,7 +41,7 @@ RSpec.describe PortableBridgeNotation::IoParser do
         end
       end
       context 'when not passed a block' do
-        let(:game_enumerator) { described_class.each_game_string(file_under_test) }
+        let(:game_enumerator) { described_object.each_game_string }
         it 'returns an enumerator instead' do
           expect(game_enumerator).to be_a(Enumerator)
         end
@@ -53,7 +54,7 @@ RSpec.describe PortableBridgeNotation::IoParser do
       let(:file_under_test) { File.open('spec/resource/three_test_records_crlf.pbn') }
       it 'passes a total of three games to the given block' do
         expect do |block|
-          described_class.each_game_string(file_under_test, &block)
+          described_object.each_game_string &block
         end.to yield_control.exactly(3).times
       end
       it 'includes the CRLF ending to be dealt with during game parsing' do
@@ -64,14 +65,14 @@ RSpec.describe PortableBridgeNotation::IoParser do
       let(:file_under_test) { File.open('spec/resource/test_record_with_empty_line_in_comment.pbn') }
       it 'passes exactly one game to the given block' do
         expect do |block|
-          described_class.each_game_string(file_under_test, &block)
+          described_object.each_game_string &block
         end.to yield_control.once
       end
       context 'with two valid test records, yet one with a single-line curly-comment' do
         let(:file_under_test) { File.open('spec/resource/test_record_with_single_line_curly_comment.pbn') }
         it 'passes two games to the given block' do
           expect do |block|
-            described_class.each_game_string(file_under_test, &block)
+            described_object.each_game_string &block
           end.to yield_control.exactly(2).times
         end
       end
@@ -79,7 +80,7 @@ RSpec.describe PortableBridgeNotation::IoParser do
         let(:file_under_test) { File.open('spec/resource/test_record_with_lots_of_curlies.pbn') }
         it 'passes two games to the given block' do
           expect do |block|
-            described_class.each_game_string(file_under_test, &block)
+            described_object.each_game_string &block
           end.to yield_control.exactly(2).times
         end
       end
@@ -87,7 +88,7 @@ RSpec.describe PortableBridgeNotation::IoParser do
         let(:file_under_test) { File.open('spec/resource/test_record_with_escape_in_comment.pbn') }
         it 'does not consider the escape character to actually-escape' do
           expect do |block|
-            described_class.each_game_string(file_under_test, &block)
+            described_object.each_game_string &block
           end.to yield_with_args("[Event \"\"]\n{\n%\n}")
         end
       end

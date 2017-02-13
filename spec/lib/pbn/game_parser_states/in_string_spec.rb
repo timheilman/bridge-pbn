@@ -4,9 +4,9 @@ require_relative '../../../../lib/portable_bridge_notation/game_parser_states/ga
 RSpec.describe PortableBridgeNotation::GameParserStates::InString do
   describe('#process_char') do
     let(:game_parser) { double }
-    let(:domain_builder) { double }
+    let(:subgame_builder) { double }
     let(:described_object) { PortableBridgeNotation::GameParserStates::GameParserStateFactory.new(
-        game_parser, domain_builder).make_state(:InString) }
+        game_parser, subgame_builder).make_state(:InString) }
 
     %W(\t \n \v \r).each do |char|
       context("with PBN-permitted ASCII control code #{char.ord}") do

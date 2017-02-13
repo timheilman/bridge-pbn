@@ -4,9 +4,9 @@ require_relative '../../../../lib/portable_bridge_notation/game_parser_states/ga
 RSpec.describe PortableBridgeNotation::GameParserStates::InSupplementalSection do
   describe('#process_char') do
     let(:game_parser) { double }
-    let(:domain_builder) { double }
+    let(:subgame_builder) { double }
     let(:described_object) { PortableBridgeNotation::GameParserStates::GameParserStateFactory.new(
-        game_parser, domain_builder).make_state(:InSupplementalSection) }
+        game_parser, subgame_builder).make_state(:InSupplementalSection) }
     %w(] { } ; %).each do |disallowed_symbol|
       it("should raise an error for disallowed symbol #{disallowed_symbol}. ") do
         error = StandardError.new 'Mock error'

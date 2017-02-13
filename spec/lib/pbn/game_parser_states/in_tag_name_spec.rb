@@ -4,14 +4,14 @@ require_relative '../../../../lib/portable_bridge_notation/game_parser_states/ga
 RSpec.describe PortableBridgeNotation::GameParserStates::InTagName do
   describe('#process_char') do
     let(:game_parser) { double }
-    let(:domain_builder) { double }
-    let(:factory) { PortableBridgeNotation::GameParserStates::GameParserStateFactory.new(game_parser, domain_builder) }
+    let(:subgame_builder) { double }
+    let(:factory) { PortableBridgeNotation::GameParserStates::GameParserStateFactory.new(game_parser, subgame_builder) }
     let(:described_object) { factory.make_state(:InTagName) }
 
     %W(\t \n \v \r).each do |char|
       context("with PBN-permitted ASCII control code #{char.ord}") do
         it('should should disregard the character') do
-          expect(domain_builder).to receive(:add_tag_item)
+          expect(subgame_builder).to receive(:add_tag_item)
           expect(described_object.process_char(char)).to be_a PortableBridgeNotation::GameParserStates::BeforeTagValue
         end
       end

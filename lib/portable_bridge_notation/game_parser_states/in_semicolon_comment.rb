@@ -14,7 +14,7 @@ module PortableBridgeNotation::GameParserStates
           return self
         when line_feed
           finalize
-          return next_state
+          return mediator.next_state
         else
           perhaps_emit_cr
           @prev_char_was_cr = false
@@ -31,7 +31,7 @@ module PortableBridgeNotation::GameParserStates
     end
 
     def finalize
-      next_state.add_comment(@comment)
+      mediator.add_comment(@comment)
     end
   end
 end

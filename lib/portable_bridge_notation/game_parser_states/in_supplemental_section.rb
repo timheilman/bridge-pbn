@@ -11,20 +11,20 @@ module PortableBridgeNotation::GameParserStates
       case char
         when open_bracket
           finalize
-          game_parser.yield_subgame
-          return game_parser_state_factory.make_state(:BeforeTagName)
+          mediator.yield_subgame
+          return mediator.make_state(:BeforeTagName)
         when double_quote
-          return game_parser_state_factory.make_state(:InString, self)
+          return mediator.make_state(:InString, self)
         when continuing_nonstring_supp_sect_char
           @section << char
           return self
         else
-          game_parser.raise_error "Unexpected character within a supplemental section: `#{char}'"
+          mediator.raise_error "Unexpected character within a supplemental section: `#{char}'"
       end
     end
 
     def finalize
-      domain_builder.section = @section unless @section.empty?
+      mediator.section = @section unless @section.empty?
     end
 
     def add_string(string)

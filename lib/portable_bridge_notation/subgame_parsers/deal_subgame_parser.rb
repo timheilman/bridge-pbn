@@ -5,9 +5,9 @@ module PortableBridgeNotation::SubgameParsers
       @domain_builder = domain_builder
     end
 
-    def handle(subgame)
+    def parse(subgame)
       unless subgame.tagPair[0] == 'Deal'
-        raise ArgumentError.new("Incorrect handler for subgame of tag #{subgame.tagPair[0]}; this handler is for Deal")
+        raise ArgumentError.new("Incorrect parser for subgame of tag #{subgame.tagPair[0]}; this parser is for Deal")
       end
 
       deal = subgame.tagPair[1]

@@ -5,11 +5,11 @@ require_relative '../../../lib/portable_bridge_notation/subgame_parser_dispatche
 RSpec.describe PortableBridgeNotation::SubgameParserDispatcher do
   describe('#handle') do
     context('when it is called') do
-      let(:game_builder) { double }
+      let(:domain_builder) { double }
       let(:logger) { double }
-      let(:handler) { described_class.new(game_builder, logger) }
-      it('returns a handler') do
-        expect(handler).to respond_to :handle
+      let(:parser) { described_class.new(domain_builder, logger) }
+      it('returns a subgame parser') do
+        expect(parser).to respond_to :parse
       end
       context('and the result is asked to handle a nonsense tag subgame') do
         let(:subgame) do
@@ -17,9 +17,8 @@ RSpec.describe PortableBridgeNotation::SubgameParserDispatcher do
         end
         it('logs a warning regarding an unrecognized tag name') do
           expect(logger).to receive(:warn).with(/.*unrecognized tag name.*/i)
-          handler.handle(subgame)
+          parser.parse(subgame)
         end
-
       end
     end
   end

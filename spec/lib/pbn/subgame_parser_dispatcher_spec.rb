@@ -1,15 +1,15 @@
 require 'spec_helper'
 require_relative '../../../lib/portable_bridge_notation/subgame_builder'
-require_relative '../../../lib/portable_bridge_notation/subgame_parser_chain_factory'
+require_relative '../../../lib/portable_bridge_notation/subgame_parser_dispatcher'
 
-RSpec.describe PortableBridgeNotation::SubgameParserChainFactory do
-  describe('#get_chain') do
+RSpec.describe PortableBridgeNotation::SubgameParserDispatcher do
+  describe('#handle') do
     context('when it is called') do
       let(:game_builder) { double }
       let(:logger) { double }
-      let(:chain) { described_class.new(game_builder, logger).get_chain }
+      let(:handler) { described_class.new(game_builder, logger) }
       it('returns a handler') do
-        expect(chain).to respond_to :handle
+        expect(handler).to respond_to :handle
       end
       context('and the result is asked to handle a nonsense tag subgame') do
         let(:subgame) do
@@ -17,7 +17,7 @@ RSpec.describe PortableBridgeNotation::SubgameParserChainFactory do
         end
         it('logs a warning regarding an unrecognized tag name') do
           expect(logger).to receive(:warn).with(/.*unrecognized tag name.*/i)
-          chain.handle(subgame)
+          handler.handle(subgame)
         end
 
       end

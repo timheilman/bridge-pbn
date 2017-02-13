@@ -1,6 +1,6 @@
 require_relative 'subgame_parsers/deal_subgame_parser'
 module PortableBridgeNotation
-  class SubgameParserChainFactory
+  class SubgameParserDispatcher
     def initialize(domain_builder, logger)
       @domain_builder = domain_builder
       @logger = logger
@@ -15,9 +15,6 @@ module PortableBridgeNotation
       end
     end
 
-    def get_chain
-      return self
-    end
   end
 
 end

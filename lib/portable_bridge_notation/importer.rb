@@ -1,15 +1,14 @@
 require 'logger'
 
-require_relative 'handler'
 require_relative 'io_parser'
 require_relative 'game_parser'
-require_relative 'subgame_parser_chain_factory'
+require_relative 'subgame_parser_dispatcher'
 
 class PortableBridgeNotation::Importer
   def initialize
     @observers = []
     @subgame_builder = PortableBridgeNotation::SubgameBuilder.new
-    @subgame_handler = PortableBridgeNotation::SubgameParserChainFactory.new(self, Logger.new(STDOUT)).get_chain
+    @subgame_handler = PortableBridgeNotation::SubgameParserDispatcher.new(self, Logger.new(STDOUT))
   end
 
   def attach(importObserver)

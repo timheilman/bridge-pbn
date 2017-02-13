@@ -1,4 +1,3 @@
-require_relative '../handler'
 require_relative '../deal_string_parser'
 module PortableBridgeNotation::SubgameParsers
   class DealSubgameParser

@@ -1,11 +1,14 @@
 module PortableBridgeNotation
   module GameParserStates
     class GameParserStateMediator
-      def initialize(game_parser_state_mediator_builder)
-        @game_parser = game_parser_state_mediator_builder.game_parser
-        @subgame_builder = game_parser_state_mediator_builder.subgame_builder
-        @game_parser_state_factory = game_parser_state_mediator_builder.game_parser_state_factory
-        @next_state = game_parser_state_mediator_builder.next_state
+      def initialize(game_parser: game_parser,
+                     subgame_builder: subgame_builder,
+                     game_parser_state_factory: game_parser_state_factory,
+                     next_state: next_state)
+        @game_parser = game_parser
+        @subgame_builder = subgame_builder
+        @game_parser_state_factory = game_parser_state_factory
+        @next_state = next_state
       end
 
       def add_preceding_comment(*args)
@@ -38,6 +41,14 @@ module PortableBridgeNotation
 
       def raise_error(*args)
         @game_parser.raise_error *args
+      end
+
+      def reached_section(*args)
+        @game_parser.reached_section *args
+      end
+
+      def add_note_ref_resolution(*args)
+        @game_parser.add_note_ref_resolution *args
       end
 
       def add_comment(*args)

@@ -15,10 +15,8 @@ module PortableBridgeNotation::GameParserStates
         when initial_supplemental_section_char
           err_str = "Unexpected section element starting character (see PBN section 5.1) : `#{char}'"
           mediator.raise_error(err_str) unless section_tokens_allowed?
-          section_state = if mediator.tag_name == 'Play'
-                            mediator.make_state(:InPlaySection)
-                          elsif mediator.tag_name == 'Auction'
-                            mediator.make_state(:InAuctionSection)
+          section_state = if mediator.tag_name == 'Play' || mediator.tag_name == 'Auction'
+                            mediator.reached_section(mediator.tag_name)
                           else
                             mediator.make_state(:InSupplementalSection)
                           end

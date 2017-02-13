@@ -24,6 +24,9 @@ class PortableBridgeNotation::Importer
     PortableBridgeNotation::GameParser.new.each_subgame(game) do |subgame|
       import_subgame subgame
     end
+    # todo: in order to have Note tag values when sections get parsed, we want to delay their parsing
+    # until here; provide GameParser's @section_notes to the AuctionSectionParser and PlaySectionParser here,
+    # to (finally) send the Auction and Play sections' worth of domain builder API messages
   end
 
   def import_subgame subgame

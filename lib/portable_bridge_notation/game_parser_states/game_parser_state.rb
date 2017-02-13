@@ -6,9 +6,7 @@ module PortableBridgeNotation::GameParserStates
 
     def initialize(game_parser_state_mediator)
       @mediator = game_parser_state_mediator
-      if self.respond_to? :post_initialize
-        post_initialize
-      end
+      post_initialize if self.respond_to? :post_initialize
     end
   end
 end

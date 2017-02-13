@@ -14,6 +14,7 @@ class PortableBridgeNotation::GameParser
         new(self, @builder).make_state(:BeforeFirstTag)
     @block = block
     @builder.clear
+    @section_notes = {}
     process
   end
 
@@ -47,4 +48,13 @@ class PortableBridgeNotation::GameParser
                                 "char_index: #{@cur_char_index.to_s}; message: #{message}")
   end
 
+  def reached_section(section_name)
+    @section_name = section_name
+    @section_notes.merge! section_name => {}
+  end
+
+  # todo: to be called from NoteSubgameParser
+  def add_note_ref_resolution(ref_num, text)
+    @section_notes[@section_name].merge! ref_num => text
+  end
 end

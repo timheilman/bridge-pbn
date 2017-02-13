@@ -1,4 +1,4 @@
-require_relative 'game_parser_state_mediator_builder'
+require_relative 'game_parser_state_mediator'
 require_relative 'game_parser_state'
 require_relative 'outside_tag_and_section_template'
 require_relative 'before_first_tag'
@@ -23,14 +23,12 @@ class PortableBridgeNotation::GameParserStates::GameParserStateFactory
   end
 
   def make_state(class_sym, next_state = nil)
-    game_parser_state_mediator_builder = PortableBridgeNotation::GameParserStates::GameParserStateMediatorBuilder.new
-
-    mediator = game_parser_state_mediator_builder.
-        with_game_parser(game_parser).
-        with_subgame_builder(subgame_builder).
-        with_game_parser_state_factory(self).
-        with_next_state(next_state).
-        build
+    mediator = PortableBridgeNotation::GameParserStates::GameParserStateMediator.new(
+        game_parser: game_parser,
+        subgame_builder: subgame_builder,
+        game_parser_state_factory: self,
+        next_state: next_state
+    )
     PortableBridgeNotation::GameParserStates.const_get(class_sym).new(mediator)
   end
 end

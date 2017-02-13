@@ -1,4 +1,3 @@
-require_relative 'game_parser_state'
 module PortableBridgeNotation::GameParserStates
   class InPlaySection < GameParserState
 

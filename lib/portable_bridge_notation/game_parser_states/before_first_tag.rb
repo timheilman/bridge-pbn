@@ -1,4 +1,3 @@
-require_relative 'outside_tag_and_section_template'
 module PortableBridgeNotation::GameParserStates
   class BeforeFirstTag < OutsideTagAndSectionTemplate
     def add_comment(comment)

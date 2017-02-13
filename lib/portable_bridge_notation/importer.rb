@@ -1,8 +1,9 @@
 require 'logger'
 
+require_relative 'subgame_builder'
+require_relative 'subgame_parser_dispatcher'
 require_relative 'io_parser'
 require_relative 'game_parser'
-require_relative 'subgame_parser_dispatcher'
 
 class PortableBridgeNotation::Importer
   def initialize

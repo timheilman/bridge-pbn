@@ -1,5 +1,6 @@
 require_relative 'single_char_comparison_constants'
 require_relative 'subgame_builder'
+require_relative 'game_parser_states/game_parser_state_factory'
 class PortableBridgeNotation::GameParser
   include PortableBridgeNotation::SingleCharComparisonConstants
 
@@ -9,7 +10,8 @@ class PortableBridgeNotation::GameParser
   def each_subgame(pbn_game_string, &block)
     @pbn_game_string = pbn_game_string
     @builder = PortableBridgeNotation::SubgameBuilder.new
-    @state = PortableBridgeNotation::GameParserStates::BeforeFirstTag.new(self, @builder)
+    @state = PortableBridgeNotation::GameParserStates::GameParserStateFactory.
+        new(self, @builder).make_state(:BeforeFirstTag)
     @block = block
     @builder.clear
     process

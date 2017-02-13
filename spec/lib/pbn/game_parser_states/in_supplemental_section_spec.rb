@@ -4,7 +4,8 @@ RSpec.describe PortableBridgeNotation::GameParserStates::InSupplementalSection d
   describe('#process_char') do
     let(:parser) { double }
     let(:builder) { double }
-    let(:described_object) { described_class.new(parser, builder) }
+    let(:state_factory) { double }
+    let(:described_object) { described_class.new(parser, builder, state_factory) }
     %w(] { } ; %).each do |disallowed_symbol|
       it("should raise an error for disallowed symbol #{disallowed_symbol}. ") do
         error = StandardError.new 'Mock error'

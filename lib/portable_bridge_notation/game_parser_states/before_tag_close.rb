@@ -7,7 +7,7 @@ module PortableBridgeNotation::GameParserStates
         when whitespace_allowed_in_games
           return self
         when close_bracket
-          return BetweenTags.new(parser, builder)
+          return state_factory.make_state(:BetweenTags)
         else
           parser.raise_error "Unexpected char other than whitespace or closing bracket: `#{char}'"
       end

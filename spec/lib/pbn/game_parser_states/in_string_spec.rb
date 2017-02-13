@@ -5,7 +5,8 @@ RSpec.describe PortableBridgeNotation::GameParserStates::InString do
   describe('#process_char') do
     let(:parser) { double }
     let(:builder) { double }
-    let(:described_object) { described_class.new(parser, builder) }
+    let(:state_factory) { double }
+    let(:described_object) { described_class.new(parser, builder, state_factory) }
 
     %W(\t \n \v \r).each do |char|
       context("with PBN-permitted ASCII control code #{char.ord}") do

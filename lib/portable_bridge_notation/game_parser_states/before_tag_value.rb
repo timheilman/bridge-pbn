@@ -8,7 +8,7 @@ module PortableBridgeNotation::GameParserStates
         when whitespace_allowed_in_games
           return self
         when double_quote
-          return InString.new(parser, builder, BeforeTagClose.new(parser, builder))
+          return state_factory.make_state(:InString, state_factory.make_state(:BeforeTagClose))
         else
           parser.raise_error "Unexpected non-whitespace, non-double quote character: `#{char}'"
       end

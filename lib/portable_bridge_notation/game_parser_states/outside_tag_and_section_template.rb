@@ -8,22 +8,21 @@ module PortableBridgeNotation::GameParserStates
         when whitespace_allowed_in_games
           return self
         when semicolon
-          #todo: abstract-factory these news
-          return InSemicolonComment.new(parser, builder, self)
+          return state_factory.make_state(:InSemicolonComment, self)
         when open_curly
-          return InCurlyComment.new(parser, builder, self)
+          return state_factory.make_state(:InCurlyComment, self)
         when open_bracket
           perhaps_yield
-          return BeforeTagName.new(parser, builder)
+          return state_factory.make_state(:BeforeTagName)
         when initial_supplemental_section_char
           err_str = "Unexpected section element starting character (see PBN section 5.1) : `#{char}'"
           parser.raise_error(err_str) unless section_tokens_allowed?
           section_state = if builder.tag_name == 'Play'
-                            InPlaySection.new(parser, builder)
+                            state_factory.make_state(:InPlaySection)
                           elsif builder.tag_name == 'Auction'
-                            InAuctionSection.new(parser, builder)
+                            state_factory.make_state(:InAuctionSection)
                           else
-                            InSupplementalSection.new(parser, builder)
+                            state_factory.make_state(:InSupplementalSection)
                           end
           return section_state.process_char char
         else

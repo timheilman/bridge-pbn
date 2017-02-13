@@ -4,7 +4,8 @@ RSpec.describe PortableBridgeNotation::GameParserStates::BeforeTagName do
   describe('#process_char') do
     let(:parser) { double }
     let(:builder) { double }
-    let(:described_object) { described_class.new(parser, builder) }
+    let(:state_factory) { double }
+    let(:described_object) { described_class.new(parser, builder, state_factory) }
     it('should skip whitespace') do
       expect(described_object.process_char("\t")).to be(described_object)
     end

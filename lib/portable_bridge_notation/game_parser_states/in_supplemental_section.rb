@@ -14,9 +14,9 @@ module PortableBridgeNotation::GameParserStates
         when open_bracket
           finalize
           parser.yield_subgame
-          return BeforeTagName.new(parser, builder)
+          return state_factory.make_state(:BeforeTagName)
         when double_quote
-          return InString.new(parser, builder, self)
+          return state_factory.make_state(:InString, self)
         when continuing_nonstring_supp_sect_char
           @section << char
           return self

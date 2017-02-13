@@ -26,9 +26,11 @@ RSpec.describe PortableBridgeNotation::GameParser do
     context 'when asked to raise an error' do
       let(:parser) { double }
       let(:builder) { double }
+      let(:state_factory) { double }
       let(:described_object) do
         temp = described_class.new
-        temp.instance_variable_set(:@state, PortableBridgeNotation::GameParserStates::BeforeFirstTag.new(parser, builder))
+        temp.instance_variable_set(:@state, PortableBridgeNotation::GameParserStates::BeforeFirstTag.
+            new(parser, builder, state_factory))
         temp.instance_variable_set(:@cur_char_index, 17)
         temp
       end

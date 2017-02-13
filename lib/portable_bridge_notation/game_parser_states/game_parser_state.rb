@@ -6,11 +6,13 @@ module PortableBridgeNotation::GameParserStates
     attr_reader :parser
     attr_reader :builder
     attr_reader :next_state
+    attr_reader :state_factory
 
-    #todo: apply Mediator and Builder patterns to eliminate triadic constructor
-    def initialize(parser, builder, next_state = nil)
+    #todo: apply Mediator and Builder patterns to eliminate polyadic constructor
+    def initialize(parser, domain_builder, state_factory, next_state = nil)
       @parser = parser
-      @builder = builder
+      @builder = domain_builder
+      @state_factory = state_factory
       @next_state = next_state
       if self.respond_to? :post_initialize
         post_initialize

@@ -1,5 +1,7 @@
 #todo: fix this; eliminate usage of frowned-upon autoload; make dependencies explicit and just-in-time?
+
 module PortableBridgeNotation
+  autoload :Importer, File.expand_path('../portable_bridge_notation/importer', __FILE__)
   autoload :Handler, File.expand_path('../portable_bridge_notation/handler', __FILE__)
   autoload :SingleCharComparisonConstants, File.expand_path('../portable_bridge_notation/single_char_comparison_constants', __FILE__)
   autoload :HandStringParser, File.expand_path('../portable_bridge_notation/hand_string_parser', __FILE__)

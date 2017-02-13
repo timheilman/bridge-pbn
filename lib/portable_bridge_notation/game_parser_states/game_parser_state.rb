@@ -1,5 +1,7 @@
+require_relative '../single_char_comparison_constants'
+require_relative 'game_parser_state'
 module PortableBridgeNotation::GameParserStates
-  module GameParserState
+  class GameParserState
     include PortableBridgeNotation::SingleCharComparisonConstants
     attr_reader :parser
     attr_reader :builder

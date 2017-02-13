@@ -1,4 +1,7 @@
 require 'spec_helper'
+require_relative '../../../lib/portable_bridge_notation/subgame'
+require_relative '../../../lib/portable_bridge_notation/game_parser'
+require_relative '../../../lib/portable_bridge_notation/game_parser_states/before_first_tag'
 
 def expect_first_yield_with_arg
   expect do |block|

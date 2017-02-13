@@ -1,4 +1,6 @@
 require 'spec_helper'
+require_relative '../../../lib/portable_bridge_notation/subgame_builder'
+require_relative '../../../lib/portable_bridge_notation/subgame_parser_chain_factory'
 
 RSpec.describe PortableBridgeNotation::SubgameParserChainFactory do
   describe('#get_chain') do

@@ -1,4 +1,5 @@
 require 'spec_helper'
+require_relative '../../../../lib/portable_bridge_notation/game_parser_states/before_tag_close'
 
 RSpec.describe PortableBridgeNotation::GameParserStates::BeforeTagClose do
   describe('#process_char') do

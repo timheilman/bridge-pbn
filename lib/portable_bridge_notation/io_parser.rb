@@ -1,5 +1,6 @@
-module PortableBridgeNotation
-  class IoParser
+require_relative 'parser_util'
+
+class PortableBridgeNotation::IoParser
     # see sections 2.4 "Escape Mechanism", 3 "Game layout", and 3.8 "Commentary"
     SEMI_EMPTY_LINE = /^[\t ]*\r?$/
     PBN_ESCAPED_LINE = /^%/ # see section 2.4; do not confuse with Commentary from section 3.8
@@ -22,9 +23,8 @@ module PortableBridgeNotation
         else
           record << line
         end
-        comment_is_open = ParserUtil.instance.comment_open_after_eol? line, comment_is_open
+        comment_is_open = PortableBridgeNotation::ParserUtil.instance.comment_open_after_eol? line, comment_is_open
       end
       yield record unless record.empty?
     end
-  end
 end

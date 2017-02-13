@@ -1,5 +1,5 @@
 require 'spec_helper'
-
+require_relative '../../../lib/portable_bridge_notation/hand_string_parser'
 RSpec.describe PortableBridgeNotation::HandStringParser do
   describe '.hand' do
     let(:described_object) { PortableBridgeNotation::HandStringParser.new(hand) }

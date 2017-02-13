@@ -1,4 +1,5 @@
 require 'spec_helper'
+require_relative '../../../lib/portable_bridge_notation/subgame'
 
 RSpec.describe PortableBridgeNotation::Subgame do
   describe('#to_s') do

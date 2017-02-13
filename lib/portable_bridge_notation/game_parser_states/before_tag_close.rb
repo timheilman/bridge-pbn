@@ -1,7 +1,7 @@
-module PortableBridgeNotation::GameParserStates
-  class BeforeTagClose
-    include GameParserState
+require_relative 'game_parser_state'
 
+module PortableBridgeNotation::GameParserStates
+  class BeforeTagClose < GameParserState
     def process_char char
       case char
         when whitespace_allowed_in_games

@@ -1,4 +1,5 @@
 require 'spec_helper'
+require_relative '../../../lib/portable_bridge_notation/deal_string_parser'
 
 RSpec.describe PortableBridgeNotation::DealStringParser do
   describe '.yield_cards' do

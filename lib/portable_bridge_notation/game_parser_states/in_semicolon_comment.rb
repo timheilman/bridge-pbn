@@ -1,6 +1,6 @@
+require_relative 'game_parser_state'
 module PortableBridgeNotation::GameParserStates
-  class InSemicolonComment
-    include GameParserState
+  class InSemicolonComment < GameParserState
 
     def post_initialize
       @comment = ''

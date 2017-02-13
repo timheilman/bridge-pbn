@@ -1,5 +1,5 @@
 require 'spec_helper'
-
+require_relative '../../../../lib/portable_bridge_notation/game_parser_states/before_first_tag'
 RSpec.describe PortableBridgeNotation::GameParserStates::BeforeFirstTag do
   describe('#process_char') do
     let(:parser) { double }

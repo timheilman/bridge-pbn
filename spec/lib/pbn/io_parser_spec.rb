@@ -1,5 +1,5 @@
 require 'spec_helper'
-
+require_relative '../../../lib/portable_bridge_notation/io_parser'
 
 RSpec.describe PortableBridgeNotation::IoParser do
   describe '.each_game' do

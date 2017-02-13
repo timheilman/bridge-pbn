@@ -2,19 +2,7 @@
 
 module PortableBridgeNotation
   autoload :Importer, File.expand_path('../portable_bridge_notation/importer', __FILE__)
-  autoload :Handler, File.expand_path('../portable_bridge_notation/handler', __FILE__)
-  autoload :SingleCharComparisonConstants, File.expand_path('../portable_bridge_notation/single_char_comparison_constants', __FILE__)
-  autoload :HandStringParser, File.expand_path('../portable_bridge_notation/hand_string_parser', __FILE__)
-  autoload :DealStringParser, File.expand_path('../portable_bridge_notation/deal_string_parser', __FILE__)
-  autoload :IoParser, File.expand_path('../portable_bridge_notation/io_parser', __FILE__)
-  autoload :ParserUtil, File.expand_path('../portable_bridge_notation/parser_util', __FILE__)
-  autoload :Subgame, File.expand_path('../portable_bridge_notation/subgame', __FILE__)
-  autoload :SubgameBuilder, File.expand_path('../portable_bridge_notation/subgame_builder', __FILE__)
-  autoload :GameParser, File.expand_path('../portable_bridge_notation/game_parser', __FILE__)
-  autoload :SubgameParserChainFactory, File.expand_path('../portable_bridge_notation/subgame_parser_chain_factory', __FILE__)
   module GameParserStates
-    autoload :GameParserState, File.expand_path('../portable_bridge_notation/game_parser_states/game_parser_state', __FILE__)
-    autoload :OutsideTagAndSectionTemplate, File.expand_path('../portable_bridge_notation/game_parser_states/outside_tag_and_section_template', __FILE__)
     autoload :BeforeFirstTag, File.expand_path('../portable_bridge_notation/game_parser_states/before_first_tag', __FILE__)
     autoload :InSemicolonComment, File.expand_path('../portable_bridge_notation/game_parser_states/in_semicolon_comment', __FILE__)
     autoload :InCurlyComment, File.expand_path('../portable_bridge_notation/game_parser_states/in_curly_comment', __FILE__)

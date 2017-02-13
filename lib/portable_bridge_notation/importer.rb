@@ -1,7 +1,9 @@
 require 'logger'
 
-require_relative '../portable_bridge_notation'
-require_relative './handler'
+require_relative 'handler'
+require_relative 'io_parser'
+require_relative 'game_parser'
+require_relative 'subgame_parser_chain_factory'
 
 class PortableBridgeNotation::Importer
   def initialize

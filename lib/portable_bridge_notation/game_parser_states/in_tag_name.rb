@@ -1,6 +1,7 @@
+require_relative 'game_parser_state'
+
 module PortableBridgeNotation::GameParserStates
-  class InTagName
-    include GameParserState
+  class InTagName < GameParserState
 
     def post_initialize
       @tag_name = ''

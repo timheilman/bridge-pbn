@@ -1,4 +1,5 @@
 require 'spec_helper'
+require_relative '../../../../lib/portable_bridge_notation/game_parser_states/in_string'
 
 RSpec.describe PortableBridgeNotation::GameParserStates::InString do
   describe('#process_char') do

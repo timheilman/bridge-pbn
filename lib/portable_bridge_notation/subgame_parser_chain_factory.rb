@@ -1,3 +1,4 @@
+require_relative 'handler'
 module PortableBridgeNotation
   class UnrecognizedSubgameHandler < PortableBridgeNotation::Handler
     def initialize logger

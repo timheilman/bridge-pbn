@@ -1,6 +1,7 @@
+require_relative 'game_parser_state'
+
 module PortableBridgeNotation::GameParserStates
-  class BeforeTagValue
-    include GameParserState
+  class BeforeTagValue < GameParserState
 
     def process_char(char)
       case char

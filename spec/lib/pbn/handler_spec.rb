@@ -1,4 +1,5 @@
 require 'spec_helper'
+require_relative '../../../lib/portable_bridge_notation/handler'
 
 class ConcreteHandler < PortableBridgeNotation::Handler
   def initialize(successor, initialization_arg)

@@ -1,3 +1,4 @@
+require_relative 'single_char_comparison_constants'
 class PortableBridgeNotation::HandStringParser
   include PortableBridgeNotation::SingleCharComparisonConstants
 

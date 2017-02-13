@@ -1,6 +1,6 @@
+require_relative 'game_parser_state'
 module PortableBridgeNotation::GameParserStates
-  class InString
-    include GameParserState
+  class InString < GameParserState
 
     def post_initialize
       @string = ''

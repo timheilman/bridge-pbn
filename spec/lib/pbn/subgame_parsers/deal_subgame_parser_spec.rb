@@ -1,4 +1,5 @@
 require 'spec_helper'
+require_relative '../../../../lib/portable_bridge_notation/subgame_builder'
 RSpec.describe PortableBridgeNotation::SubgameParsers::DealSubgameParser do
 
   describe '#handle_subgame' do

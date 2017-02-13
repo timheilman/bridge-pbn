@@ -1,4 +1,5 @@
 require_relative 'hand_string_parser'
+require_relative 'single_char_comparison_constants'
 class PortableBridgeNotation::DealStringParser
   include PortableBridgeNotation::SingleCharComparisonConstants
 

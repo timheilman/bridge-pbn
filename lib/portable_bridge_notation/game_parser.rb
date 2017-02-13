@@ -4,17 +4,19 @@ require_relative 'game_parser_states/game_parser_state_factory'
 class PortableBridgeNotation::GameParser
   include PortableBridgeNotation::SingleCharComparisonConstants
 
+  def initialize(pbn_game_string: pbn_game_string, subgame_builder: subgame_builder)
+    @pbn_game_string = pbn_game_string
+    @subgame_builder = subgame_builder
+    @state = PortableBridgeNotation::GameParserStates::GameParserStateFactory.
+        new(self, subgame_builder).make_state(:BeforeFirstTag)
+    @section_notes = {}
+  end
+
   # TODO: enforce section continuity (no identification section tags both before and after play/auction/supplemental)
   # TODO: enforce 255 char cap on line width
-  # TODO: Evans feedback on command/query mix here: Make c'tor w/builder or abstract factory pattern for self vars
-  def each_subgame(pbn_game_string, &block)
-    @pbn_game_string = pbn_game_string
-    @builder = PortableBridgeNotation::SubgameBuilder.new
-    @state = PortableBridgeNotation::GameParserStates::GameParserStateFactory.
-        new(self, @builder).make_state(:BeforeFirstTag)
+  def each_subgame(&block)
     @block = block
-    @builder.clear
-    @section_notes = {}
+    @subgame_builder.clear
     process
   end
 
@@ -39,8 +41,8 @@ class PortableBridgeNotation::GameParser
   end
 
   def yield_subgame
-    @block.yield @builder.build
-    @builder.clear
+    @block.yield @subgame_builder.build
+    @subgame_builder.clear
   end
 
   def raise_error(message = nil)

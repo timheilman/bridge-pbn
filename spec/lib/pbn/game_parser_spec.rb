@@ -5,7 +5,7 @@ require_relative '../../../lib/portable_bridge_notation/game_parser_states/game_
 
 def expect_first_yield_with_arg
   expect do |block|
-    described_class.new.each_subgame(pbn_game_string, &block)
+    described_object.each_subgame(&block)
   end.to yield_with_args(expected_arg)
 end
 
@@ -28,7 +28,7 @@ RSpec.describe PortableBridgeNotation::GameParser do
       let(:subgame_builder) { double }
       let(:game_parser_state_factory) { double }
       let(:described_object) do
-        temp = described_class.new
+        temp = described_class.new subgame_builder: subgame_builder, pbn_game_string: ''
         temp.instance_variable_set(:@state, PortableBridgeNotation::GameParserStates::GameParserStateFactory.
             new(game_parser, subgame_builder).make_state(:BeforeFirstTag))
         temp.instance_variable_set(:@cur_char_index, 17)
@@ -41,6 +41,8 @@ RSpec.describe PortableBridgeNotation::GameParser do
   end
 
   describe('#each_subgame') do
+    let(:described_object) { described_class.new(subgame_builder: PortableBridgeNotation::SubgameBuilder.new,
+                                                 pbn_game_string: pbn_game_string) }
     #### HAPPY PATHS #####
 
     context 'with an opening single-line comment with LF' do
@@ -134,7 +136,7 @@ RSpec.describe PortableBridgeNotation::GameParser do
       let(:pbn_game_string) { "[Event #{DOUBLE_QUOTE}#{DOUBLE_QUOTE}]#{LF}[Site #{DOUBLE_QUOTE}#{DOUBLE_QUOTE}]" }
       it 'yields twice with the minimal structures' do
         expect do |block|
-          described_class.new.each_subgame(pbn_game_string, &block)
+          described_object.each_subgame(&block)
         end.to yield_successive_args(PortableBridgeNotation::Subgame.new([], ['Event', ''], [], ''),
                                      PortableBridgeNotation::Subgame.new([], ['Site', ''], [], ''))
       end
@@ -146,7 +148,7 @@ RSpec.describe PortableBridgeNotation::GameParser do
           ";comment following site#{LF}" }
       it 'yields twice with the structures including their commentary' do
         expect do |block|
-          described_class.new.each_subgame(pbn_game_string, &block)
+          described_object.each_subgame(&block)
         end.to yield_successive_args(PortableBridgeNotation::Subgame.new(['preceding comment'], ['Event', ''],
                                                               ['comment following event'], ''),
                                      PortableBridgeNotation::Subgame.new([], ['Site', ''],
@@ -161,7 +163,7 @@ RSpec.describe PortableBridgeNotation::GameParser do
           "b5 b6#{CRLF}" }
       it 'yields twice with the structures including their commentary and section data' do
         expect do |block|
-          described_class.new.each_subgame(pbn_game_string, &block)
+          described_object.each_subgame(&block)
         end.to yield_successive_args(PortableBridgeNotation::Subgame.new(%w(a1 a2), ['a3', ''], ['a4'], '"a5" '),
                                      PortableBridgeNotation::Subgame.new([], ['b1', ''], ['b2 '],
                                                               "b3 b4#{CRLF}b5 b6#{CRLF}"))
@@ -173,7 +175,7 @@ RSpec.describe PortableBridgeNotation::GameParser do
     context 'with an unclosed curly comment' do
       let(:pbn_game_string) { '{unclosed comment' }
       it 'complains about the unclosed comment' do
-        expect { described_class.new.each_subgame(pbn_game_string) {} }.to raise_error(/.*unclosed brace comment.*/)
+        expect { described_object.each_subgame {} }.to raise_error(/.*unclosed brace comment.*/)
       end
     end
 
@@ -188,35 +190,35 @@ RSpec.describe PortableBridgeNotation::GameParser do
     context 'with a barely-opened tag' do
       let(:pbn_game_string) { "[#{TAB}#{TAB}  " }
       it 'complains about the missing tag name' do
-        expect { described_class.new.each_subgame(pbn_game_string) {} }.to raise_error(/.*prior to tag name.*/)
+        expect { described_object.each_subgame {} }.to raise_error(/.*prior to tag name.*/)
       end
     end
 
     context 'with a tag name followed by end-of-game' do
       let(:pbn_game_string) { "[#{TAB}#{TAB}  TagName" }
       it 'complains about an unfinished tag name' do
-        expect { described_class.new.each_subgame(pbn_game_string) {} }.to raise_error(/.*unfinished tag name.*/)
+        expect { described_object.each_subgame {} }.to raise_error(/.*unfinished tag name.*/)
       end
     end
 
     context 'with a tag name but no value' do
       let(:pbn_game_string) { "[#{TAB}#{TAB}  TagName " }
       it 'complains about the missing tag value' do
-        expect { described_class.new.each_subgame(pbn_game_string) {} }.to raise_error(/.*tag value.*/)
+        expect { described_object.each_subgame {} }.to raise_error(/.*tag value.*/)
       end
     end
 
     context 'with an unclosed tag value' do
       let(:pbn_game_string) { "[#{TAB}#{TAB}  TagName #{DOUBLE_QUOTE}TagVal " }
       it 'complains about the unclosed string' do
-        expect { described_class.new.each_subgame(pbn_game_string) {} }.to raise_error(/.*unclosed string.*/)
+        expect { described_object.each_subgame {} }.to raise_error(/.*unclosed string.*/)
       end
     end
 
     context 'with an unclosed tag' do
       let(:pbn_game_string) { "[TagName #{DOUBLE_QUOTE}TagValue#{DOUBLE_QUOTE}" }
       it 'complains about the unclosed tag' do
-        expect { described_class.new.each_subgame(pbn_game_string) {} }.to raise_error(/.*unclosed tag.*/)
+        expect { described_object.each_subgame {} }.to raise_error(/.*unclosed tag.*/)
       end
     end
 
@@ -247,14 +249,14 @@ RSpec.describe PortableBridgeNotation::GameParser do
     context 'with control ASCII characters' do
       let(:pbn_game_string) { "[TagName #{DOUBLE_QUOTE}Ta#{FF}gValue#{DOUBLE_QUOTE}" }
       it 'refuses the invalid character' do
-        expect { described_class.new.each_subgame(pbn_game_string) {} }.to raise_error(/.*disallowed.*: 12/)
+        expect { described_object.each_subgame {} }.to raise_error(/.*disallowed.*: 12/)
       end
     end
 
     context 'with control non-ASCII characters' do
       let (:pbn_game_string) { "[TagName #{DOUBLE_QUOTE}Ta#{VAL_149}gValue#{DOUBLE_QUOTE}" }
       it 'refuses the invalid character' do
-        expect { described_class.new.each_subgame(pbn_game_string) {} }.to raise_error(/.*disallowed.*: 149/)
+        expect { described_object.each_subgame {} }.to raise_error(/.*disallowed.*: 149/)
       end
     end
 

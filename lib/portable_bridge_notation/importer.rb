@@ -8,6 +8,7 @@ require_relative 'subgame_parser_chain_factory'
 class PortableBridgeNotation::Importer
   def initialize
     @observers = []
+    @subgame_builder = PortableBridgeNotation::SubgameBuilder.new
   end
 
   def attach(importObserver)
@@ -21,7 +22,8 @@ class PortableBridgeNotation::Importer
   end
 
   def import_game game
-    PortableBridgeNotation::GameParser.new.each_subgame(game) do |subgame|
+    game_parser = PortableBridgeNotation::GameParser.new(subgame_builder: @subgame_builder, pbn_game_string: game)
+    game_parser.each_subgame do |subgame|
       import_subgame subgame
     end
     # todo: in order to have Note tag values when sections get parsed, we want to delay their parsing

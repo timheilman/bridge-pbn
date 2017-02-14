@@ -6,8 +6,8 @@ module PortableBridgeNotation
 
       # intent: this same functionality will eventually be needed by PlaySubgameParser and AuctionSubgameParser
       # as well as IoParser, for the same reasons
-      # intent: hold our nose at the arity-2 method, considering for now it's the easiest way
-      # to share the method with the future classes; todo: consider placing in a subclass hierarchy
+      # intent: hold our nose at the arity-2 method, considering it's better than the alternatives of
+      # duplicating the logic or placing it arbitrarily in the inheritance hierarchy
       def comment_open_after_eol?(line, comment_is_open)
         last_char = nil
         line.each_char do |char|

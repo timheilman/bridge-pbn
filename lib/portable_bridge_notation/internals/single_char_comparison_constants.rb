@@ -35,6 +35,10 @@ module PortableBridgeNotation
         "\n"
       end
 
+      def form_feed
+        "\f"
+      end
+
       def tab
         "\t"
       end
@@ -77,6 +81,10 @@ module PortableBridgeNotation
 
       def hyphen
         '-'
+      end
+
+      def iso_8859_1_dec_val_149
+        [149].pack('C').force_encoding(Encoding::ISO_8859_1)
       end
     end
   end

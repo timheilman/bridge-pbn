@@ -1,13 +1,13 @@
-require 'singleton'
 require_relative 'single_char_comparison_constants'
 module PortableBridgeNotation
   module Internals
-    class ParserUtil
-      include Singleton
+    module StringParserUtil
       include SingleCharComparisonConstants
 
       # intent: this same functionality will eventually be needed by PlaySubgameParser and AuctionSubgameParser
-      # todo: thus, make it a mixin; the arity-2 method is less bad than having two separate impls
+      # as well as IoParser, for the same reasons
+      # intent: hold our nose at the arity-2 method, considering for now it's the easiest way
+      # to share the method with the future classes; todo: consider placing in a subclass hierarchy
       def comment_open_after_eol?(line, comment_is_open)
         last_char = nil
         line.each_char do |char|

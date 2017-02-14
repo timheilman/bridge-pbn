@@ -15,9 +15,9 @@ module PortableBridgeNotation
             when open_bracket
               finalize
               mediator.yield_subgame
-              return mediator.make_state(:BeforeTagName)
+              return mediator.make_game_parser_state(:BeforeTagName)
             when double_quote
-              return mediator.make_state(:InString, self)
+              return mediator.make_game_parser_state(:InString, self)
             when continuing_nonstring_supp_sect_char
               @section << char
               return self

@@ -21,13 +21,14 @@ module PortableBridgeNotation
         attr_reader :game_parser
         attr_reader :subgame_builder
 
-        def initialize(game_parser, subgame_builder)
+        def initialize(game_parser:, subgame_builder:, game_parser_state_mediator_class:GameParserStateMediator)
           @game_parser = game_parser
           @subgame_builder = subgame_builder
+          @game_parser_state_mediator_class = game_parser_state_mediator_class
         end
 
-        def make_state(class_sym, next_state = nil)
-          mediator = GameParserStateMediator.new(
+        def make_game_parser_state(class_sym, next_state = nil)
+          mediator = @game_parser_state_mediator_class.new(
               game_parser: game_parser,
               subgame_builder: subgame_builder,
               game_parser_state_factory: self,

@@ -1,15 +1,19 @@
 # require_relative 'single_char_comparison_constants' # is this needed? check after code movement to internals
 require_relative 'game_parser_states/game_parser_state_factory'
+require_relative 'portable_bridge_notation_error'
 module PortableBridgeNotation
   module Internals
-    class GameStringParser
+    class GameParser
       include SingleCharComparisonConstants
 
-      def initialize(pbn_game_string:, subgame_builder:)
+      def initialize(pbn_game_string:,
+                     subgame_builder:,
+                     game_parser_state_factory_class: GameParserStates::GameParserStateFactory)
         @pbn_game_string = pbn_game_string
         @subgame_builder = subgame_builder
-        @state = GameParserStates::GameParserStateFactory.
-            new(self, subgame_builder).make_state(:BeforeFirstTag)
+        @state = game_parser_state_factory_class.
+            new(game_parser: self, subgame_builder: @subgame_builder).
+            make_game_parser_state(:BeforeFirstTag)
         @section_notes = {}
       end
 
@@ -47,8 +51,8 @@ module PortableBridgeNotation
       end
 
       def raise_error(message = nil)
-        raise ArgumentError.new("state: #{@state.to_s}; string: `#{@pbn_game_string}'; " +
-                                    "char_index: #{@cur_char_index.to_s}; message: #{message}")
+        raise PortableBridgeNotationError.new("state: #{@state.to_s}; string: `#{@pbn_game_string}'; " +
+                                                  "char_index: #{@cur_char_index.to_s}; message: #{message}")
       end
 
       def reached_section(section_name)

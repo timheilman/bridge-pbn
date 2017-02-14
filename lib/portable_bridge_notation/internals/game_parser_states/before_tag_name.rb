@@ -8,7 +8,7 @@ module PortableBridgeNotation
             when whitespace_allowed_in_games
               return self
             when allowed_in_names
-              return mediator.make_state(:InTagName).process_char(char)
+              return mediator.make_game_parser_state(:InTagName).process_char(char)
             else
               mediator.raise_error "Unexpected non-whitespace, non-name token character: `#{char}'"
           end

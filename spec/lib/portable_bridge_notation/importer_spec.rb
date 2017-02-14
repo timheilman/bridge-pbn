@@ -20,7 +20,7 @@ module PortableBridgeNotation
     end
   end
   RSpec.describe Importer do
-    let(:described_object) { described_class.create }
+    let(:described_object) { described_class.new }
     context('with one dealt_card observer and one non-') do
       let(:dealt_card_observer) { TestImportListeningObserver.new }
       let(:non_dealt_card_observer) { TestImportNonlisteningObserver.new }

@@ -5,8 +5,9 @@ module PortableBridgeNotation
     class DealStringParser
       include SingleCharComparisonConstants
 
-      def initialize(deal_string)
+      def initialize(deal_string, hand_string_parser_class:HandStringParser)
         @deal_string = deal_string
+        @hand_string_parser_class = hand_string_parser_class
       end
 
       def yield_cards(&block)
@@ -32,7 +33,7 @@ module PortableBridgeNotation
       end
 
       def yield_hand
-        HandStringParser.new(hand_string).yield_cards do |suit:, rank: |
+        @hand_string_parser_class.new(hand_string).yield_cards do |suit:, rank: |
           yield direction: direction_char, suit: suit, rank: rank
         end
       end

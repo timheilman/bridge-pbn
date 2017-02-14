@@ -32,8 +32,8 @@ module PortableBridgeNotation
           @subgame_builder.section= arg
         end
 
-        def make_state(*args)
-          @game_parser_state_factory.make_state *args
+        def make_game_parser_state(*args)
+          @game_parser_state_factory.make_game_parser_state *args
         end
 
         def yield_subgame(*args)

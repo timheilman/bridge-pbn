@@ -3,8 +3,9 @@ module PortableBridgeNotation
   module Internals
     module SubgameParsers
       class DealSubgameParser
-        def initialize(domain_builder)
+        def initialize(domain_builder, deal_string_parser_class:DealStringParser)
           @domain_builder = domain_builder
+          @deal_string_parser_class = deal_string_parser_class
         end
 
         def parse(subgame)
@@ -13,7 +14,7 @@ module PortableBridgeNotation
           end
 
           deal = subgame.tagPair[1]
-          DealStringParser.new(deal).yield_cards do |direction:, rank:, suit:|
+          @deal_string_parser_class.new(deal).yield_cards do |direction:, rank:, suit:|
             @domain_builder.with_dealt_card(direction: direction, rank: rank, suit: suit)
           end
         end

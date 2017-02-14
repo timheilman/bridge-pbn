@@ -9,19 +9,19 @@ module PortableBridgeNotation
             when whitespace_allowed_in_games
               return self
             when semicolon
-              return mediator.make_state(:InSemicolonComment, self)
+              return mediator.make_game_parser_state(:InSemicolonComment, self)
             when open_curly
-              return mediator.make_state(:InCurlyComment, self)
+              return mediator.make_game_parser_state(:InCurlyComment, self)
             when open_bracket
               perhaps_yield
-              return mediator.make_state(:BeforeTagName)
+              return mediator.make_game_parser_state(:BeforeTagName)
             when initial_supplemental_section_char
               err_str = "Unexpected section element starting character (see PBN section 5.1) : `#{char}'"
               mediator.raise_error(err_str) unless section_tokens_allowed?
               section_state = if mediator.tag_name == 'Play' || mediator.tag_name == 'Auction'
                                 mediator.reached_section(mediator.tag_name)
                               else
-                                mediator.make_state(:InSupplementalSection)
+                                mediator.make_game_parser_state(:InSupplementalSection)
                               end
               return section_state.process_char char
             else

@@ -9,7 +9,7 @@ module PortableBridgeNotation
             when whitespace_allowed_in_games
               return self
             when double_quote
-              return mediator.make_state(:InString, mediator.make_state(:BeforeTagClose))
+              return mediator.make_game_parser_state(:InString, mediator.make_game_parser_state(:BeforeTagClose))
             else
               mediator.raise_error "Unexpected non-whitespace, non-double quote character: `#{char}'"
           end

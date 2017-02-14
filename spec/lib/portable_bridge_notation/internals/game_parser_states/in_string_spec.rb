@@ -8,7 +8,7 @@ module PortableBridgeNotation
           let(:game_parser) { double }
           let(:subgame_builder) { double }
           let(:described_object) { GameParserStateFactory.new(
-              game_parser, subgame_builder).make_state(:InString) }
+              game_parser: game_parser, subgame_builder: subgame_builder).make_game_parser_state(:InString) }
 
           %W(\t \n \v \r).each do |char|
             context("with PBN-permitted ASCII control code #{char.ord}") do

@@ -8,7 +8,7 @@ module PortableBridgeNotation
           let(:game_parser) { double }
           let(:subgame_builder) { double }
           let(:described_object) { GameParserStateFactory.new(
-              game_parser, subgame_builder).make_state(:BeforeFirstTag) }
+              game_parser: game_parser, subgame_builder: subgame_builder).make_game_parser_state(:BeforeFirstTag) }
           it('should skip whitespace') do
             expect(described_object.process_char("\t")).to be(described_object)
           end

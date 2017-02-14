@@ -1,13 +1,13 @@
 require 'spec_helper'
 require_relative '../../../../lib/portable_bridge_notation/internals/single_char_comparison_constants'
 require_relative '../../../../lib/portable_bridge_notation/internals/subgame'
-require_relative '../../../../lib/portable_bridge_notation/internals/game_string_parser'
+require_relative '../../../../lib/portable_bridge_notation/internals/game_parser'
 require_relative '../../../../lib/portable_bridge_notation/internals/game_parser_states/game_parser_state_factory'
 
 
 module PortableBridgeNotation
   module Internals
-    RSpec.describe GameStringParser do
+    RSpec.describe GameParser do
       # todo: break this down, preserving every test case, to more closely focus on the edge case being tested
       # but do so against the specific GameParserState responsible to cover the case
       # intent: to maximize human readability for quoting situations, use bare words for all difficult characters
@@ -25,11 +25,15 @@ module PortableBridgeNotation
         context 'when asked to raise an error' do
           let(:game_parser) { double }
           let(:subgame_builder) { double }
-          let(:game_parser_state_factory) { double }
+          let(:game_parser_state_factory) { GameParserStates::GameParserStateFactory.new(
+              game_parser: game_parser,
+              subgame_builder: subgame_builder) }
           let(:described_object) do
-            temp = described_class.new subgame_builder: subgame_builder, pbn_game_string: ''
-            temp.instance_variable_set(:@state, GameParserStates::GameParserStateFactory.
-                new(game_parser, subgame_builder).make_state(:BeforeFirstTag))
+            temp = described_class.new(
+                subgame_builder: subgame_builder,
+                pbn_game_string: '',
+                game_parser_state_factory_class: game_parser_state_factory.class)
+            temp.instance_variable_set(:@state, game_parser_state_factory.make_game_parser_state(:BeforeFirstTag))
             temp.instance_variable_set(:@cur_char_index, 17)
             temp
           end
@@ -40,8 +44,11 @@ module PortableBridgeNotation
       end
 
       describe('#each_subgame') do
-        let(:described_object) { described_class.new(subgame_builder: SubgameBuilder.new,
-                                                     pbn_game_string: pbn_game_string) }
+        let(:described_object) do
+          described_class.new(subgame_builder: SubgameBuilder.new,
+                              pbn_game_string: pbn_game_string,
+                              game_parser_state_factory_class: GameParserStates::GameParserStateFactory)
+        end
         #### HAPPY PATHS #####
 
         context 'with an opening single-line comment with LF' do

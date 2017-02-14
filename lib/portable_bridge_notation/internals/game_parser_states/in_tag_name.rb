@@ -15,10 +15,10 @@ module PortableBridgeNotation
               return self
             when whitespace_allowed_in_games
               mediator.add_tag_item(@tag_name)
-              return mediator.make_state(:BeforeTagValue)
+              return mediator.make_game_parser_state(:BeforeTagValue)
             when double_quote
               mediator.add_tag_item(@tag_name)
-              return mediator.make_state(:InString, mediator.make_state(:BeforeTagClose))
+              return mediator.make_game_parser_state(:InString, mediator.make_game_parser_state(:BeforeTagClose))
             else
               mediator.raise_error "non-whitespace, non-name character found ending tag name: #{char}"
           end

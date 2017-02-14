@@ -5,7 +5,7 @@ require_relative '../../../../lib/portable_bridge_notation/internals/subgame_par
 module PortableBridgeNotation
   module Internals
     RSpec.describe SubgameParserDispatcher do
-      describe('#handle') do
+      describe('.parse') do
         context('when it is called') do
           let(:domain_builder) { double }
           let(:logger) { double }

@@ -21,17 +21,17 @@ module PortableBridgeNotation
   end
   RSpec.describe Importer do
     let(:described_object) { described_class.create }
-    context('with one dealt_card handler and one non-') do
-      let(:dealt_card_handler) { TestImportListeningObserver.new }
-      let(:non_dealt_card_handler) { TestImportNonlisteningObserver.new }
+    context('with one dealt_card observer and one non-') do
+      let(:dealt_card_observer) { TestImportListeningObserver.new }
+      let(:non_dealt_card_observer) { TestImportNonlisteningObserver.new }
       let(:deal_string) { "[Deal \"N:AKQJT98765432... .AKQJT98765432.. ..AKQJT98765432. ...AKQJT98765432\"]\n\n\n" }
       it 'calls the method only on the proper observer' do
-        described_object.attach(dealt_card_handler)
-        described_object.attach(non_dealt_card_handler)
+        described_object.attach(dealt_card_observer)
+        described_object.attach(non_dealt_card_observer)
         described_object.import(StringIO.new(deal_string))
 
-        expect(dealt_card_handler.num_calls).to eq 52
-        expect(non_dealt_card_handler.num_calls).to eq 0
+        expect(dealt_card_observer.num_calls).to eq 52
+        expect(non_dealt_card_observer.num_calls).to eq 0
       end
     end
   end

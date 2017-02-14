@@ -55,7 +55,7 @@ module PortableBridgeNotation
         context 'with an opening multi-line comment followed by event tag on the same line' do
           let(:pbn_game_string) { "  { multiline #{line_feed}" +
               "comment } [TagName #{double_quote}TagValue#{double_quote}]#{line_feed}" }
-          let(:expected_subgame_fields) { [[" multiline #{line_feed} comment "], %w(TagName TagValue), [], ''] }
+          let(:expected_subgame_fields) { [[" multiline #{line_feed}comment "], %w(TagName TagValue), [], ''] }
           it 'provides a structure with the multi-line comment, the tag pair, no following comment, no section' do
             expect_first_yield_with_arg
           end

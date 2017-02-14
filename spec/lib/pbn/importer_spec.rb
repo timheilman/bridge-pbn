@@ -22,7 +22,7 @@ end
 require 'spec_helper'
 
 RSpec.describe PortableBridgeNotation::Importer do
-  let(:described_object) { described_class.new }
+  let(:described_object) { described_class.create }
   context('with one dealt_card handler and one non-') do
     let(:dealt_card_handler) { PortableBridgeNotation::TestImportListeningObserver.new }
     let(:non_dealt_card_handler) { PortableBridgeNotation::TestImportNonlisteningObserver.new }

@@ -6,12 +6,10 @@ require_relative 'io_parser'
 require_relative 'game_parser'
 
 class PortableBridgeNotation::Importer
-  def initialize
-    @observers = []
-    #todo: I'd love to inject the subgame parser dispatcher, but then from where? OldSchool abstract-factory this
-    #todo: fixup filestructure, use Internal namespace like Weirich advised and get everything but Importer into it
-    @subgame_builder = PortableBridgeNotation::SubgameBuilder.new
-    @subgame_parser = PortableBridgeNotation::SubgameParserDispatcher.new(self, Logger.new(STDOUT))
+  #todo: fixup filestructure, use Internal namespace like Weirich advised and get everything but Importer into it
+
+  def self.create(logger: Logger.new(STDERR))
+    new(subgame_builder: PortableBridgeNotation::SubgameBuilder.new, logger: logger)
   end
 
   def attach(importObserver)
@@ -24,7 +22,15 @@ class PortableBridgeNotation::Importer
     end
   end
 
-  def import_game game
+  private
+
+  def initialize(subgame_builder: subgame_builder, subgame_parser: subgame_parser, logger: logger)
+    @observers = []
+    @subgame_builder = subgame_builder
+    @subgame_parser = PortableBridgeNotation::SubgameParserDispatcher.new(self, logger)
+  end
+
+  def import_game(game)
     game_parser = PortableBridgeNotation::GameParser.new(subgame_builder: @subgame_builder, pbn_game_string: game)
     game_parser.each_subgame do |subgame|
       @subgame_parser.parse subgame

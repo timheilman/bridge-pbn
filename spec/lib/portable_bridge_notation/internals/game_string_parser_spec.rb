@@ -8,6 +8,8 @@ require_relative '../../../../lib/portable_bridge_notation/internals/game_parser
 module PortableBridgeNotation
   module Internals
     RSpec.describe GameStringParser do
+      # todo: break this down, preserving every test case, to more closely focus on the edge case being tested
+      # but do so against the specific GameParserState responsible to cover the case
       # intent: to maximize human readability for quoting situations, use bare words for all difficult characters
       include SingleCharComparisonConstants
 

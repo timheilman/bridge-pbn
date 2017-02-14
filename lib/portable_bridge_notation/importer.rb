@@ -1,9 +1,9 @@
 require 'logger'
 
-require_relative 'internals/subgame_builder'
-require_relative 'internals/subgame_parser_dispatcher'
 require_relative 'internals/io_parser'
-require_relative 'internals/game_parser'
+require_relative 'internals/subgame_builder'
+require_relative 'internals/game_string_parser'
+require_relative 'internals/subgame_parser_dispatcher'
 
 module PortableBridgeNotation
   class Importer
@@ -26,14 +26,14 @@ module PortableBridgeNotation
 
     private
 
-    def initialize(subgame_builder: subgame_builder, subgame_parser: subgame_parser, logger: logger)
+    def initialize(subgame_builder:, logger:)
       @observers = []
       @subgame_builder = subgame_builder
       @subgame_parser = Internals::SubgameParserDispatcher.new(self, logger)
     end
 
     def import_game(game)
-      game_parser = Internals::GameParser.new(subgame_builder: @subgame_builder, pbn_game_string: game)
+      game_parser = Internals::GameStringParser.new(subgame_builder: @subgame_builder, pbn_game_string: game)
       game_parser.each_subgame do |subgame|
         @subgame_parser.parse subgame
       end

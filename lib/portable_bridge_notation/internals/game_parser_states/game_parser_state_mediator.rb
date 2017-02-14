@@ -2,10 +2,10 @@ module PortableBridgeNotation
   module Internals
     module GameParserStates
       class GameParserStateMediator
-        def initialize(game_parser: game_parser,
-                       subgame_builder: subgame_builder,
-                       game_parser_state_factory: game_parser_state_factory,
-                       next_state: next_state)
+        def initialize(game_parser:,
+                       subgame_builder:,
+                       game_parser_state_factory:,
+                       next_state:)
           @game_parser = game_parser
           @subgame_builder = subgame_builder
           @game_parser_state_factory = game_parser_state_factory

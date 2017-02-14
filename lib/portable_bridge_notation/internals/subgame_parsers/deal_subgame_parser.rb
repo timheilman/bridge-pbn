@@ -1,4 +1,4 @@
-require_relative '../deal_string_parser'
+require_relative 'deal_string_parser'
 module PortableBridgeNotation
   module Internals
     module SubgameParsers
@@ -13,7 +13,7 @@ module PortableBridgeNotation
           end
 
           deal = subgame.tagPair[1]
-          DealStringParser.new(deal).yield_cards do |direction: direction, rank: rank, suit: suit|
+          DealStringParser.new(deal).yield_cards do |direction:, rank:, suit:|
             @domain_builder.with_dealt_card(direction: direction, rank: rank, suit: suit)
           end
         end

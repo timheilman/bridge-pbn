@@ -1,5 +1,5 @@
 require 'spec_helper'
-require_relative '../../../lib/portable_bridge_notation/internals/hand_string_parser'
+require_relative '../../../../../lib/portable_bridge_notation/internals/subgame_parsers/hand_string_parser'
 module PortableBridgeNotation
   module Internals
     RSpec.describe HandStringParser do

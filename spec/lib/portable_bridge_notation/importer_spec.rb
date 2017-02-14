@@ -10,7 +10,7 @@ module PortableBridgeNotation
     end
   end
   class TestImportListeningObserver < TestImportObserver
-    def with_dealt_card(direction: direction, suit: suit, rank: rank)
+    def with_dealt_card(direction:, suit:, rank:)
       @num_calls += 1
     end
   end

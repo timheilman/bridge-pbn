@@ -1,5 +1,5 @@
 require 'spec_helper'
-require_relative '../../../lib/portable_bridge_notation/internals/io_parser'
+require_relative '../../../../lib/portable_bridge_notation/internals/io_parser'
 
 module PortableBridgeNotation
   module Internals

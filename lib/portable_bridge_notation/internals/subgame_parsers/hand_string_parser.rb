@@ -1,4 +1,4 @@
-require_relative 'single_char_comparison_constants'
+require_relative '../single_char_comparison_constants'
 module PortableBridgeNotation
   module Internals
     class HandStringParser

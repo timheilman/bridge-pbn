@@ -1,5 +1,5 @@
 require 'spec_helper'
-require_relative '../../../../lib/portable_bridge_notation/internals/game_parser_states/game_parser_state_factory'
+require_relative '../../../../../lib/portable_bridge_notation/internals/game_parser_states/game_parser_state_factory'
 
 module PortableBridgeNotation
   module Internals

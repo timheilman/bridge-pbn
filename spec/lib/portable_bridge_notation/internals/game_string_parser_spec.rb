@@ -1,7 +1,7 @@
 require 'spec_helper'
-require_relative '../../../lib/portable_bridge_notation/internals/subgame'
-require_relative '../../../lib/portable_bridge_notation/internals/game_parser'
-require_relative '../../../lib/portable_bridge_notation/internals/game_parser_states/game_parser_state_factory'
+require_relative '../../../../lib/portable_bridge_notation/internals/subgame'
+require_relative '../../../../lib/portable_bridge_notation/internals/game_string_parser'
+require_relative '../../../../lib/portable_bridge_notation/internals/game_parser_states/game_parser_state_factory'
 def expect_first_yield_with_arg
   expect do |block|
     described_object.each_subgame(&block)
@@ -10,7 +10,7 @@ end
 
 module PortableBridgeNotation
   module Internals
-    RSpec.describe GameParser do
+    RSpec.describe GameStringParser do
       let(:expected_arg) { Subgame.new(*expected_subgame_fields) }
 
       # intent: to maximize human readability for complicated quoting situations, use constants for all difficult characters

@@ -2,10 +2,10 @@
 require_relative 'game_parser_states/game_parser_state_factory'
 module PortableBridgeNotation
   module Internals
-    class GameParser
+    class GameStringParser
       include SingleCharComparisonConstants
 
-      def initialize(pbn_game_string: pbn_game_string, subgame_builder: subgame_builder)
+      def initialize(pbn_game_string:, subgame_builder:)
         @pbn_game_string = pbn_game_string
         @subgame_builder = subgame_builder
         @state = GameParserStates::GameParserStateFactory.

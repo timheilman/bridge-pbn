@@ -22,10 +22,10 @@ clarity.
 The structure of the parsing code is in three stages, for readability
 of the code:
 
-1. Parsing of an Io into games
-2. Parsing of a game into subgames, which are:
+1. Parsing of an Io into game strings
+2. Parsing of a game string into Subgames, which are:
   * start-of-game comments (only potentially populated for the first
-    game in an io)
+    game string in an Io)
   * the tag pair
   * commentary following the tag pair
   * the section (if any)

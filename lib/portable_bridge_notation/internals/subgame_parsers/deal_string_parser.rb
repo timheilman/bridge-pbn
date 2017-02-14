@@ -1,5 +1,5 @@
 require_relative 'hand_string_parser'
-require_relative 'single_char_comparison_constants'
+require_relative '../single_char_comparison_constants'
 module PortableBridgeNotation
   module Internals
     class DealStringParser
@@ -32,7 +32,7 @@ module PortableBridgeNotation
       end
 
       def yield_hand
-        HandStringParser.new(hand_string).yield_cards do |suit: suit, rank: rank|
+        HandStringParser.new(hand_string).yield_cards do |suit:, rank: |
           yield direction: direction_char, suit: suit, rank: rank
         end
       end

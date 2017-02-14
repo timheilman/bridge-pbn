@@ -1,6 +1,6 @@
 require 'spec_helper'
-require_relative '../../../lib/portable_bridge_notation/internals/subgame_builder'
-require_relative '../../../lib/portable_bridge_notation/internals/subgame_parser_dispatcher'
+require_relative '../../../../lib/portable_bridge_notation/internals/subgame_builder'
+require_relative '../../../../lib/portable_bridge_notation/internals/subgame_parser_dispatcher'
 
 module PortableBridgeNotation
   module Internals

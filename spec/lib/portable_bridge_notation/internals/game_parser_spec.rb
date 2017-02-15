@@ -2,7 +2,7 @@ require 'spec_helper'
 require_relative '../../../../lib/portable_bridge_notation/internals/single_char_comparison_constants'
 require_relative '../../../../lib/portable_bridge_notation/internals/subgame'
 require_relative '../../../../lib/portable_bridge_notation/internals/game_parser'
-require_relative '../../../../lib/portable_bridge_notation/internals/game_parser_factory'
+require_relative '../../../../lib/portable_bridge_notation/internals/concrete_factory'
 
 
 module PortableBridgeNotation
@@ -24,8 +24,8 @@ module PortableBridgeNotation
       describe('#raise_error') do
         context 'when asked to raise an error' do
           let(:subgame_builder) { double }
-          let(:game_parser_factory) do
-            factory = GameParserFactory.new subgame_builder: subgame_builder
+          let(:concrete_factory) do
+            factory = ConcreteFactory.new
             factory.make_cached_game_parser('')
             factory
           end
@@ -33,8 +33,8 @@ module PortableBridgeNotation
             temp = described_class.new(
                 subgame_builder: subgame_builder,
                 pbn_game_string: '',
-                game_parser_factory: nil)
-            temp.instance_variable_set(:@state, game_parser_factory.make_game_parser_state(:BeforeFirstTag))
+                abstract_factory: nil)
+            temp.instance_variable_set(:@state, concrete_factory.make_game_parser_state(:BeforeFirstTag))
             temp.instance_variable_set(:@cur_char_index, 17)
             temp
           end
@@ -46,7 +46,7 @@ module PortableBridgeNotation
 
       describe('#each_subgame') do
         let(:described_object) do
-          factory = GameParserFactory.new(subgame_builder: SubgameBuilder.new)
+          factory = ConcreteFactory.new
           factory.make_cached_game_parser pbn_game_string
         end
         #### HAPPY PATHS #####

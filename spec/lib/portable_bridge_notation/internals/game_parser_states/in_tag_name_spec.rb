@@ -8,7 +8,7 @@ module PortableBridgeNotation
           let(:described_object) { make_testing_game_parser_state described_class }
           %W(\t \n \v \r).each do |char|
             context("with PBN-permitted ASCII control code #{char.ord}") do
-              it('should should disregard the character') do
+              it('should disregard the character') do
                 expect(subgame_builder).to receive(:add_tag_item)
                 expect(described_object.process_char(char)).to be_a BeforeTagValue
               end

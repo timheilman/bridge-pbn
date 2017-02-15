@@ -1,5 +1,4 @@
 require_relative 'single_char_comparison_constants'
-require_relative 'game_parser_factory'
 require_relative 'portable_bridge_notation_error'
 module PortableBridgeNotation
   module Internals
@@ -8,10 +7,10 @@ module PortableBridgeNotation
 
       def initialize(pbn_game_string:,
                      subgame_builder:,
-                     game_parser_factory:)
+                     abstract_factory:)
         @pbn_game_string = pbn_game_string
         @subgame_builder = subgame_builder
-        @game_parser_factory = game_parser_factory
+        @abstract_factory = abstract_factory
         @section_notes = {}
       end
 
@@ -24,7 +23,7 @@ module PortableBridgeNotation
       end
 
       def process
-        state = @game_parser_factory.make_game_parser_state :BeforeFirstTag
+        state = @abstract_factory.make_game_parser_state :BeforeFirstTag
         @pbn_game_string.each_char.with_index do |char, index|
           @cur_char_index = index
           case (char.encode(Encoding::ISO_8859_1).ord)

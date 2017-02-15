@@ -15,9 +15,9 @@ module PortableBridgeNotation
             when open_bracket
               finalize
               game_parser.yield_subgame
-              return game_parser_factory.make_game_parser_state(:BeforeTagName)
+              return abstract_factory.make_game_parser_state(:BeforeTagName)
             when double_quote
-              return game_parser_factory.make_game_parser_state(:InString, self)
+              return abstract_factory.make_game_parser_state(:InString, self)
             when continuing_nonstring_supp_sect_char
               @section << char
               return self

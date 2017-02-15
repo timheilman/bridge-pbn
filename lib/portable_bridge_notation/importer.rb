@@ -5,7 +5,7 @@ require_relative 'internals/portable_bridge_notation_error'
 require_relative 'internals/subgame_builder'
 require_relative 'internals/game_parser'
 require_relative 'internals/subgame_parser_factory'
-require_relative 'internals/game_parser_states/game_parser_state_factory'
+require_relative 'internals/game_parser_factory'
 
 module PortableBridgeNotation
   class Importer
@@ -32,7 +32,7 @@ module PortableBridgeNotation
     def initialize(logger: Logger.new(STDERR), # passed in from outside
                    subgame_builder: Internals::SubgameBuilder.new, # cleared between uses; singleton; lives per-import
                    subgame_parser_factory: Internals::SubgameParserFactory, # good, I like this usage, and is a self. method: lives per-ruby-process
-                   game_parser_state_factory_class: Internals::GameParserStates::GameParserStateFactory, # bad: its c'tors args could be per-import, so it could be per-import
+                   game_parser_state_factory_class: Internals::GameParserStates::GameParserFactory, # bad: its c'tors args could be per-import, so it could be per-import
                    game_parser_class: Internals::GameParser, # bad: lives per-game and not presently cleared; make live per-import
                    io_parser_class: Internals::IoParser) # good:
       @observers = []

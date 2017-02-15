@@ -1,5 +1,5 @@
 require 'spec_helper'
-require_relative '../../../../../lib/portable_bridge_notation/internals/game_parser_states/game_parser_state_factory'
+require_relative '../../../../../lib/portable_bridge_notation/internals/game_parser_factory'
 
 module PortableBridgeNotation
   module Internals
@@ -8,7 +8,7 @@ module PortableBridgeNotation
         describe('#process_char') do
           let(:game_parser) { double }
           let(:subgame_builder) { double }
-          let(:factory) { GameParserStateFactory.new(game_parser: game_parser, subgame_builder: subgame_builder) }
+          let(:factory) { GameParserFactory.new(game_parser: game_parser, subgame_builder: subgame_builder) }
           let(:described_object) { factory.make_game_parser_state(:InTagName) }
 
           %W(\t \n \v \r).each do |char|

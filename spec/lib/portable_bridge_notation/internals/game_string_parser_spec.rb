@@ -2,7 +2,7 @@ require 'spec_helper'
 require_relative '../../../../lib/portable_bridge_notation/internals/single_char_comparison_constants'
 require_relative '../../../../lib/portable_bridge_notation/internals/subgame'
 require_relative '../../../../lib/portable_bridge_notation/internals/game_parser'
-require_relative '../../../../lib/portable_bridge_notation/internals/game_parser_states/game_parser_state_factory'
+require_relative '../../../../lib/portable_bridge_notation/internals/game_parser_factory'
 
 
 module PortableBridgeNotation
@@ -25,7 +25,7 @@ module PortableBridgeNotation
         context 'when asked to raise an error' do
           let(:game_parser) { double }
           let(:subgame_builder) { double }
-          let(:game_parser_state_factory) { GameParserStates::GameParserStateFactory.new(
+          let(:game_parser_state_factory) { GameParserStates::GameParserFactory.new(
               game_parser: game_parser,
               subgame_builder: subgame_builder) }
           let(:described_object) do
@@ -47,7 +47,7 @@ module PortableBridgeNotation
         let(:described_object) do
           described_class.new(subgame_builder: SubgameBuilder.new,
                               pbn_game_string: pbn_game_string,
-                              game_parser_state_factory_class: GameParserStates::GameParserStateFactory)
+                              game_parser_state_factory_class: GameParserStates::GameParserFactory)
         end
         #### HAPPY PATHS #####
 

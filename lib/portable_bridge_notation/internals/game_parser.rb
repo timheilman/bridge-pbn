@@ -1,5 +1,5 @@
 # require_relative 'single_char_comparison_constants' # is this needed? check after code movement to internals
-require_relative 'game_parser_states/game_parser_state_factory'
+require_relative 'game_parser_factory'
 require_relative 'portable_bridge_notation_error'
 module PortableBridgeNotation
   module Internals
@@ -8,7 +8,7 @@ module PortableBridgeNotation
 
       def initialize(pbn_game_string:,
                      subgame_builder:,
-                     game_parser_state_factory_class: GameParserStates::GameParserStateFactory)
+                     game_parser_state_factory_class: GameParserStates::GameParserFactory)
         @pbn_game_string = pbn_game_string
         @subgame_builder = subgame_builder
         @state = game_parser_state_factory_class.

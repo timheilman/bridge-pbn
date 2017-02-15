@@ -2,9 +2,6 @@ require_relative 'io_parser'
 require_relative 'subgame_builder'
 require_relative 'game_parser'
 
-# all subgame parsers implemented should be required here
-require_relative 'subgame_parsers/deal_subgame_parser'
-
 # all defined states should be required here
 require_relative 'game_parser_states/game_parser_state'
 require_relative 'game_parser_states/outside_tag_and_section_template'
@@ -21,6 +18,8 @@ require_relative 'game_parser_states/in_auction_section'
 require_relative 'game_parser_states/in_play_section'
 require_relative 'game_parser_states/in_supplemental_section'
 
+# all subgame parsers implemented should be required here
+require_relative 'subgame_parsers/deal_subgame_parser'
 
 module PortableBridgeNotation
   module Internals

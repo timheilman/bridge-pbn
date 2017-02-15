@@ -2,8 +2,6 @@ require 'logger'
 
 require_relative 'internals/concrete_factory'
 require_relative 'internals/portable_bridge_notation_error'
-require_relative 'internals/subgame_builder'
-require_relative 'internals/game_parser'
 
 module PortableBridgeNotation
   class Importer

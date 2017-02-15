@@ -19,30 +19,6 @@ module PortableBridgeNotation
         end.to yield_with_args(expected_arg)
       end
 
-      describe('#raise_error') do
-        context 'when asked to raise an error' do
-          let(:subgame_builder) { double }
-          let(:concrete_factory) do
-            factory = ConcreteFactory.new
-            factory.make_cached_game_parser('')
-            factory
-          end
-          let(:described_object) do
-            temp = described_class.new(
-              subgame_builder: subgame_builder,
-              pbn_game_string: '',
-              abstract_factory: ConcreteFactory.new
-            )
-            temp.instance_variable_set(:@state, concrete_factory.make_game_parser_state(:BeforeFirstTag))
-            temp.instance_variable_set(:@cur_char_index, 17)
-            temp
-          end
-          it 'Provides the state, char index, and given message' do
-            expect { described_object.raise_error 'foobar' }.to raise_error(/.*BeforeFirstTag.*17.*foobar.*/)
-          end
-        end
-      end
-
       describe('#each_subgame') do
         let(:described_object) do
           factory = ConcreteFactory.new

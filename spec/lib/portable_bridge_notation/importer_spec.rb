@@ -12,13 +12,11 @@ module PortableBridgeNotation
   class TestImportListeningObserver < TestImportObserver
     def with_dealt_card(direction:, suit:, rank:)
       @num_calls += 1
-      return nil
     end
   end
   class TestImportNonlisteningObserver < TestImportObserver
     def with_unrecognized_observer_method(*args, &block)
       @num_calls += 1
-      return nil
     end
   end
   RSpec.describe Importer do
@@ -26,11 +24,11 @@ module PortableBridgeNotation
     let(:io) { StringIO.new("[Deal \"N:AKQJT98765432... .AKQJT98765432.. ..AKQJT98765432. ...AKQJT98765432\"]\n") }
     context('with one dealt_card observer') do
       let(:dealt_card_observer) { TestImportListeningObserver.new }
-      context('and one non-dealt_card listening observer') do
+      context('and one non-dealt_card observer') do
 
         let(:non_dealt_card_observer) { TestImportNonlisteningObserver.new }
         # todo: test edge case with multiple \n's
-        it 'calls the method only on the proper observer' do
+        it 'calls the sole declared method only on the proper observer' do
           described_object.attach_observer(dealt_card_observer)
           described_object.attach_observer(non_dealt_card_observer)
           described_object.import(io)
@@ -41,7 +39,7 @@ module PortableBridgeNotation
       end
       context('and an additional dealt_card observer') do
         let(:additional_dealt_card_observer) { TestImportListeningObserver.new }
-        it 'calls the method on both the listening, and not the nonlistening, observer' do
+        it 'calls the declared method on both the listening observers' do
           described_object.attach_observer(dealt_card_observer)
           described_object.attach_observer(additional_dealt_card_observer)
           described_object.import(io)

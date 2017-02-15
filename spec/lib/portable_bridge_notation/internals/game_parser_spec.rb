@@ -1,7 +1,6 @@
 require 'spec_helper'
 require_relative '../../../../lib/portable_bridge_notation/internals/single_char_comparison_constants'
 require_relative '../../../../lib/portable_bridge_notation/internals/subgame'
-require_relative '../../../../lib/portable_bridge_notation/internals/game_parser'
 require_relative '../../../../lib/portable_bridge_notation/internals/concrete_factory'
 
 

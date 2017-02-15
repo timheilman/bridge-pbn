@@ -1,6 +1,5 @@
 require 'spec_helper'
 require_relative '../../../../lib/portable_bridge_notation/internals/portable_bridge_notation_error'
-require_relative '../../../../lib/portable_bridge_notation/internals/subgame_builder'
 require_relative '../../../../lib/portable_bridge_notation/internals/concrete_factory'
 
 module PortableBridgeNotation

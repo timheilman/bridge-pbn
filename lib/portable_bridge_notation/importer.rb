@@ -39,7 +39,7 @@ module PortableBridgeNotation
         begin
           subgame_parser = @abstract_factory.make_subgame_parser(self, tag_name) #todo: break multiplexer off self
           subgame_parser.parse subgame
-        rescue Internals::PortableBridgeNotationError => pbne # todo: ensure all exceptions raised during subgames are these
+        rescue Internals::PortableBridgeNotationError => pbne
           @logger.warn("; ignoring tag name #{tag_name} due to error: #{pbne.to_s}")
         end
       end

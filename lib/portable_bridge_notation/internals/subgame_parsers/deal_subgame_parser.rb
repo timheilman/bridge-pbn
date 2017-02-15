@@ -15,7 +15,7 @@ module PortableBridgeNotation
 
           deal = subgame.tagPair[1]
           @abstract_factory.make_deal_string_parser(deal).yield_cards do |direction:, rank:, suit:|
-            @domain_builder.with_dealt_card(direction: direction, rank: rank, suit: suit)
+            @observer.with_dealt_card(direction: direction, rank: rank, suit: suit)
           end
         end
       end

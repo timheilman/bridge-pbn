@@ -32,7 +32,7 @@ module PortableBridgeNotation
             temp = described_class.new(
                 subgame_builder: subgame_builder,
                 pbn_game_string: '',
-                abstract_factory: nil)
+                abstract_factory: ConcreteFactory.new)
             temp.instance_variable_set(:@state, concrete_factory.make_game_parser_state(:BeforeFirstTag))
             temp.instance_variable_set(:@cur_char_index, 17)
             temp

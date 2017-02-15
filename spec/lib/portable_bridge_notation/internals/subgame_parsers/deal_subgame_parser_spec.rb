@@ -1,5 +1,5 @@
 require 'spec_helper'
-require_relative '../../../../../lib/portable_bridge_notation/internals/subgame_builder'
+require_relative '../../../../../lib/portable_bridge_notation/internals/concrete_factory'
 require_relative '../../../../../lib/portable_bridge_notation/internals/subgame_parsers/deal_subgame_parser'
 module PortableBridgeNotation
   module Internals
@@ -7,7 +7,7 @@ module PortableBridgeNotation
       RSpec.describe DealSubgameParser do
         describe '#parse' do
           let(:domain_builder) { double }
-          let(:described_object) { described_class.new(domain_builder) }
+          let(:described_object) { described_class.new(ConcreteFactory.new, domain_builder) }
           context('when asked to parse a Deal subgame') do
             let(:subgame) do
               deal = 'N:.63.AKQ987.A9732 A8654.KQ5.T.QJT6 J973.J98742.3.K4 KQT2.AT.J6542.85'

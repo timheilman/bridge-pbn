@@ -29,24 +29,21 @@ module PortableBridgeNotation
 
     private
 
-    def initialize(logger: Logger.new(STDERR), # passed in from outside
-                   subgame_builder: Internals::SubgameBuilder.new, # cleared between uses; singleton; lives per-import
-                   subgame_parser_factory: Internals::SubgameParserFactory, # good, I like this usage, and is a self. method: lives per-ruby-process
-                   game_parser_factory_class: Internals::GameParserFactory, # bad: its c'tors args could be per-import, so it could be per-import
-                   game_parser_class: Internals::GameParser, # bad: lives per-game and not presently cleared; make live per-import
-                   io_parser_class: Internals::IoParser) # good:
-      @observers = []
-      @subgame_builder = subgame_builder
+    def initialize(logger: Logger.new(STDERR),
+                   io_parser_class: Internals::IoParser,
+                   subgame_builder: Internals::SubgameBuilder.new,
+                   game_parser_factory: Internals::GameParserFactory.new(subgame_builder: subgame_builder),
+                   subgame_parser_factory: Internals::SubgameParserFactory)
       @logger = logger
-      @subgame_parser_factory = subgame_parser_factory
-      @game_parser_class = game_parser_class
       @io_parser_class = io_parser_class
-      @game_parser_factory_class = game_parser_factory_class
+      @game_parser_factory = game_parser_factory
+      @subgame_builder = subgame_builder
+      @subgame_parser_factory = subgame_parser_factory
+      @observers = []
     end
 
     def import_game(game)
-      game_parser_factory = @game_parser_factory_class.new subgame_builder: @subgame_builder
-      game_parser = game_parser_factory.make_cached_game_parser game
+      game_parser = @game_parser_factory.make_cached_game_parser game
       game_parser.each_subgame do |subgame|
         tag_name = subgame.tagPair[0]
         begin

@@ -9,13 +9,15 @@ module PortableBridgeNotation
       end
 
       def method_missing(method_sym, *arguments, &block)
+        observer_responded = false
         @observers.each do |observer|
           if observer.respond_to? method_sym
-            # todo: TDD-fix this unintended behavior: all responsive observers should receive the send!
-            return observer.send(method_sym, *arguments, &block)
+            # disregarded_observer_return_value =
+            observer.send(method_sym, *arguments, &block)
+            observer_responded = true
           end
         end
-        super
+        super unless observer_responded
       end
 
       def self.respond_to?(method_sym, include_private = false)

@@ -58,19 +58,19 @@ module PortableBridgeNotation
         rescue NameError
           raise PortableBridgeNotationError.new "Unrecognized tag name: #{tag_name}"
         end
-        subgame_parser_class_for_tag_name.new(self, observer)
+        subgame_parser_class_for_tag_name.new self, observer
       end
 
       def make_deal_string_parser(deal_string)
-        DealStringParser.new(self, deal_string)
+        DealStringParser.new self, deal_string
       end
 
       def make_hand_string_parser(hand_string)
-        HandStringParser.new(hand_string)
+        HandStringParser.new hand_string
       end
 
       def make_error(error_string)
-        PortableBridgeNotationError.new(error_string)
+        PortableBridgeNotationError.new error_string
       end
 
       def make_observer_multiplexer

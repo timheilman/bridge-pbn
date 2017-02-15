@@ -12,27 +12,43 @@ module PortableBridgeNotation
   class TestImportListeningObserver < TestImportObserver
     def with_dealt_card(direction:, suit:, rank:)
       @num_calls += 1
+      return nil
     end
   end
   class TestImportNonlisteningObserver < TestImportObserver
     def with_unrecognized_observer_method(*args, &block)
       @num_calls += 1
+      return nil
     end
   end
   RSpec.describe Importer do
     let(:described_object) { described_class.new }
-    context('with one dealt_card observer and one non-') do
+    let(:io) { StringIO.new("[Deal \"N:AKQJT98765432... .AKQJT98765432.. ..AKQJT98765432. ...AKQJT98765432\"]\n") }
+    context('with one dealt_card observer') do
       let(:dealt_card_observer) { TestImportListeningObserver.new }
-      let(:non_dealt_card_observer) { TestImportNonlisteningObserver.new }
-      # todo: test edge case with multiple \n's
-      let(:deal_string) { "[Deal \"N:AKQJT98765432... .AKQJT98765432.. ..AKQJT98765432. ...AKQJT98765432\"]\n" }
-      it 'calls the method only on the proper observer' do
-        described_object.attach_observer(dealt_card_observer)
-        described_object.attach_observer(non_dealt_card_observer)
-        described_object.import(StringIO.new(deal_string))
+      context('and one non-dealt_card listening observer') do
 
-        expect(dealt_card_observer.num_calls).to eq 52
-        expect(non_dealt_card_observer.num_calls).to eq 0
+        let(:non_dealt_card_observer) { TestImportNonlisteningObserver.new }
+        # todo: test edge case with multiple \n's
+        it 'calls the method only on the proper observer' do
+          described_object.attach_observer(dealt_card_observer)
+          described_object.attach_observer(non_dealt_card_observer)
+          described_object.import(io)
+
+          expect(dealt_card_observer.num_calls).to eq 52
+          expect(non_dealt_card_observer.num_calls).to eq 0
+        end
+      end
+      context('and an additional dealt_card observer') do
+        let(:additional_dealt_card_observer) { TestImportListeningObserver.new }
+        it 'calls the method on both the listening, and not the nonlistening, observer' do
+          described_object.attach_observer(dealt_card_observer)
+          described_object.attach_observer(additional_dealt_card_observer)
+          described_object.import(io)
+
+          expect(dealt_card_observer.num_calls).to eq 52
+          expect(additional_dealt_card_observer.num_calls).to eq 52
+        end
       end
     end
   end

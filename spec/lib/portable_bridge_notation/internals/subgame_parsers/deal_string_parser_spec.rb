@@ -34,7 +34,7 @@ module PortableBridgeNotation
         end
 
         context 'with hyphens for some hands' do
-          let (:deal) { 'E:..A.A - ... -' }
+          let(:deal) { 'E:..A.A - ... -' }
           it 'deals the non-hyphen cards' do
             expect { |block| described_object.yield_cards(&block) }.to yield_successive_args(
               { direction: 'E', suit: 'D', rank: 'A' },
@@ -44,9 +44,9 @@ module PortableBridgeNotation
         end
 
         context 'with a bad initial direction letter' do
-          let (:deal) { 'M:foo' }
+          let(:deal) { 'M:foo' }
           it 'raises an error' do
-            expect { |block| described_object.yield_cards(&block) }.to raise_error /.*first position.*M.*/
+            expect { |block| described_object.yield_cards(&block) }.to raise_error(/.*first position.*M.*/)
           end
         end
       end

@@ -4,6 +4,7 @@ require_relative 'internals/concrete_factory'
 require_relative 'internals/portable_bridge_notation_error'
 
 module PortableBridgeNotation
+  # TODO: figure out how rdoc works and put some docs here (to satisfy rubocop)
   class Importer
     # TODO: default-rubocop-comply for full repo
     # todo: rubocop as git pre-commit hook

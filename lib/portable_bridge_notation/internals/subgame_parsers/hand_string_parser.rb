@@ -12,7 +12,7 @@ module PortableBridgeNotation
         hand_string.split(period).each_with_index do |ranks_string, suit_index|
           @ranks_string = ranks_string
           @suit_index = suit_index
-          yield_cards_for_suit &block
+          yield_cards_for_suit(&block)
         end
       end
 

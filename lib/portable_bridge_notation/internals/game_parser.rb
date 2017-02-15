@@ -13,7 +13,7 @@ module PortableBridgeNotation
         @section_notes = {}
       end
 
-      # TODO: enforce section continuity (no identification section tags both before and after play/auction/supplemental)
+      # TODO: enforce section continuity: no identification section tags both before and after play/auction/supplemental
       # TODO: enforce 255 char cap on line width
       def each_subgame(&block)
         @block = block
@@ -25,21 +25,25 @@ module PortableBridgeNotation
         state = @abstract_factory.make_game_parser_state :BeforeFirstTag
         @pbn_game_string.each_char.with_index do |char, index|
           @cur_char_index = index
-          case char.encode(Encoding::ISO_8859_1).ord
-            # intent: couldn't figure out how to do non-ascii by ordinal in a regexp; fell back to this
-            # 9 is \t
-            # 10 is \n
-            # 11 is \v
-            # 13 is \r
-            # 32-126 are ASCII printable
-            # 160-255 are non-ASCII printable
-          when 0..8, 12, 14..31, 127..159
-            raise_error "disallowed character in PBN files, decimal code: #{char.ord}"
-          end
+          verify_char char
           state = state.process_char(char)
         end
         state.finalize
         yield_subgame
+      end
+
+      def verify_char(char)
+        case char.encode(Encoding::ISO_8859_1).ord
+          # intent: couldn't figure out how to do non-ascii by ordinal in a regexp; fell back to this
+          # 9 is \t
+          # 10 is \n
+          # 11 is \v
+          # 13 is \r
+          # 32-126 are ASCII printable
+          # 160-255 are non-ASCII printable
+        when 0..8, 12, 14..31, 127..159
+          raise_error "disallowed character in PBN files, decimal code: #{char.ord}"
+        end
       end
 
       def yield_subgame

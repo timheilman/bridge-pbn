@@ -20,7 +20,7 @@ module PortableBridgeNotation
         super unless observer_responded
       end
 
-      def self.respond_to?(method_sym, include_private = false)
+      def respond_to_missing?(method_sym, include_private = false)
         @observers.each do |observer|
           return true if observer.respond_to? method_sym, include_private
         end

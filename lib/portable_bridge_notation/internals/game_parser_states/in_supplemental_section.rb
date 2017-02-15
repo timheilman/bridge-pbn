@@ -11,18 +11,23 @@ module PortableBridgeNotation
           # we are returning the section exactly as-provided, in order for custom supplemental sections
           # to be parsed in custom ways
           case char
-          when open_bracket
-            finalize
-            game_parser.yield_subgame
-            abstract_factory.make_game_parser_state(:BeforeTagName)
-          when double_quote
-            abstract_factory.make_game_parser_state(:InString, self)
-          when continuing_nonstring_supp_sect_char
-            @section << char
-            self
+          when open_bracket then handle_open_bracket
+          when double_quote then abstract_factory.make_game_parser_state(:InString, self)
+          when continuing_nonstring_supp_sect_char then handle_supp_section_char char
           else
             game_parser.raise_error "Unexpected character within a supplemental section: `#{char}'"
           end
+        end
+
+        def handle_supp_section_char(char)
+          @section << char
+          self
+        end
+
+        def handle_open_bracket
+          finalize
+          game_parser.yield_subgame
+          abstract_factory.make_game_parser_state(:BeforeTagName)
         end
 
         def finalize

@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Tim Heilman', 'Daniel Evans']
   spec.email         = ['tim@dv8.org', 'evans.daniel.n@gmail.com']
 
-  spec.summary       = 'Pure Ruby Portable Bridge Notation (PBN) parsing and construction for Contract Bridge card game data'
+  spec.summary       = 'Pure Ruby Portable Bridge Notation (PBN) utilities for Contract Bridge card game data'
   spec.homepage      = 'https://github.com/timheilman/bridge-pbn'
   spec.license       = 'MIT'
 

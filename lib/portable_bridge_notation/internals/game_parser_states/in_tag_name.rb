@@ -9,18 +9,27 @@ module PortableBridgeNotation
 
         def process_char(char)
           case char
-          when allowed_in_names
-            @tag_name << char
-            self
-          when whitespace_allowed_in_games
-            subgame_builder.add_tag_item(@tag_name)
-            abstract_factory.make_game_parser_state(:BeforeTagValue)
-          when double_quote
-            subgame_builder.add_tag_item(@tag_name)
-            abstract_factory.make_game_parser_state(:InString, abstract_factory.make_game_parser_state(:BeforeTagClose))
+          when allowed_in_names then handle_name_char char
+          when whitespace_allowed_in_games then handle_whitespace
+          when double_quote then handle_double_quote
           else
             game_parser.raise_error "non-whitespace, non-name character found ending tag name: #{char}"
           end
+        end
+
+        def handle_name_char(char)
+          @tag_name << char
+          self
+        end
+
+        def handle_whitespace
+          subgame_builder.add_tag_item(@tag_name)
+          abstract_factory.make_game_parser_state(:BeforeTagValue)
+        end
+
+        def handle_double_quote
+          subgame_builder.add_tag_item(@tag_name)
+          abstract_factory.make_game_parser_state(:InString, abstract_factory.make_game_parser_state(:BeforeTagClose))
         end
 
         def finalize

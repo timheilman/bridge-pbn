@@ -273,7 +273,7 @@ module PortableBridgeNotation
         end
 
         context 'with control non-ASCII characters' do
-          let (:pbn_game_string) { "[TagName #{double_quote}Ta#{iso_8859_1_dec_val_149}gValue#{double_quote}" }
+          let(:pbn_game_string) { "[TagName #{double_quote}Ta#{iso_8859_1_dec_val_149}gValue#{double_quote}" }
           it 'refuses the invalid character' do
             expect { described_object.each_subgame {} }.to raise_error(/.*disallowed.*: 149/)
           end

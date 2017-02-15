@@ -1,2 +1,11 @@
 Metrics/LineLength:
   Max: 120
+
+# Rspec, as a DSL, ought not to be held to this metric
+# convenient technique from http://stackoverflow.com/questions/40934345/rubocop-25-line-block-size-and-rspec-tests
+# but at the cost that the check is turned off for all methods of this name.  That's OK.
+Metrics/BlockLength:
+  ExcludedMethods: ['describe', 'context']
+
+#Documentation:
+#  Enabled: false

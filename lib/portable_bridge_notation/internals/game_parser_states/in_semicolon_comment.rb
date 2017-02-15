@@ -10,19 +10,28 @@ module PortableBridgeNotation
 
         def process_char(char)
           case char
-          when carriage_return
-            perhaps_emit_cr
-            @prev_char_was_cr = true
-            self
-          when line_feed
-            finalize
-            enclosing_state
-          else
-            perhaps_emit_cr
-            @prev_char_was_cr = false
-            @comment << char
-            self
+          when carriage_return then handle_carriage_return
+          when line_feed then handle_line_feed
+          else handle_other char
           end
+        end
+
+        def handle_other(char)
+          perhaps_emit_cr
+          @prev_char_was_cr = false
+          @comment << char
+          self
+        end
+
+        def handle_line_feed
+          finalize
+          enclosing_state
+        end
+
+        def handle_carriage_return
+          perhaps_emit_cr
+          @prev_char_was_cr = true
+          self
         end
 
         def perhaps_emit_cr

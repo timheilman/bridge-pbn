@@ -11,6 +11,7 @@ module PortableBridgeNotation
   end
   class TestImportListeningObserver < TestImportObserver
     def with_dealt_card(direction:, suit:, rank:)
+      [direction, suit, rank].map { |arg| raise StandardError if arg.nil? }
       @num_calls += 1
     end
   end

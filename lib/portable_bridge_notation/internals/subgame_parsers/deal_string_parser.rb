@@ -27,7 +27,7 @@ module PortableBridgeNotation
           next if hand_string == hyphen
           @hand_string = hand_string
           @hand_index = hand_index
-          yield_hand &block
+          yield_hand(&block)
         end
       end
 

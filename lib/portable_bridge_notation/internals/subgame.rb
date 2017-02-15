@@ -1,6 +1,6 @@
 module PortableBridgeNotation
   module Internals
-    class Subgame < Struct.new(:beginningComments, :tagPair, :followingComments, :section)
+    Subgame = Struct.new(:beginningComments, :tagPair, :followingComments, :section) do
       # terminology from http://www.tistis.nl/pbn/
       # targeting PBN version 2.1
 

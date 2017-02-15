@@ -10,23 +10,36 @@ module PortableBridgeNotation
 
         def process_char(char)
           case char
-          when backslash
-            @string << backslash if @escaped
-            @escaped = !@escaped
-          when double_quote
-            if @escaped
-              @escaped = false
-              @string << double_quote
-            else
-              enclosing_state.add_string(@string)
-              return enclosing_state
-            end
-          when tab, line_feed, vertical_tab, carriage_return
-            game_parser.raise_error "PBN-valid but string-invalid ASCII control character. Decimal code point: #{char.ord}"
+          when backslash then handle_backslash
+          when double_quote then handle_double_quote
+          when tab, line_feed, vertical_tab, carriage_return then raise_error char
           else
             @escaped = false
             @string << char
+            self
           end
+        end
+
+        def raise_error(char)
+          game_parser.raise_error(
+            "PBN-valid but string-invalid ASCII control character. Decimal code point: #{char.ord}"
+          )
+        end
+
+        def handle_double_quote
+          if @escaped
+            @escaped = false
+            @string << double_quote
+            self
+          else
+            enclosing_state.add_string(@string)
+            enclosing_state
+          end
+        end
+
+        def handle_backslash
+          @string << backslash if @escaped
+          @escaped = !@escaped
           self
         end
 

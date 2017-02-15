@@ -1,4 +1,4 @@
-# require_relative 'single_char_comparison_constants' # is this needed? check after code movement to internals
+require_relative 'single_char_comparison_constants'
 require_relative 'game_parser_factory'
 require_relative 'portable_bridge_notation_error'
 module PortableBridgeNotation
@@ -8,12 +8,10 @@ module PortableBridgeNotation
 
       def initialize(pbn_game_string:,
                      subgame_builder:,
-                     game_parser_state_factory_class: GameParserStates::GameParserFactory)
+                     game_parser_factory:)
         @pbn_game_string = pbn_game_string
         @subgame_builder = subgame_builder
-        @state = game_parser_state_factory_class.
-            new(game_parser: self, subgame_builder: @subgame_builder).
-            make_game_parser_state(:BeforeFirstTag)
+        @game_parser_factory = game_parser_factory
         @section_notes = {}
       end
 
@@ -26,6 +24,7 @@ module PortableBridgeNotation
       end
 
       def process
+        state = @game_parser_factory.make_game_parser_state :BeforeFirstTag
         @pbn_game_string.each_char.with_index do |char, index|
           @cur_char_index = index
           case (char.encode(Encoding::ISO_8859_1).ord)
@@ -39,9 +38,9 @@ module PortableBridgeNotation
             when 0..8, 12, 14..31, 127..159
               raise_error "disallowed character in PBN files, decimal code: #{char.ord}"
           end
-          @state = @state.process_char(char)
+          state = state.process_char(char)
         end
-        @state.finalize
+        state.finalize
         yield_subgame
       end
 

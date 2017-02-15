@@ -1,21 +1,14 @@
 require 'spec_helper'
-require_relative '../../../../../lib/portable_bridge_notation/internals/game_parser_factory'
-
 module PortableBridgeNotation
   module Internals
     module GameParserStates
-      RSpec.describe BetweenTags do
+      RSpec.describe BetweenTags, :group => :game_parser_states do
         describe('#process_char') do
-          let(:game_parser) { double }
           let(:subgame_builder) { double }
-          let(:described_object) { GameParserFactory.new(
-              game_parser: game_parser, subgame_builder: subgame_builder).make_game_parser_state(:BetweenTags) }
-          let(:error) { StandardError.new 'Mock error' }
-
+          let(:described_object) { make_testing_game_parser_state described_class }
           it('should raise an error for closing brace, closing bracket, or percent sign') do
             error_regexp = /.*33.*126.*closing brace.*closing bracket.*percent sign.*\].*/
-            expect(game_parser).to receive(:raise_error).with(error_regexp).and_raise error
-            expect { described_object.process_char(']') }.to raise_error StandardError
+            expect { described_object.process_char(']') }.to raise_error(error_regexp)
           end
         end
       end

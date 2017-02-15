@@ -1,7 +1,7 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'portable_bridge_notation'
 require 'simplecov'
-
+require 'lib/portable_bridge_notation/internals/game_parser_states/game_parser_state_spec_helper'
 RSpec.configure do |config|
 
   config.expect_with :rspec do |expectations|
@@ -17,8 +17,10 @@ RSpec.configure do |config|
 
   config.filter_run focus: true
   config.run_all_when_everything_filtered = true
-  config.order = :random
+  # config.order = :random
   config.alias_it_should_behave_like_to :it_has_behaviour, 'has behavior'
+  config.include(PortableBridgeNotation::Internals::GameParserStates::GameParserStateSpecHelper,
+                  :group => :game_parser_states)
 end
 
 SimpleCov.start

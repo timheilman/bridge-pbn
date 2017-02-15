@@ -15,10 +15,10 @@ module PortableBridgeNotation
               return self
             when whitespace_allowed_in_games
               subgame_builder.add_tag_item(@tag_name)
-              return game_parser_state_factory.make_game_parser_state(:BeforeTagValue)
+              return game_parser_factory.make_game_parser_state(:BeforeTagValue)
             when double_quote
               subgame_builder.add_tag_item(@tag_name)
-              return game_parser_state_factory.make_game_parser_state(:InString, game_parser_state_factory.make_game_parser_state(:BeforeTagClose))
+              return game_parser_factory.make_game_parser_state(:InString, game_parser_factory.make_game_parser_state(:BeforeTagClose))
             else
               game_parser.raise_error "non-whitespace, non-name character found ending tag name: #{char}"
           end

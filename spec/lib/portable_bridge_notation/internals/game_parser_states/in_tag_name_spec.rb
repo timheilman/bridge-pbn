@@ -1,16 +1,11 @@
 require 'spec_helper'
-require_relative '../../../../../lib/portable_bridge_notation/internals/game_parser_factory'
-
 module PortableBridgeNotation
   module Internals
     module GameParserStates
-      RSpec.describe InTagName do
+      RSpec.describe InTagName, :group => :game_parser_states do
         describe('#process_char') do
-          let(:game_parser) { double }
           let(:subgame_builder) { double }
-          let(:factory) { GameParserFactory.new(game_parser: game_parser, subgame_builder: subgame_builder) }
-          let(:described_object) { factory.make_game_parser_state(:InTagName) }
-
+          let(:described_object) { make_testing_game_parser_state described_class }
           %W(\t \n \v \r).each do |char|
             context("with PBN-permitted ASCII control code #{char.ord}") do
               it('should should disregard the character') do

@@ -23,17 +23,18 @@ module PortableBridgeNotation
 
       describe('#raise_error') do
         context 'when asked to raise an error' do
-          let(:game_parser) { double }
           let(:subgame_builder) { double }
-          let(:game_parser_state_factory) { GameParserStates::GameParserFactory.new(
-              game_parser: game_parser,
-              subgame_builder: subgame_builder) }
+          let(:game_parser_factory) do
+            factory = GameParserFactory.new subgame_builder: subgame_builder
+            factory.make_cached_game_parser('')
+            factory
+          end
           let(:described_object) do
             temp = described_class.new(
                 subgame_builder: subgame_builder,
                 pbn_game_string: '',
-                game_parser_state_factory_class: game_parser_state_factory.class)
-            temp.instance_variable_set(:@state, game_parser_state_factory.make_game_parser_state(:BeforeFirstTag))
+                game_parser_factory: nil)
+            temp.instance_variable_set(:@state, game_parser_factory.make_game_parser_state(:BeforeFirstTag))
             temp.instance_variable_set(:@cur_char_index, 17)
             temp
           end
@@ -45,9 +46,8 @@ module PortableBridgeNotation
 
       describe('#each_subgame') do
         let(:described_object) do
-          described_class.new(subgame_builder: SubgameBuilder.new,
-                              pbn_game_string: pbn_game_string,
-                              game_parser_state_factory_class: GameParserStates::GameParserFactory)
+          factory = GameParserFactory.new(subgame_builder: SubgameBuilder.new)
+          factory.make_cached_game_parser pbn_game_string
         end
         #### HAPPY PATHS #####
 

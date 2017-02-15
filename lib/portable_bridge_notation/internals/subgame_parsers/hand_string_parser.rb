@@ -29,9 +29,8 @@ module PortableBridgeNotation
       end
 
       def suit_char_for(index)
-        {0 => 'S', 1 => 'H', 2 => 'D', 3 => 'C'}[index]
+        { 0 => 'S', 1 => 'H', 2 => 'D', 3 => 'C' }[index]
       end
-
     end
   end
 end

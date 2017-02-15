@@ -32,7 +32,7 @@ module PortableBridgeNotation
       end
 
       def yield_hand
-        @abstract_factory.make_hand_string_parser(hand_string).yield_cards do |suit:, rank: |
+        @abstract_factory.make_hand_string_parser(hand_string).yield_cards do |suit:, rank:|
           yield direction: direction_char, suit: suit, rank: rank
         end
       end
@@ -44,10 +44,9 @@ module PortableBridgeNotation
         directions[(index_of_hand_0_direction + hand_index) % directions.size]
       end
 
-      def raise_error initial_dir
+      def raise_error(initial_dir)
         raise @abstract_factory.make_error("bad first position character for pgn deal string: `#{initial_dir}'")
       end
-
     end
   end
 end

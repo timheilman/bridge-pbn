@@ -14,7 +14,7 @@ module PortableBridgeNotation
           @subgame_builder = subgame_builder
           @abstract_factory = abstract_factory
           @enclosing_state = enclosing_state
-          post_initialize if self.respond_to? :post_initialize
+          post_initialize if respond_to? :post_initialize
         end
       end
     end

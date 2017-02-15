@@ -17,8 +17,8 @@ module PortableBridgeNotation
           end
           context('and the result is asked to handle a nonsense tag subgame') do
             it('throws a PortableBridgeNotationError') do
-              expect{described_class.new.make_subgame_parser(domain_builder, 'NotAValidTagName')}.
-                  to raise_error(PortableBridgeNotationError)
+              expect { described_class.new.make_subgame_parser(domain_builder, 'NotAValidTagName') }
+                .to raise_error(PortableBridgeNotationError)
             end
           end
         end

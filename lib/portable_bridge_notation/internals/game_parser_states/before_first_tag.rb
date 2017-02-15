@@ -8,7 +8,7 @@ module PortableBridgeNotation
         end
 
         def perhaps_yield
-          #no-op
+          # no-op
         end
 
         def section_tokens_allowed?

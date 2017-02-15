@@ -15,14 +15,11 @@ module PortableBridgeNotation
           if char == open_curly && (last_char.nil? || last_char == space)
             comment_is_open = true
           end
-          if char == close_curly
-            comment_is_open = false
-          end
+          comment_is_open = false if char == close_curly
           last_char = char
         end
         comment_is_open
       end
-
     end
   end
 end

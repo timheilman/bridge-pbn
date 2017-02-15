@@ -6,10 +6,10 @@ module PortableBridgeNotation
 
       # For now, section is provided as a string. Subgame parsers will be responsible for parsing sections.
       def to_s
-        return 'bc: ' + beginningComments.join('|') +
-            ' tp: ' + tagPair.join('|') +
-            ' fc: ' + followingComments.join('|') +
-            ' s: `' + section + '\''
+        'bc: ' + beginningComments.join('|') +
+          ' tp: ' + tagPair.join('|') +
+          ' fc: ' + followingComments.join('|') +
+          ' s: `' + section + '\''
       end
     end
   end

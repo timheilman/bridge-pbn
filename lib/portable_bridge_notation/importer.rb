@@ -5,9 +5,8 @@ require_relative 'internals/portable_bridge_notation_error'
 
 module PortableBridgeNotation
   class Importer
-    #todo: is injecting logger even the right error-handling strategy?
-    #todo: default-rubocop-comply for full repo
-    #todo: rubocop as git pre-commit hook
+    # TODO: default-rubocop-comply for full repo
+    # todo: rubocop as git pre-commit hook
 
     def self.create(logger: Logger.new(STDERR))
       new(logger: logger)
@@ -40,14 +39,12 @@ module PortableBridgeNotation
           subgame_parser = @abstract_factory.make_subgame_parser(@observer_multiplexer, tag_name)
           subgame_parser.parse subgame
         rescue Internals::PortableBridgeNotationError => pbne
-          @logger.warn("; ignoring tag name `#{tag_name}' due to error: `#{pbne.to_s}'")
+          @logger.warn("; ignoring tag name `#{tag_name}' due to error: `#{pbne}'")
         end
       end
-      # todo: in order to have Note tag values when sections get parsed, we want to delay their parsing
+      # TODO: in order to have Note tag values when sections get parsed, we want to delay their parsing
       # until here; provide GameParser's @section_notes to the AuctionSectionParser and PlaySectionParser here,
       # to (finally) send the Auction and Play sections' worth of domain builder API messages
     end
-
-
   end
 end

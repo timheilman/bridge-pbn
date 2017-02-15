@@ -13,22 +13,22 @@ module PortableBridgeNotation
             let(:deal) { 'N:' + space_separated_hands }
             it 'yields with aces in proper places, two in the north' do
               expect { |block| described_object.yield_cards(&block) }.to yield_successive_args(
-                                                                             {direction: 'N', suit: 'D', rank: 'A'},
-                                                                             {direction: 'N', suit: 'C', rank: 'A'},
-                                                                             {direction: 'E', suit: 'S', rank: 'A'},
-                                                                             {direction: 'W', suit: 'H', rank: 'A'},
-                                                                         )
+                { direction: 'N', suit: 'D', rank: 'A' },
+                { direction: 'N', suit: 'C', rank: 'A' },
+                { direction: 'E', suit: 'S', rank: 'A' },
+                direction: 'W', suit: 'H', rank: 'A'
+              )
             end
           end
           context 'starting with E' do
             let(:deal) { 'E:' + space_separated_hands }
             it 'yields with aces in proper places, two in the east' do
               expect { |block| described_object.yield_cards(&block) }.to yield_successive_args(
-                                                                             {direction: 'E', suit: 'D', rank: 'A'},
-                                                                             {direction: 'E', suit: 'C', rank: 'A'},
-                                                                             {direction: 'S', suit: 'S', rank: 'A'},
-                                                                             {direction: 'N', suit: 'H', rank: 'A'},
-                                                                         )
+                { direction: 'E', suit: 'D', rank: 'A' },
+                { direction: 'E', suit: 'C', rank: 'A' },
+                { direction: 'S', suit: 'S', rank: 'A' },
+                direction: 'N', suit: 'H', rank: 'A'
+              )
             end
           end
         end
@@ -37,9 +37,9 @@ module PortableBridgeNotation
           let (:deal) { 'E:..A.A - ... -' }
           it 'deals the non-hyphen cards' do
             expect { |block| described_object.yield_cards(&block) }.to yield_successive_args(
-                                                                           {direction: 'E', suit: 'D', rank: 'A'},
-                                                                           {direction: 'E', suit: 'C', rank: 'A'}
-                                                                       )
+              { direction: 'E', suit: 'D', rank: 'A' },
+              direction: 'E', suit: 'C', rank: 'A'
+            )
           end
         end
 

@@ -1,1 +1,1 @@
-module PortableBridgeNotation; VERSION = "0.1.0"; end
+module PortableBridgeNotation; VERSION = '0.1.0'.freeze; end

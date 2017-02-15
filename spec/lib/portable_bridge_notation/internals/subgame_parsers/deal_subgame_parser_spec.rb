@@ -20,9 +20,9 @@ module PortableBridgeNotation
               expect { described_object.parse subgame }.not_to raise_error
             end
             it('provides the game builder fifty-two cards') do
-              expect(domain_builder).to receive(:with_dealt_card).
-                  with(direction: instance_of(String), rank: instance_of(String), suit: instance_of(String)).
-                  exactly(52).times
+              expect(domain_builder).to receive(:with_dealt_card)
+                .with(direction: instance_of(String), rank: instance_of(String), suit: instance_of(String))
+                .exactly(52).times
               described_object.parse subgame
             end
           end
@@ -40,4 +40,3 @@ module PortableBridgeNotation
     end
   end
 end
-

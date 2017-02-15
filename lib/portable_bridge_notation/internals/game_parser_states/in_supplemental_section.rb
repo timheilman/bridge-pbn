@@ -3,7 +3,6 @@ module PortableBridgeNotation
   module Internals
     module GameParserStates
       class InSupplementalSection < GameParserState
-
         def post_initialize
           @section = ''
         end
@@ -12,17 +11,17 @@ module PortableBridgeNotation
           # we are returning the section exactly as-provided, in order for custom supplemental sections
           # to be parsed in custom ways
           case char
-            when open_bracket
-              finalize
-              game_parser.yield_subgame
-              return abstract_factory.make_game_parser_state(:BeforeTagName)
-            when double_quote
-              return abstract_factory.make_game_parser_state(:InString, self)
-            when continuing_nonstring_supp_sect_char
-              @section << char
-              return self
-            else
-              game_parser.raise_error "Unexpected character within a supplemental section: `#{char}'"
+          when open_bracket
+            finalize
+            game_parser.yield_subgame
+            abstract_factory.make_game_parser_state(:BeforeTagName)
+          when double_quote
+            abstract_factory.make_game_parser_state(:InString, self)
+          when continuing_nonstring_supp_sect_char
+            @section << char
+            self
+          else
+            game_parser.raise_error "Unexpected character within a supplemental section: `#{char}'"
           end
         end
 

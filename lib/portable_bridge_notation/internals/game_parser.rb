@@ -25,7 +25,7 @@ module PortableBridgeNotation
         state = @abstract_factory.make_game_parser_state :BeforeFirstTag
         @pbn_game_string.each_char.with_index do |char, index|
           @cur_char_index = index
-          case (char.encode(Encoding::ISO_8859_1).ord)
+          case char.encode(Encoding::ISO_8859_1).ord
             # intent: couldn't figure out how to do non-ascii by ordinal in a regexp; fell back to this
             # 9 is \t
             # 10 is \n
@@ -33,8 +33,8 @@ module PortableBridgeNotation
             # 13 is \r
             # 32-126 are ASCII printable
             # 160-255 are non-ASCII printable
-            when 0..8, 12, 14..31, 127..159
-              raise_error "disallowed character in PBN files, decimal code: #{char.ord}"
+          when 0..8, 12, 14..31, 127..159
+            raise_error "disallowed character in PBN files, decimal code: #{char.ord}"
           end
           state = state.process_char(char)
         end
@@ -48,8 +48,8 @@ module PortableBridgeNotation
       end
 
       def raise_error(message = nil)
-        raise @abstract_factory.make_error("state: #{@state.to_s}; string: `#{@pbn_game_string}'; " +
-                                                  "char_index: #{@cur_char_index.to_s}; message: #{message}")
+        raise @abstract_factory.make_error("state: #{@state}; string: `#{@pbn_game_string}'; " \
+                                                  "char_index: #{@cur_char_index}; message: #{message}")
       end
 
       def reached_section(section_name)
@@ -57,7 +57,7 @@ module PortableBridgeNotation
         @section_notes.merge! section_name => {}
       end
 
-      # todo: to be called from NoteSubgameParser
+      # TODO: to be called from NoteSubgameParser
       def add_note_ref_resolution(ref_num, text)
         @section_notes[@section_name].merge! ref_num => text
       end

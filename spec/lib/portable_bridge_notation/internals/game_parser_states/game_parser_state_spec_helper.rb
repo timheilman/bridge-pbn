@@ -3,7 +3,7 @@ module PortableBridgeNotation
   module Internals
     module GameParserStates
       module GameParserStateSpecHelper
-        def make_testing_game_parser_state described_class
+        def make_testing_game_parser_state(described_class)
           class_sym = described_class.name.split('::').last.to_sym
           factory = ConcreteFactory.new subgame_builder
           factory.make_cached_game_parser ''
@@ -13,4 +13,3 @@ module PortableBridgeNotation
     end
   end
 end
-

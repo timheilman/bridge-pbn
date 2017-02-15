@@ -3,11 +3,10 @@ require_relative '../../../../lib/portable_bridge_notation/internals/single_char
 require_relative '../../../../lib/portable_bridge_notation/internals/subgame'
 require_relative '../../../../lib/portable_bridge_notation/internals/concrete_factory'
 
-
 module PortableBridgeNotation
   module Internals
     RSpec.describe GameParser do
-      # todo: break this down, preserving every test case, to more closely focus on the edge case being tested
+      # TODO: break this down, preserving every test case, to more closely focus on the edge case being tested
       # but do so against the specific GameParserState responsible to cover the case
       # intent: to maximize human readability for quoting situations, use bare words for all difficult characters
       include SingleCharComparisonConstants
@@ -30,9 +29,10 @@ module PortableBridgeNotation
           end
           let(:described_object) do
             temp = described_class.new(
-                subgame_builder: subgame_builder,
-                pbn_game_string: '',
-                abstract_factory: ConcreteFactory.new)
+              subgame_builder: subgame_builder,
+              pbn_game_string: '',
+              abstract_factory: ConcreteFactory.new
+            )
             temp.instance_variable_set(:@state, concrete_factory.make_game_parser_state(:BeforeFirstTag))
             temp.instance_variable_set(:@cur_char_index, 17)
             temp
@@ -59,8 +59,10 @@ module PortableBridgeNotation
         end
 
         context 'with an opening multi-line comment followed by event tag on the same line' do
-          let(:pbn_game_string) { "  { multiline #{line_feed}" +
-              "comment } [TagName #{double_quote}TagValue#{double_quote}]#{line_feed}" }
+          let(:pbn_game_string) do
+            "  { multiline #{line_feed}" \
+            "comment } [TagName #{double_quote}TagValue#{double_quote}]#{line_feed}"
+          end
           let(:expected_subgame_fields) { [[" multiline #{line_feed}comment "], %w(TagName TagValue), [], ''] }
           it 'provides a structure with the multi-line comment, the tag pair, no following comment, no section' do
             expect_first_yield_with_arg
@@ -69,13 +71,15 @@ module PortableBridgeNotation
 
         context 'with a mixture of opening comments' do
           let(:pbn_game_string) do
-            ";one-liner#{line_feed}" +
-                "{{{;;;multiline #{line_feed}" +
-                "comment} ;with more commentary#{line_feed} " +
-                " [TagName #{double_quote}TagValue#{double_quote}]#{line_feed}"
+            ";one-liner#{line_feed}" \
+              "{{{;;;multiline #{line_feed}" \
+              "comment} ;with more commentary#{line_feed} " \
+              " [TagName #{double_quote}TagValue#{double_quote}]#{line_feed}"
           end
-          let(:expected_subgame_fields) { [['one-liner', "{{;;;multiline #{line_feed}comment", 'with more commentary'],
-                                           %w(TagName TagValue), [], ''] }
+          let(:expected_subgame_fields) do
+            [['one-liner', "{{;;;multiline #{line_feed}comment", 'with more commentary'],
+             %w(TagName TagValue), [], '']
+          end
           it 'provides multiple comments in the structure' do
             expect_first_yield_with_arg
           end
@@ -107,8 +111,8 @@ module PortableBridgeNotation
 
         context 'with no comments, one tag pair, and a section' do
           let(:pbn_game_string) do
-            "[TagName #{double_quote}TagValue#{double_quote}]#{line_feed}" +
-                "three section tokens#{double_quote}and a string#{double_quote + line_feed}"
+            "[TagName #{double_quote}TagValue#{double_quote}]#{line_feed}" \
+              "three section tokens#{double_quote}and a string#{double_quote + line_feed}"
           end
           let(:expected_subgame_fields) do
             [[], %w(TagName TagValue), [],
@@ -121,11 +125,11 @@ module PortableBridgeNotation
 
         context 'with comment before, one tag pair, comment after, and a section' do
           let(:pbn_game_string) do
-            ";comment1#{line_feed}" +
-                "[TagName \"TagValue\" ]#{tab}#{line_feed}" +
-                "{comment2#{line_feed}" +
-                "comment2 second line}#{line_feed}" +
-                "verbatim section#{line_feed}"
+            ";comment1#{line_feed}" \
+              "[TagName \"TagValue\" ]#{tab}#{line_feed}" \
+              "{comment2#{line_feed}" \
+              "comment2 second line}#{line_feed}" \
+              "verbatim section#{line_feed}"
           end
           let(:expected_subgame_fields) do
             [['comment1'],
@@ -139,8 +143,10 @@ module PortableBridgeNotation
         end
 
         context 'with two very simple tag pairs' do
-          let(:pbn_game_string) { "[Event #{double_quote + double_quote}]#{line_feed}" +
-              "[Site #{double_quote + double_quote}]" }
+          let(:pbn_game_string) do
+            "[Event #{double_quote + double_quote}]#{line_feed}" \
+            "[Site #{double_quote + double_quote}]"
+          end
           it 'yields twice with the minimal structures' do
             expect do |block|
               described_object.each_subgame(&block)
@@ -150,10 +156,12 @@ module PortableBridgeNotation
         end
 
         context 'with two very simple tag pairs with comments' do
-          let(:pbn_game_string) { ";preceding comment#{line_feed}" +
-              "[Event #{double_quote + double_quote}] {comment following event} " + # no line_feed!
-              "[Site #{double_quote + double_quote}] " +
-              ";comment following site#{line_feed}" }
+          let(:pbn_game_string) do
+            ";preceding comment#{line_feed}" \
+            "[Event #{double_quote + double_quote}] {comment following event} " + # no line_feed!
+              "[Site #{double_quote + double_quote}] " \
+              ";comment following site#{line_feed}"
+          end
           it 'yields twice with the structures including their commentary' do
             expect do |block|
               described_object.each_subgame(&block)
@@ -165,16 +173,18 @@ module PortableBridgeNotation
         end
 
         context 'with two very simple tag pairs with comments, sections, and CRLF line endings' do
-          subject(:pbn_game_string) { "{a1};a2#{carriage_return + line_feed}" +
-              "[a3 \"\"] {a4} \"a5\" [b1 \"\"] ;b2 #{carriage_return + line_feed}" +
-              "b3 b4#{carriage_return + line_feed}" +
-              "b5 b6#{carriage_return + line_feed}" }
+          subject(:pbn_game_string) do
+            "{a1};a2#{carriage_return + line_feed}" \
+            "[a3 \"\"] {a4} \"a5\" [b1 \"\"] ;b2 #{carriage_return + line_feed}" \
+            "b3 b4#{carriage_return + line_feed}" \
+            "b5 b6#{carriage_return + line_feed}"
+          end
           it 'yields twice with the structures including their commentary and section data' do
             expect do |block|
               described_object.each_subgame(&block)
             end.to yield_successive_args(Subgame.new(%w(a1 a2), ['a3', ''], ['a4'], '"a5" '),
                                          Subgame.new([], ['b1', ''], ['b2 '],
-                                                     "b3 b4#{carriage_return + line_feed}" +
+                                                     "b3 b4#{carriage_return + line_feed}" \
                                                          "b5 b6#{carriage_return + line_feed}"))
           end
         end
@@ -278,6 +288,5 @@ module PortableBridgeNotation
         end
       end
     end
-
   end
 end

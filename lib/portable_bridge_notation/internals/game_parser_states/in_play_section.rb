@@ -3,8 +3,7 @@ module PortableBridgeNotation
   module Internals
     module GameParserStates
       class InPlaySection < GameParserState
-
-        def process_char(char)
+        def process_char(_char)
           game_parser.raise_error 'Play sections are complicated and not yet implemented!'
         end
       end

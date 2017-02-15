@@ -15,7 +15,7 @@ module PortableBridgeNotation
     end
   end
   class TestImportNonlisteningObserver < TestImportObserver
-    def with_unrecognized_observer_method(*args, &block)
+    def with_unrecognized_observer_method(*_args)
       @num_calls += 1
     end
   end
@@ -25,9 +25,8 @@ module PortableBridgeNotation
     context('with one dealt_card observer') do
       let(:dealt_card_observer) { TestImportListeningObserver.new }
       context('and one non-dealt_card observer') do
-
         let(:non_dealt_card_observer) { TestImportNonlisteningObserver.new }
-        # todo: test edge case with multiple \n's
+        # TODO: test edge case with multiple \n's
         it 'calls the sole declared method only on the proper observer' do
           described_object.attach_observer(dealt_card_observer)
           described_object.attach_observer(non_dealt_card_observer)

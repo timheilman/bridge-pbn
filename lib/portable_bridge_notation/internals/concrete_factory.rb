@@ -28,7 +28,7 @@ require_relative 'subgame_parsers/hand_string_parser'
 module PortableBridgeNotation
   module Internals
     class ConcreteFactory
-      def initialize subgame_builder = SubgameBuilder.new
+      def initialize(subgame_builder = SubgameBuilder.new)
         @subgame_builder = subgame_builder
       end
 
@@ -43,12 +43,13 @@ module PortableBridgeNotation
       end
 
       def make_game_parser_state(class_sym, enclosing_state = nil)
-        raise PortableBridgeNotationError.new('Must make a game parser prior to making states!') if @game_parser.nil?
+        raise PortableBridgeNotationError, 'Must make a game parser prior to making states!' if @game_parser.nil?
         GameParserStates.const_get(class_sym).new(
-            game_parser: @game_parser,
-            subgame_builder: @subgame_builder,
-            abstract_factory: self,
-            enclosing_state: enclosing_state)
+          game_parser: @game_parser,
+          subgame_builder: @subgame_builder,
+          abstract_factory: self,
+          enclosing_state: enclosing_state
+        )
       end
 
       def make_subgame_parser(observer, tag_name)
@@ -56,7 +57,7 @@ module PortableBridgeNotation
         begin
           subgame_parser_class_for_tag_name = SubgameParsers.const_get(tag_name + 'SubgameParser')
         rescue NameError
-          raise PortableBridgeNotationError.new "Unrecognized tag name: #{tag_name}"
+          raise PortableBridgeNotationError, "Unrecognized tag name: #{tag_name}"
         end
         subgame_parser_class_for_tag_name.new self, observer
       end

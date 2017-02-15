@@ -2,6 +2,7 @@ require_relative 'io_parser'
 require_relative 'subgame_builder'
 require_relative 'game_parser'
 require_relative 'portable_bridge_notation_error'
+require_relative 'observer_multiplexer'
 
 # all defined states should be required here
 require_relative 'game_parser_states/game_parser_state'
@@ -72,6 +73,9 @@ module PortableBridgeNotation
         PortableBridgeNotationError.new(error_string)
       end
 
+      def make_observer_multiplexer
+        ObserverMultiplexer.new
+      end
     end
   end
 end

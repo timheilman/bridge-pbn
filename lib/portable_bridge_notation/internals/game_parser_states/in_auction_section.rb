@@ -5,7 +5,7 @@ module PortableBridgeNotation
       class InAuctionSection < GameParserState
 
         def process_char char
-          mediator.raise_error 'Auction sections are complicated and not yet implemented!'
+          game_parser.raise_error 'Auction sections are complicated and not yet implemented!'
         end
       end
     end

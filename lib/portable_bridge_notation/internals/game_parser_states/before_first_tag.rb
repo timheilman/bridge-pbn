@@ -4,7 +4,7 @@ module PortableBridgeNotation
     module GameParserStates
       class BeforeFirstTag < OutsideTagAndSectionTemplate
         def add_comment(comment)
-          mediator.add_preceding_comment comment
+          subgame_builder.add_preceding_comment comment
         end
 
         def perhaps_yield

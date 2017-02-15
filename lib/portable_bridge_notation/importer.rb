@@ -29,12 +29,12 @@ module PortableBridgeNotation
 
     private
 
-    def initialize(logger: Logger.new(STDERR),
-                   subgame_builder: Internals::SubgameBuilder.new,
-                   subgame_parser_factory: Internals::SubgameParserFactory,
-                   game_parser_state_factory_class: Internals::GameParserStates::GameParserStateFactory,
-                   game_parser_class: Internals::GameParser,
-                   io_parser_class: Internals::IoParser)
+    def initialize(logger: Logger.new(STDERR), # passed in from outside
+                   subgame_builder: Internals::SubgameBuilder.new, # cleared between uses; singleton; lives per-import
+                   subgame_parser_factory: Internals::SubgameParserFactory, # good, I like this usage, and is a self. method: lives per-ruby-process
+                   game_parser_state_factory_class: Internals::GameParserStates::GameParserStateFactory, # bad: its c'tors args could be per-import, so it could be per-import
+                   game_parser_class: Internals::GameParser, # bad: lives per-game and not presently cleared; make live per-import
+                   io_parser_class: Internals::IoParser) # good:
       @observers = []
       @subgame_builder = subgame_builder
       @logger = logger
@@ -52,10 +52,10 @@ module PortableBridgeNotation
       game_parser.each_subgame do |subgame|
         tag_name = subgame.tagPair[0]
         begin
-          subgame_parser = @subgame_parser_factory.make_subgame_parser(self, tag_name)
+          subgame_parser = @subgame_parser_factory.make_subgame_parser(self, tag_name) #todo: break multiplexer off self
           subgame_parser.parse subgame
         rescue Internals::PortableBridgeNotationError => pbne # todo: ensure all exceptions raised during subgames are these
-          @logger.warn(pbne.to_s + "; ignoring tag name #{tag_name}")
+          @logger.warn("; ignoring tag name #{tag_name} due to error: #{pbne.to_s}")
         end
       end
       # todo: in order to have Note tag values when sections get parsed, we want to delay their parsing

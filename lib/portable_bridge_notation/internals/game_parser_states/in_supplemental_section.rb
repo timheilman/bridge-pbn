@@ -14,20 +14,20 @@ module PortableBridgeNotation
           case char
             when open_bracket
               finalize
-              mediator.yield_subgame
-              return mediator.make_game_parser_state(:BeforeTagName)
+              game_parser.yield_subgame
+              return game_parser_state_factory.make_game_parser_state(:BeforeTagName)
             when double_quote
-              return mediator.make_game_parser_state(:InString, self)
+              return game_parser_state_factory.make_game_parser_state(:InString, self)
             when continuing_nonstring_supp_sect_char
               @section << char
               return self
             else
-              mediator.raise_error "Unexpected character within a supplemental section: `#{char}'"
+              game_parser.raise_error "Unexpected character within a supplemental section: `#{char}'"
           end
         end
 
         def finalize
-          mediator.section = @section unless @section.empty?
+          subgame_builder.section = @section unless @section.empty?
         end
 
         def add_string(string)

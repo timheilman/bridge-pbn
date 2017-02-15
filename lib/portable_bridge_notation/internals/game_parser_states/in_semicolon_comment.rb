@@ -17,7 +17,7 @@ module PortableBridgeNotation
               return self
             when line_feed
               finalize
-              return mediator.next_state
+              return enclosing_state
             else
               perhaps_emit_cr
               @prev_char_was_cr = false
@@ -34,7 +34,7 @@ module PortableBridgeNotation
         end
 
         def finalize
-          mediator.add_comment(@comment)
+          enclosing_state.add_comment(@comment)
         end
       end
     end

@@ -14,18 +14,18 @@ module PortableBridgeNotation
               @tag_name << char
               return self
             when whitespace_allowed_in_games
-              mediator.add_tag_item(@tag_name)
-              return mediator.make_game_parser_state(:BeforeTagValue)
+              subgame_builder.add_tag_item(@tag_name)
+              return game_parser_state_factory.make_game_parser_state(:BeforeTagValue)
             when double_quote
-              mediator.add_tag_item(@tag_name)
-              return mediator.make_game_parser_state(:InString, mediator.make_game_parser_state(:BeforeTagClose))
+              subgame_builder.add_tag_item(@tag_name)
+              return game_parser_state_factory.make_game_parser_state(:InString, game_parser_state_factory.make_game_parser_state(:BeforeTagClose))
             else
-              mediator.raise_error "non-whitespace, non-name character found ending tag name: #{char}"
+              game_parser.raise_error "non-whitespace, non-name character found ending tag name: #{char}"
           end
         end
 
         def finalize
-          mediator.raise_error 'end of input with unfinished tag name'
+          game_parser.raise_error 'end of input with unfinished tag name'
         end
       end
     end

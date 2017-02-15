@@ -1,5 +1,4 @@
 # all defined states should be required here
-require_relative 'game_parser_state_mediator'
 require_relative 'game_parser_state'
 require_relative 'outside_tag_and_section_template'
 require_relative 'before_first_tag'
@@ -21,20 +20,17 @@ module PortableBridgeNotation
         attr_reader :game_parser
         attr_reader :subgame_builder
 
-        def initialize(game_parser:, subgame_builder:, game_parser_state_mediator_class:GameParserStateMediator)
+        def initialize(game_parser:, subgame_builder:)
           @game_parser = game_parser
           @subgame_builder = subgame_builder
-          @game_parser_state_mediator_class = game_parser_state_mediator_class
         end
 
-        def make_game_parser_state(class_sym, next_state = nil)
-          mediator = @game_parser_state_mediator_class.new(
+        def make_game_parser_state(class_sym, enclosing_state = nil)
+          GameParserStates.const_get(class_sym).new(
               game_parser: game_parser,
               subgame_builder: subgame_builder,
               game_parser_state_factory: self,
-              next_state: next_state
-          )
-          GameParserStates.const_get(class_sym).new(mediator)
+              enclosing_state: enclosing_state)
         end
       end
     end

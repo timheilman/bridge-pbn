@@ -11,8 +11,8 @@ module PortableBridgeNotation
         def process_char(char)
           case char
             when close_curly
-              mediator.add_comment(@comment)
-              return mediator.next_state
+              enclosing_state.add_comment(@comment)
+              return enclosing_state
             else
               @comment << char
               return self
@@ -20,7 +20,7 @@ module PortableBridgeNotation
         end
 
         def finalize
-          mediator.raise_error 'end of input within unclosed brace comment'
+          game_parser.raise_error 'end of input within unclosed brace comment'
         end
       end
     end

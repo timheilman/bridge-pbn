@@ -8,18 +8,18 @@ module PortableBridgeNotation
             when whitespace_allowed_in_games
               return self
             when close_bracket
-              return mediator.make_game_parser_state :BetweenTags
+              return game_parser_state_factory.make_game_parser_state :BetweenTags
             else
-              mediator.raise_error "Unexpected char other than whitespace or closing bracket: `#{char}'"
+              game_parser.raise_error "Unexpected char other than whitespace or closing bracket: `#{char}'"
           end
         end
 
         def finalize
-          mediator.raise_error 'Unexpected unclosed tag.'
+          game_parser.raise_error 'Unexpected unclosed tag.'
         end
 
         def add_string string
-          mediator.add_tag_item(string)
+          subgame_builder.add_tag_item(string)
         end
       end
     end

@@ -19,11 +19,11 @@ module PortableBridgeNotation
                 @escaped = false
                 @string << double_quote
               else
-                mediator.add_string(@string)
-                return mediator.next_state
+                enclosing_state.add_string(@string)
+                return enclosing_state
               end
             when tab, line_feed, vertical_tab, carriage_return
-              mediator.raise_error "PBN-valid but string-invalid ASCII control character. Decimal code point: #{char.ord}"
+              game_parser.raise_error "PBN-valid but string-invalid ASCII control character. Decimal code point: #{char.ord}"
             else
               @escaped = false
               @string << char
@@ -32,7 +32,7 @@ module PortableBridgeNotation
         end
 
         def finalize
-          mediator.raise_error "end of input in unclosed string"
+          game_parser.raise_error "end of input in unclosed string"
         end
 
       end

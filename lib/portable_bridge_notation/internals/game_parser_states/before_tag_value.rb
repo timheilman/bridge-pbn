@@ -9,14 +9,15 @@ module PortableBridgeNotation
             when whitespace_allowed_in_games
               return self
             when double_quote
-              return mediator.make_game_parser_state(:InString, mediator.make_game_parser_state(:BeforeTagClose))
+              return game_parser_state_factory.
+                  make_game_parser_state(:InString, game_parser_state_factory.make_game_parser_state(:BeforeTagClose))
             else
-              mediator.raise_error "Unexpected non-whitespace, non-double quote character: `#{char}'"
+              game_parser.raise_error "Unexpected non-whitespace, non-double quote character: `#{char}'"
           end
         end
 
         def finalize
-          mediator.raise_error 'end of input prior to tag value'
+          game_parser.raise_error 'end of input prior to tag value'
         end
 
       end

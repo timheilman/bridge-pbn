@@ -4,11 +4,11 @@ module PortableBridgeNotation
     module GameParserStates
       class BetweenTags < OutsideTagAndSectionTemplate
         def add_comment(comment)
-          mediator.add_following_comment comment
+          subgame_builder.add_following_comment comment
         end
 
         def perhaps_yield
-          mediator.yield_subgame
+          game_parser.yield_subgame
         end
 
         def section_tokens_allowed?

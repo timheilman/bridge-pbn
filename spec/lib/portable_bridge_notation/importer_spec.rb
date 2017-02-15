@@ -27,8 +27,8 @@ module PortableBridgeNotation
       # todo: test edge case with multiple \n's
       let(:deal_string) { "[Deal \"N:AKQJT98765432... .AKQJT98765432.. ..AKQJT98765432. ...AKQJT98765432\"]\n" }
       it 'calls the method only on the proper observer' do
-        described_object.attach(dealt_card_observer)
-        described_object.attach(non_dealt_card_observer)
+        described_object.attach_observer(dealt_card_observer)
+        described_object.attach_observer(non_dealt_card_observer)
         described_object.import(StringIO.new(deal_string))
 
         expect(dealt_card_observer.num_calls).to eq 52

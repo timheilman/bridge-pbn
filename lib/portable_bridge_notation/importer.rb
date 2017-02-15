@@ -9,8 +9,8 @@ module PortableBridgeNotation
     #todo: default-rubocop-comply for full repo
     #todo: rubocop as git pre-commit hook
 
-    def attach(importObserver)
-      @observers << importObserver
+    def attach_observer(observer)
+      @observers << observer
     end
 
     def import(io)
@@ -19,7 +19,7 @@ module PortableBridgeNotation
       end
     end
 
-    def create(logger: Logger.new(STDERR))
+    def self.create(logger: Logger.new(STDERR))
       new(logger: logger)
     end
 

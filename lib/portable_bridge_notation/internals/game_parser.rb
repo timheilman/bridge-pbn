@@ -1,5 +1,4 @@
 require_relative 'single_char_comparison_constants'
-require_relative 'portable_bridge_notation_error'
 module PortableBridgeNotation
   module Internals
     class GameParser
@@ -49,7 +48,7 @@ module PortableBridgeNotation
       end
 
       def raise_error(message = nil)
-        raise PortableBridgeNotationError.new("state: #{@state.to_s}; string: `#{@pbn_game_string}'; " +
+        raise @abstract_factory.make_error("state: #{@state.to_s}; string: `#{@pbn_game_string}'; " +
                                                   "char_index: #{@cur_char_index.to_s}; message: #{message}")
       end
 

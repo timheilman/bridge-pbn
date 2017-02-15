@@ -1,6 +1,7 @@
 require_relative 'io_parser'
 require_relative 'subgame_builder'
 require_relative 'game_parser'
+require_relative 'portable_bridge_notation_error'
 
 # all defined states should be required here
 require_relative 'game_parser_states/game_parser_state'
@@ -20,6 +21,8 @@ require_relative 'game_parser_states/in_supplemental_section'
 
 # all subgame parsers implemented should be required here
 require_relative 'subgame_parsers/deal_subgame_parser'
+require_relative 'subgame_parsers/deal_string_parser'
+require_relative 'subgame_parsers/hand_string_parser'
 
 module PortableBridgeNotation
   module Internals
@@ -54,7 +57,19 @@ module PortableBridgeNotation
         rescue NameError
           raise PortableBridgeNotationError.new "Unrecognized tag name: #{tag_name}"
         end
-        subgame_parser_class_for_tag_name.new(observer)
+        subgame_parser_class_for_tag_name.new(abstract_factory, observer)
+      end
+
+      def make_deal_string_parser(deal_string)
+        DealStringParser.new(self, deal_string)
+      end
+
+      def make_hand_string_parser(hand_string)
+        HandStringParser.new(hand_string)
+      end
+
+      def make_error(error_string)
+        PortableBridgeNotationError.new(error_string)
       end
 
     end

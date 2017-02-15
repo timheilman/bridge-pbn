@@ -1,13 +1,12 @@
-require_relative 'hand_string_parser'
 require_relative '../single_char_comparison_constants'
 module PortableBridgeNotation
   module Internals
     class DealStringParser
       include SingleCharComparisonConstants
 
-      def initialize(deal_string, hand_string_parser_class:HandStringParser)
+      def initialize(abstract_factory, deal_string)
+        @abstract_factory = abstract_factory
         @deal_string = deal_string
-        @hand_string_parser_class = hand_string_parser_class
       end
 
       def yield_cards(&block)
@@ -33,7 +32,7 @@ module PortableBridgeNotation
       end
 
       def yield_hand
-        @hand_string_parser_class.new(hand_string).yield_cards do |suit:, rank: |
+        @abstract_factory.make_hand_string_parser(hand_string).yield_cards do |suit:, rank: |
           yield direction: direction_char, suit: suit, rank: rank
         end
       end
@@ -46,7 +45,7 @@ module PortableBridgeNotation
       end
 
       def raise_error initial_dir
-        raise ArgumentError.new("bad first position character for pgn deal string: `#{initial_dir}'")
+        raise @abstract_factory.make_error("bad first position character for pgn deal string: `#{initial_dir}'")
       end
 
     end

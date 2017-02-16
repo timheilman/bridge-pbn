@@ -14,7 +14,7 @@ module PortableBridgeNotation
     end
 
     def attach_observer(observer)
-      @observer_multiplexer.add_observer(observer)
+      @observer_broadcaster.add_observer(observer)
     end
 
     def import(io)
@@ -29,7 +29,7 @@ module PortableBridgeNotation
                    abstract_factory: Internals::ConcreteFactory.new)
       @logger = logger
       @abstract_factory = abstract_factory
-      @observer_multiplexer = abstract_factory.make_observer_multiplexer
+      @observer_broadcaster = abstract_factory.make_observer_broadcaster
     end
 
     def import_game(game)
@@ -37,7 +37,7 @@ module PortableBridgeNotation
       game_parser.each_subgame do |subgame|
         tag_name = subgame.tagPair[0]
         begin
-          subgame_parser = @abstract_factory.make_subgame_parser(@observer_multiplexer, tag_name)
+          subgame_parser = @abstract_factory.make_subgame_parser(@observer_broadcaster, tag_name)
           subgame_parser.parse subgame
         rescue Internals::PortableBridgeNotationError => pbne
           @logger.warn("; ignoring tag name `#{tag_name}' due to error: `#{pbne}'")

@@ -2,7 +2,8 @@ require_relative 'io_parser'
 require_relative 'subgame_builder'
 require_relative 'game_parser'
 require_relative 'portable_bridge_notation_error'
-require_relative 'observer_multiplexer'
+require_relative 'observer_broadcaster'
+#### WTF why are the errors always so unhelpful BECAUSE NO TYPES
 
 # all defined states should be required here
 require_relative 'game_parser_states/game_parser_state'
@@ -74,8 +75,8 @@ module PortableBridgeNotation
         PortableBridgeNotationError.new error_string
       end
 
-      def make_observer_multiplexer
-        ObserverMultiplexer.new
+      def make_observer_broadcaster
+        ObserverBroadcaster.new
       end
     end
   end

@@ -6,6 +6,3 @@ Metrics/LineLength:
 # but at the cost that the check is turned off for all methods of this name.  That's OK.
 Metrics/BlockLength:
   ExcludedMethods: ['describe', 'context']
-
-#Documentation:
-#  Enabled: false

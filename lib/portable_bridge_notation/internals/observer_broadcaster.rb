@@ -1,6 +1,6 @@
 module PortableBridgeNotation
   module Internals
-    class ObserverMultiplexer
+    class ObserverBroadcaster
       def initialize
         @observers = []
       end

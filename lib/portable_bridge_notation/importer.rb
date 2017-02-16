@@ -7,7 +7,6 @@ module PortableBridgeNotation
   # TODO: figure out how rdoc works and put some docs here (to satisfy rubocop)
   class Importer
     # TODO: default-rubocop-comply for full repo
-    # todo: rubocop as git pre-commit hook
 
     def self.create(logger: Logger.new(STDERR))
       new(logger: logger)

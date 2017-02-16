@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+require 'english'
 require 'rubocop'
 
 ADDED_OR_MODIFIED = /A|AM|^M/

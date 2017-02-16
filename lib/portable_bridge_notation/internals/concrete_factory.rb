@@ -3,7 +3,6 @@ require_relative 'subgame_builder'
 require_relative 'game_parser'
 require_relative 'portable_bridge_notation_error'
 require_relative 'observer_broadcaster'
-#### WTF why are the errors always so unhelpful BECAUSE NO TYPES
 
 # all defined states should be required here
 require_relative 'game_parser_states/game_parser_state'

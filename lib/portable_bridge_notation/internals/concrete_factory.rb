@@ -54,13 +54,13 @@ module PortableBridgeNotation
       end
 
       def make_subgame_parser(observer, tag_name)
-        subgame_parser_class_for_tag_name = ''
-        begin
-          subgame_parser_class_for_tag_name = SubgameParsers.const_get(tag_name + 'SubgameParser')
-        rescue NameError
-          raise PortableBridgeNotationError, "Unrecognized tag name: #{tag_name}"
-        end
-        subgame_parser_class_for_tag_name.new self, observer
+        get_subgame_parser_class_for_tag_name(tag_name).new self, observer
+      end
+
+      def get_subgame_parser_class_for_tag_name(tag_name)
+        return SubgameParsers.const_get(tag_name + 'SubgameParser')
+      rescue NameError
+        raise PortableBridgeNotationError, "Unrecognized tag name: #{tag_name}"
       end
 
       def make_deal_string_parser(deal_string)

@@ -17,6 +17,7 @@ module PortableBridgeNotation
     end
 
     def import(io)
+      # TODO: site to TDD default observer(s) to generate full api structure
       @abstract_factory.make_io_parser(io).each_game_string do |game|
         import_game game
       end

@@ -117,7 +117,6 @@ module PortableBridgeNotation
 
   Game = Struct.new(:initial_comments) do
     KNOWN_TAG_SET.each do |known_tag|
-      known_tag = known_tag.to_s
       define_method(known_tag.to_s) { instance_variable_get(known_tag.to_s) }
       define_method("#{known_tag}_comments") { instance_variable_get("#{known_tag}_comments") }
       define_method("#{known_tag}=") { |value| instance_variable_set(known_tag, value) }

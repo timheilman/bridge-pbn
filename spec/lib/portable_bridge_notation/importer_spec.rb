@@ -1,4 +1,4 @@
-require_relative '../../../lib/portable_bridge_notation/importer'
+require_relative '../../../lib/portable_bridge_notation/api/importer'
 require 'spec_helper'
 module PortableBridgeNotation
   # intent: use code in tests that client will actually-use: standard Ruby declarations

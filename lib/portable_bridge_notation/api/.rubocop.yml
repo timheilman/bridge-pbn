@@ -1,0 +1,7 @@
+inherit_from: ../../../.rubocop.yml
+# intent: turning off the counting of commented-out-lines failed for me for this metric;
+# being unable to turn off counting of commented-out lines, and also unable to turn off
+# counting for specific files, I'm thus resorting to placing files with API-length comment
+# documentation into this directory to permit such large modules
+Metrics/ModuleLength:
+    Max: 20000

@@ -1,7 +1,7 @@
 require 'logger'
 
-require_relative 'internals/concrete_factory'
-require_relative 'internals/portable_bridge_notation_error'
+require_relative '../internals/concrete_factory'
+require_relative '../internals/portable_bridge_notation_error'
 
 module PortableBridgeNotation
   # TODO: figure out how rdoc works and put some docs here (to satisfy rubocop)

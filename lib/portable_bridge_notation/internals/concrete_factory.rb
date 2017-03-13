@@ -3,6 +3,8 @@ require_relative 'subgame_builder'
 require_relative 'game_parser'
 require_relative 'portable_bridge_notation_error'
 require_relative 'observer_broadcaster'
+require_relative '../api/game'
+require_relative 'default_game_parser_listener'
 
 # all defined states should be required here
 require_relative 'game_parser_states/game_parser_state'
@@ -87,6 +89,14 @@ module PortableBridgeNotation
       # Spring/Guice-sense Prototype-Scoped
       def make_observer_broadcaster
         ObserverBroadcaster.new
+      end
+
+      def make_game_parser_listener
+        DefaultGameParserListener.new self
+      end
+
+      def make_game
+        Api::Game.new
       end
     end
   end

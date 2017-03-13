@@ -32,7 +32,9 @@ module PortableBridgeNotation
       :south, # 3.4.8 player name(s) as in :west
       :dealer, # 3.4.9 "N", "S", "E" or "W"
       :vulnerable, # 3.4.10 "None", ("Love", "-"), "NS", "EW", "All", ("Both")
-      :deal, # 3.4.11 Ruby Struct Deal described below
+      :deal, # 3.4.11 Ruby hash from single-char among "NSEW" to
+      # (cont'd) (a hash from single-char among "CDHS" to string of distinct single-char ranks among "AKQJT98765432")
+
       :scoring, # 3.4.12 open-ended; see spec for examples
       :declarer, # 3.4.13 Ruby Struct Declarer described below
       :contract, # 3.4.14 "Pass" or Ruby Struct Contract described below
@@ -118,10 +120,10 @@ module PortableBridgeNotation
 
     Game = Struct.new(:initial_comments) do
       KNOWN_TAG_SET.each do |known_tag|
-        define_method(known_tag.to_s) { instance_variable_get(known_tag.to_s) }
-        define_method("#{known_tag}_comments") { instance_variable_get("#{known_tag}_comments") }
-        define_method("#{known_tag}=") { |value| instance_variable_set(known_tag, value) }
-        define_method("#{known_tag}_comments=") { |value| instance_variable_set("#{known_tag}_comments", value) }
+        define_method(known_tag.to_s) { instance_variable_get("@#{known_tag}") }
+        define_method("#{known_tag}_comments") { instance_variable_get("@#{known_tag}_comments") }
+        define_method("#{known_tag}=") { |value| instance_variable_set("@#{known_tag}", value) }
+        define_method("#{known_tag}_comments=") { |value| instance_variable_set("@#{known_tag}_comments", value) }
       end
 
       def initialize
@@ -130,8 +132,8 @@ module PortableBridgeNotation
         # for all outside-tag-pair-and-special-section commentary
         @initial_comments = []
         KNOWN_TAG_SET.each do |known_tag|
-          instance_variable_set(known_tag, nil)
-          instance_variable_set("#{known_tag}_comments", [])
+          instance_variable_set("@#{known_tag}", nil)
+          instance_variable_set("@#{known_tag}_comments", [])
         end
       end
     end
@@ -141,10 +143,6 @@ module PortableBridgeNotation
 
     # local time for :site, 24-hour clock
     Time = Struct.new(:hours, :minutes, :seconds)
-
-    # differs only in physical structure from PBN: Ruby is happy to name the hands by direction
-    # :ranks_for_suit hash from single-char among "CDHS" to string of distinct single-char ranks among "AKQJT98765432"
-    Deal = Struct.new(:initial_direction, :ranks_for_suit)
 
     # "N", "S", "E" or "W" for direction
     Declarer = Struct.new(:direction, :are_dummy_and_declarer_swapped)

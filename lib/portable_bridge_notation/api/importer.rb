@@ -4,18 +4,24 @@ require_relative '../internals/concrete_factory'
 require_relative '../internals/portable_bridge_notation_error'
 
 module PortableBridgeNotation
-  # TODO: figure out how rdoc works and put some docs here (to satisfy rubocop)
+  ##
+  # Class for importing Portable Bridge Notation data
   class Importer
-    # TODO: default-rubocop-comply for full repo
-
+    ##
+    # Provide an instance. Parsing problems will be reported to client's logger, if provided
     def self.create(logger: Logger.new(STDERR))
       new(logger: logger)
     end
 
+    ##
+    # Attach an observer for client-based parsing (and potentially disregard the yields from #import)
     def attach_observer(observer)
       @observer_broadcaster.add_observer(observer)
     end
 
+    ##
+    # Invokes methods on observers attached with #attach_observer which respond_to specific methods called
+    # by SubgameParsers.  Yields one Game per game provided by the io.
     def import(io)
       # TODO: site to TDD default observer(s) to generate full api structure
       @abstract_factory.make_io_parser(io).each_game_string do |game|

@@ -143,7 +143,7 @@ module PortableBridgeNotation
     Time = Struct.new(:hours, :minutes, :seconds)
 
     # differs only in physical structure from PBN: Ruby is happy to name the hands by direction
-    # :ranks_for_suit hash from single-char among "CDHS" to array of distinct single-char ranks among "AKQJT98765432"
+    # :ranks_for_suit hash from single-char among "CDHS" to string of distinct single-char ranks among "AKQJT98765432"
     Deal = Struct.new(:initial_direction, :ranks_for_suit)
 
     # "N", "S", "E" or "W" for direction

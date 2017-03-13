@@ -1,7 +1,7 @@
 require 'logger'
 
-require_relative 'internals/concrete_factory'
-require_relative 'internals/portable_bridge_notation_error'
+require_relative '../internals/concrete_factory'
+require_relative '../internals/portable_bridge_notation_error'
 
 module PortableBridgeNotation
   # TODO: figure out how rdoc works and put some docs here (to satisfy rubocop)
@@ -17,6 +17,7 @@ module PortableBridgeNotation
     end
 
     def import(io)
+      # TODO: site to TDD default observer(s) to generate full api structure
       @abstract_factory.make_io_parser(io).each_game_string do |game|
         import_game game
       end

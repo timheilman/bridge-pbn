@@ -35,6 +35,7 @@ module PortableBridgeNotation
         end
 
         def add_string(string)
+          # TODO: TDD bug here: double quotes and backslashes aren't forwarded properly for sections
           @section << double_quote
           @section << string
           @section << double_quote

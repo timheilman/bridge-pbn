@@ -1,0 +1,406 @@
+% ==================== game 1 ====================
+%
+% The intention of this pbn file is to check the PBN verifier.
+% The games show the possible usage of the PBN standard.
+% The file does not contain errors against the PBN standard 1.0 .
+%
+% A simple game; with demo rest-of-line comments
+%
+[Event "International Amsterdam Airport Schiphol Bridgetournament"]
+[Site "Amsterdam, The Netherlands NLD"]  ; rest-of-line IDENT
+[Date "1995.06.10"]
+[Board "1"]
+[West "Podgor"]
+[North "Westra"]
+[East "Kalish"]
+[South "Leufkens"]
+[Dealer "N"]
+[Vulnerable "None"]
+[Deal "N:.63.AKQ987.A9732 A8654.KQ5.T.QJT6 J973.J98742.3.K4 KQT2.AT.J6542.85"]
+[Declarer "S"]
+[Contract "5HX"]
+[Result "9"]
+{
+                S
+                H 6 3
+                D A K Q 9 8 7
+                C A 9 7 3 2
+S K Q 10 2                      S A 8 6 5 4
+H A 10                          H K Q 5
+D J 6 5 4 2                     D 10
+C 8 5                           C Q J 10 6
+                S J 9 7 3
+                H J 9 8 7 4 2
+                D 3
+                C K 4
+}
+[Auction "N"]
+1D      1S 3H =1= 4S  ; end-of-line AUCTION
+4NT =2= X  Pass   Pass
+5C      X  5H     X
+AP
+[Note "1: non-forcing 6-9 points, 6-card"]
+[Note "2: two colors: clubs and diamonds"]
+[Play "W"]
+SK H3 S4 S3     ; end-of-line PLAY
+C5 C2 C6 CK
+S2 H6 S5 S7
+C8 CA CT C4
+D2 DA DT D3
+D4 DK H5 H7
+-  -  -  H2
+*
+
+% ==================== game 2 ====================
+% Same game; no cards for W/E; demo (nonsense) comments
+%
+[Event "2 International Amsterdam Airport Schiphol Bridgetournament"]
+[Site "Amsterdam, The Netherlands NLD"]
+[Date "1995.06.10"]
+[Board "1"]
+[West "Podgor"]
+[North "Westra"]
+[East "Kalish"]
+[South "Leufkens"]
+[Dealer "N"]
+[Vulnerable "Love"]
+[Deal "W:- .63.AKQ987.A9732 - J973.J98742.3.K4"]
+[Declarer "S"]
+[Contract "5HX"]
+[Result "NS 9 EW 4"]
+{
+                S
+                H 6 3
+                D A K Q 9 8 7
+                C A 9 7 3 2
+S K Q 10 2                      S A 8 6 5 4
+H A 10                          H K Q 5
+D J 6 5 4 2                     D 10
+C 8 5                           C Q J 10 6
+                S J 9 7 3
+                H J 9 8 7 4 2
+                D 3
+                C K 4
+}
+[Auction "W"]
+- 1D 1S 3H {A1} {A2} ! {B1} {B2} $13 {C1} {C2} =1= {D1} {D2}
+4S 4NT =2= X Pass
+Pass 5C X 5H
+X AP
+[Note "1: non-forcing 6-9 points, 6-card"]
+[Note "2: two colors: clubs and diamonds"]
+[Play "W"]
+SK {A1} {A2} ! {B1} {B2} $14 {C1} {C2} =1= {D1} {D2} H3 S4 S3
+C5 C2 C6 CK
+S2 H6 S5 S7
+C8 CA CT C4
+D2 DA DT D3
+D4 DK H5 H7
+-  -  -  H2
+*
+[Note "1:highest of series"]
+
+% ==================== game 3 ====================
+% Game with all irregularity situations
+%
+[Event "Test illegals"]
+[Dealer "N"]
+[Vulnerable "None"]
+[Deal "W:KQT2.AT.J6542.85 .63.AKQ987.A9732 A8654.KQ5.T.QJT6 J973.J98742.3.K4"]
+[Declarer "^S"]
+[Contract "5HX"]
+[Result "^5"]
+[Auction "W"]
+- ^S 1D ^I 1C
+4S ^I 3NT ^S ^S
+X 5H X AP
+[Play "W"]
+SK H3 S4 S3
+C5 C2 ^R S5 ^L CK
+S2 H6 ^R C6 S7
+C8 CA CT C4
+D2 DA DT D3
+D4 DK H5 H7
+-  -  -  H2
+*
+
+% ==================== game 4 ====================
+% Games without deal; tests ISO 8859/1 characters; various tag values
+%
+[South "   ¡ ¢ £ ¤ ¥ ¦ § ¨ © ª « ¬ ­ ® ¯ ° ± ² ³ ´ µ ¶ · ¸ ¹ º » ¼ ½ ¾ ¿"]
+[West  " À Á Â Ã Ä Å Æ Ç È É Ê Ë Ì Í Î Ï Ð Ñ Ò Ó Ô Õ Ö × Ø Ù Ú Û Ü Ý Þ ß"]
+[North " à á â ã ä å æ ç è é ê ë ì í î ï ð ñ ò ó ô õ ö ÷ ø ù ú û ü ý þ ÿ"]
+[East  "\\\"\\\"\"\\  \a"]
+[Result         "EW 4 NS 9"]
+[Annotator      "Annotator"]
+[AnnotatorNA    "AnnotatorNA"]
+[BidSystemEW    "BidSystemEW"]
+[BidSystemNS    "BidSystemNS"]
+[Board          "13"]
+[Competition    "Chicago"]
+[Description    "Description"]
+[EastNA         "EastNA"]
+[EastType       "human"]
+[EventDate      "1997.10.12"]
+[EventSponsor   "EventSponsor"]
+[FrenchMP       "No"]
+[Generator      "by hand"]
+[Hidden         "W"]
+[HomeTeam       "NL"]
+[Mode           "EMB"]
+[NorthNA        "NorthNA"]
+[NorthType      "human"]
+[Room           "Open"]
+[Round          "1.A.2"]
+[ScoreRubber    "300/40"]
+[Scoring        "Chicago"]
+[Section        "Section"]
+[SouthNA        "SouthNA"]
+[SouthType      "human"]
+[Stage          "Stage"]
+[Table          "1"]
+[Termination    "unterminated"]
+[Time           "23:59:59"]
+[TimeCall       "10"]
+[TimeCard       "10"]
+[TimeControl    "4/30"]
+[UTCDate        "2000.01.01"]
+[UTCTime        "23:59:59"]
+[VisitTeam      "USA"]
+[Vulnerable     "-"]
+[WestNA         "WestNA"]
+[WestType       "human"]
+
+% ==================== game 5 ====================
+[Result         "EW 4"]
+[Competition    "Individuals"]
+[EastType       "program"]
+[FrenchMP       "Yes"]
+[Hidden         "N"]
+[Mode           "IBS"]
+[NorthType      "program"]
+[Room           "Closed"]
+[ScoreIMP       "EW 10 NS 0"]
+[Scoring        "IMP_1948"]
+[SouthType      "program"]
+[Vulnerable     "All"]
+[WestType       "program"]
+
+% ==================== game 6 ====================
+[Result         "NS 9"]
+[Competition    "Pairs"]
+[Hidden         "E"]
+[Mode           "OKB"]
+[ScoreIMP       "NS 10"]
+[Scoring        "EMP"]
+[Vulnerable     "All"]
+
+% ==================== game 7 ====================
+[Competition    "Teams"]
+[Hidden         "S"]
+[Mode           "TABLE"]
+[ScoreRubber    "EW 300/40"]
+[Scoring        "Rubber"]
+[Vulnerable     "Both"]
+
+% ==================== game 8 ====================
+[Competition    "Rubber"]
+[Hidden         "EWNS"]
+[Mode           "TC"]
+[ScoreIMP       "NS 10 EW 0"]
+[Scoring        "IMP_1961"]
+[Vulnerable     "NS"]
+
+% ==================== game 9 ====================
+[ScoreIMP       "10"]
+[Scoring        "IMP"]
+[Vulnerable     "EW"]
+
+% ==================== game 10 ====================
+[Score          "-1000"]
+[Scoring        "OldMP"]
+
+% ==================== game 11 ====================
+[ScoreIMP       "EW -2.5"]
+[Scoring        "BAM"]
+
+% ==================== game 12 ====================
+[ScoreRubber    "EW 300/40 NS 50 / 70  "]
+[Scoring        "Rubber"]
+
+% ==================== game 13 ====================
+% Games without deal; tag ScorePercentage
+%
+[ScorePercentage "0."]
+
+% ==================== game 14 ====================
+[ScorePercentage "100."]
+
+% ==================== game 15 ====================
+[ScorePercentage "100.0"]
+
+% ==================== game 16 ====================
+[ScorePercentage "0.1000"]
+
+% ==================== game 17 ====================
+[ScorePercentage "EW 50. NS 50.0"]
+
+% ==================== game 18 ====================
+% This is not a game.
+
+% Isolated comment, not a game
+%
+{
+No game
+}
+
+% Game without deal, but with Auction
+%
+[Dealer "S"]
+[Declarer "^N"]
+[Contract "1C"]
+[Auction "S"]
+1C AP
+
+% ==================== game 19 ====================
+% Game without deal, but with Contract
+%
+[Contract "Pass"]
+
+% ==================== game 20 ====================
+% No space between tag name and tag value
+%
+[Event"No space after 'event'"]
+
+% ==================== game 21 ====================
+% Spaces before tag name and after tag value
+%
+[   Event"Spaces after '[' and before ']'"   ]
+
+% ==================== game 22 ====================
+% Tokens at new lines
+%
+ [
+   Event
+         "use new lines"
+                         ]
+
+% ==================== game 23 ====================
+% 2 tag on same line
+%
+[Event "my event"] [Date "1998.03.21"]
+
+% ==================== game 24 ====================
+% Game with strings of maximum line size
+%
+{
+12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234
+}
+[Event"An extremely long line of 255 characters8901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012"]
+{
+12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234
+}
+
+% ==================== game 25 ====================
+% Test of comment
+%
+{ Initial game comment } ; rest of game comment
+{ 2nd game comment }
+[West "Podgor"] { West comment } ; rest of West comment
+{ 2nd West comment }
+[Event "test comment"] { Event comment } ; rest of Event comment
+{ 2nd Event comment }
+[South "Leufkens"]
+[Dealer "N"]
+[Vulnerable "Love"]
+[Deal "W:- .63.AKQ987.A9732 - J973.J98742.3.K4"] ; rest of Deal comment
+{
+                S
+                H 6 3
+                D A K Q 9 8 7
+                C A 9 7 3 2
+S K Q 10 2                      S A 8 6 5 4
+H A 10                          H K Q 5
+D J 6 5 4 2                     D 10
+C 8 5                           C Q J 10 6
+                S J 9 7 3
+                H J 9 8 7 4 2
+                D 3
+                C K 4
+}
+[Score "-300"] { Score comment } ; rest of Score comment
+{ 2nd Score comment }
+[Declarer "S"]
+[Contract "5HX"]
+[Result "NS 9 EW 4"]
+[Auction "W"] { Auction comment } ; rest of Auction comment
+{ 2nd Auction comment }
+- 1D 1S 3H {A1} {A2} ?! {B1} {B2} $13 {C1} {C2} =1= {D1} {D2}
+4S =3= 4NT =2= X Pass
+Pass 5C X 5H
+X =3= AP
+[Note "1: non-forcing 6-9 points, 6-card"] { Note 1a comment } ; rest of Note 1a comment
+{ 2nd Note 1a comment }
+[Note "2: two colors: clubs and diamonds"] { Note 2a comment } ; rest of Note 2a comment
+{ 2nd Note 2a comment }
+[Note "3: test note"] { Note 3a comment } ; rest of Note 3a comment
+{ 2nd Note 3a comment }
+[Play "W"] { Play comment } ; rest of Play comment
+{ 2nd Play comment }
+SK {A1} {A2} ?! {B1} {B2} $14 {C1} {C2} =1= {D1} {D2} H3 S4 S3
+C5 C2 C6 CK =2=
+S2 H6 S5 S7 =2=
+C8 CA CT C4
+D2 DA DT D3
+D4 DK H5 H7
+-  -  -  H2 =2=
+*
+[Note "1:highest of series"]
+{ Note 1b comment } ; rest of Note 1b comment
+{ 2nd Note 1b comment }
+[Note "2: test note"] { Note 2b comment } ; rest of Note 2b comment
+{ 2nd Note 2b comment }
+[East "Kalish"] { East comment } ; rest of East comment
+{ 2nd East comment }
+
+% ==================== game 26 ====================
+% Test all pass
+%
+[Dealer "S"]
+[Auction "S"]
+AP
+
+% ==================== game 27 ====================
+% Test only deal
+%
+[Deal "N:.63.AKQ987.A9732 A8654.KQ5.T.QJT6 J973.J98742.3.K4 KQT2.AT.J6542.85"]
+
+% ==================== game 28 ====================
+% Games to test empty tag values
+%
+[Dealer ""]
+[Vulnerable ""]
+[Deal "N:.63.AKQ987.A9732 A8654.KQ5.T.QJT6 J973.J98742.3.K4 KQT2.AT.J6542.85"]
+[Declarer ""]
+[Contract ""]
+[Result ""]
+
+% ==================== game 29 ====================
+[Dealer ""]
+[Vulnerable ""]
+[Deal "N:.63.AKQ987.A9732 A8654.KQ5.T.QJT6 J973.J98742.3.K4 KQT2.AT.J6542.85"]
+[Declarer ""]
+[Contract ""]
+
+% ==================== game 30 ====================
+[Dealer ""]
+[Vulnerable ""]
+[Deal "N:.63.AKQ987.A9732 A8654.KQ5.T.QJT6 J973.J98742.3.K4 KQT2.AT.J6542.85"]
+[Contract ""]
+
+% ==================== game 31 ====================
+[Dealer ""]
+[Vulnerable ""]
+[Deal "N:.63.AKQ987.A9732 A8654.KQ5.T.QJT6 J973.J98742.3.K4 KQT2.AT.J6542.85"]
+[Declarer ""]
+

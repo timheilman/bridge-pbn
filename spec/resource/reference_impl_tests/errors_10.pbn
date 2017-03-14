@@ -1,0 +1,957 @@
+% ==================== game 1 ====================
+%
+% The intention of this pbn file is to check the PBN verifier.
+% The file contains many errors against the PBN standard 1.0 .
+%
+% New tag name
+[Wrong "Unknown tag"]
+
+% ==================== game 2 ====================
+% No tag value
+[Event]
+
+% ==================== game 3 ====================
+% Bad character
+[Event No_quotes]
+
+% ==================== game 4 ====================
+% Bad character
+[Event "Here is a tab	"]
+
+% ==================== game 5 ====================
+% No integer tag value
+[Round "&"]
+
+% ==================== game 6 ====================
+% No non-negative integer tag value
+[Round "-1"]
+
+% ==================== game 7 ====================
+% Bad date character
+[Date "1995.o6.10"]
+
+% ==================== game 8 ====================
+% Bad date format
+[Date "95.06.10"]
+
+% ==================== game 9 ====================
+% Bad side
+[Dealer "Black"]
+
+% ==================== game 10 ====================
+% Wrong tag value
+[Vulnerable "E"]
+
+% ==================== game 11 ====================
+% Bad rank
+[Deal "W:vKQT2.AT.J6542.85 .63.AKQ987.A9732 A8654.KQ5.T.QJT6 J973.J98742.3.K4"]
+
+% ==================== game 12 ====================
+% Wrong tag value: Double SK
+[Deal "W:KQT2.AT.J6542.85 K.63.AKQ987.A973 A8654.KQ5.T.QJT6 J973.J98742.3.K4"]
+
+% ==================== game 13 ====================
+% Bad deal: West has 14 cards
+[Deal "W:KQT2.AT.J6542.852 .63.AKQ987.A973 A8654.KQ5.T.QJT6 J973.J98742.3.K4"]
+
+% ==================== game 14 ====================
+% Bad deal: West has 12 cards, others have 13 cards
+[Deal "W:QT2.AT.J6542.85 .63.AKQ987.A9732 A8654.KQ5.T.QJT6 J973.J98742.3.K4"]
+
+% ==================== game 15 ====================
+% Bad deal: West has 12 cards, others have 13 cards
+[Deal "W:QT2.AT.J6542.85 - A8654.KQ5.T.QJT6 -"]
+
+% ==================== game 16 ====================
+% Wrong tag value: Double space
+[Deal "W:KQT2.AT.J6542.85  - - -"]
+
+% ==================== game 17 ====================
+% Bad deal: West has 14 cards
+[Deal "W:KQT2.AT.J6542.852 - - -"]
+
+% ==================== game 18 ====================
+% Bad deal: No cards
+[Deal "W:- - - -"]
+
+% ==================== game 19 ====================
+% Bad tag value
+[Declarer "White"]
+
+% ==================== game 20 ====================
+% Bad tag value
+[Contract "5Hearts"]
+
+% ==================== game 21 ====================
+% Bad trump
+[Contract "5NoTrump"]
+
+% ==================== game 22 ====================
+% Bad number: Bad result format
+[Result "C-2"]
+
+% ==================== game 23 ====================
+% Wrong character: Characters do not obey syntax
+bad characters
+
+% Bad section
+[Note "1:Bad section"]
+
+% ==================== game 24 ====================
+% No dealer
+[Auction "W"]
+
+% ==================== game 25 ====================
+% No deal
+[Declarer "S"]
+[Contract "5HX"]
+[Play "W"]
+
+% ==================== game 26 ====================
+% No declarer
+[Deal "W:KQT2.AT.J6542.85 .63.AKQ987.A9732 A8654.KQ5.T.QJT6 J973.J98742.3.K4"]
+[Contract "5HX"]
+[Play "W"]
+
+% ==================== game 27 ====================
+% No contract
+[Deal "W:KQT2.AT.J6542.85 .63.AKQ987.A9732 A8654.KQ5.T.QJT6 J973.J98742.3.K4"]
+[Declarer "S"]
+[Play "W"]
+
+% ==================== game 28 ====================
+[Event "1 International Amsterdam Airport Schiphol Bridgetournament"]
+[Site "Amsterdam, The Netherlands NLD"]
+%
+% Tag exists already
+[Site "Amsterdam, The Netherlands NLD"]
+[Date "1995.06.10"]
+[Round "1"]
+[Board "1"]
+[West "Podgor"]
+[North "Westra"]
+[East "Kalish"]
+[South "Leufkens"]
+[Dealer "N"]
+[Vulnerable "-"]
+[Deal "W:KQT2.AT.J6542.85 .63.AKQ987.A9732 A8654.KQ5.T.QJT6 J973.J98742.3.K4"]
+[Declarer "S"]
+[Contract "5HX"]
+[Result "9"]
+{
+                S
+                H 6 3
+                D A K Q 9 8 7
+                C A 9 7 3 2
+S K Q 10 2                      S A 8 6 5 4
+H A 10                          H K Q 5
+D J 6 5 4 2                     D 10
+C 8 5                           C Q J 10 6
+                S J 9 7 3
+                H J 9 8 7 4 2
+                D 3
+                C K 4
+}
+%
+[Auction "W"]
+%
+% Bad side: Dealer north must bid first
+1D
+
+% ==================== game 29 ====================
+[Event "New auction"]
+[Dealer "N"]
+[Vulnerable "-"]
+[Auction "W"]
+%
+% Bad side: Dealer north must bid first
+- - 1D
+
+% ==================== game 30 ====================
+[Event "New auction"]
+[Dealer "N"]
+[Vulnerable "-"]
+[Auction "W"]
+%
+% Bad trump
+- 1
+
+% ==================== game 31 ====================
+[Event "New auction"]
+[Dealer "N"]
+[Vulnerable "-"]
+[Auction "W"]
+%
+% Bad trump
+- 1N
+
+% ==================== game 32 ====================
+[Event "New auction"]
+[Dealer "N"]
+[Vulnerable "-"]
+[Auction "W"]
+%
+% Bad call: 1C
+- 1D 1C
+
+% ==================== game 33 ====================
+[Event "New auction"]
+[Dealer "N"]
+[Vulnerable "-"]
+[Auction "W"]
+%
+% Bad call: X
+- 1D Pass X
+
+% ==================== game 34 ====================
+[Event "New auction"]
+[Dealer "N"]
+[Vulnerable "-"]
+[Auction "W"]
+- 1D X Pass
+%
+% Bad call: XX
+XX
+
+% ==================== game 35 ====================
+[Event "New auction"]
+[Dealer "N"]
+[Vulnerable "-"]
+[Auction "N"]
+%
+% Double suffix
+1C !!!
+%
+% Double suffix
+1D ! !
+%
+% Double nag
+1H ! $3
+%
+% Double nag
+1S $3 !
+%
+% Bad nag
+1NT $7
+%
+% Bad nag
+2C $256
+%
+% Bad number
+2D $a
+%
+% Bad note
+2H =a=
+%
+% Bad note
+2S =44=
+%
+% Double note
+2NT?=1= =2=
+%
+% No note for =1=
+% No note for =2=
+
+% ==================== game 36 ====================
+% Bad declarer
+[Dealer "S"]
+[Declarer "N"]
+[Contract "1C"]
+[Auction "S"]
+1C AP
+
+% ==================== game 37 ====================
+% Bad declarer
+[Dealer "S"]
+[Declarer "W"]
+[Contract "1C"]
+[Auction "S"]
+1C AP
+
+% ==================== game 38 ====================
+% Bad declarer
+[Dealer "S"]
+[Declarer "^S"]
+[Contract "1C"]
+[Auction "S"]
+1C AP
+
+% ==================== game 39 ====================
+% Bad trump
+[Dealer "S"]
+[Declarer "S"]
+[Contract "1D"]
+[Auction "S"]
+1C AP
+
+% ==================== game 40 ====================
+% Bad trump
+[Dealer "S"]
+[Contract "Pass"]
+[Auction "S"]
+1C AP
+
+% ==================== game 41 ====================
+% Bad trump
+[Dealer "S"]
+[Declarer ""]
+[Contract "Pass"]
+[Auction "S"]
+1C AP
+
+% ==================== game 42 ====================
+% Bad risk
+[Dealer "S"]
+[Declarer "S"]
+[Contract "1CX"]
+[Auction "S"]
+1C AP
+
+% ==================== game 43 ====================
+% Bad risk
+[Dealer "S"]
+[Declarer "S"]
+[Contract "1C"]
+[Auction "S"]
+1C X AP
+
+% ==================== game 44 ====================
+[Event "New play"]
+[Dealer "N"]
+[Vulnerable "-"]
+[Deal "W:AKQJT9876543.2.. .AKQJT9876543.2. ..AKQJT9876543.2 2...AKQJT9876543"]
+[Declarer "S"]
+[Contract "7NT"]
+[Play "W"]
+%
+% Revoke: CA
+SA HA DA CA
+
+% ==================== game 45 ====================
+[Event "New play"]
+[Dealer "N"]
+[Vulnerable "-"]
+[Deal "W:AKQJT98765432... .AKQJT98765432.. ..AKQJT98765432. ...AKQJT98765432"]
+[Declarer "S"]
+[Contract "7NT"]
+[Play "W"]
+%
+% Double suffix
+SK !!!
+%
+% Double suffix
+HK ! !
+%
+% Double nag
+DK ! $9
+%
+% Double nag
+CK $9 !
+
+% ==================== game 46 ====================
+[Event "New play"]
+[Dealer "N"]
+[Vulnerable "-"]
+[Deal "W:AKQJT98765432... .AKQJT98765432.. ..AKQJT98765432. ...AKQJT98765432"]
+[Declarer "S"]
+[Contract "7NT"]
+[Play "W"]
+%
+% Bad nag
+SQ $1
+%
+HQ $256
+%
+% Bad note
+DQ =a=
+% Bad number
+CQ $a
+
+% ==================== game 47 ====================
+[Event "New play"]
+[Dealer "N"]
+[Vulnerable "-"]
+[Deal "W:AKQJT98765432... .AKQJT98765432.. ..AKQJT98765432. ...AKQJT98765432"]
+[Declarer "S"]
+[Contract "7NT"]
+[Play "W"]
+SA HA DA CA
+%
+% Bad note
+SJ =44=
+%
+% Double note
+HJ?=1= =2=
+%
+% Bad card
+DA
+%
+% Bad card
+S2
+%
+% No note for =1=
+% No note for =2=
+
+% ==================== game 48 ====================
+[Event "New play"]
+[Dealer "N"]
+[Vulnerable "-"]
+[Deal "W:AKQJT98765432... .AKQJT98765432.. ..AKQJT98765432. ...AKQJT98765432"]
+[Declarer "S"]
+[Contract "7NT"]
+[Play "W"]
+%
+% Bad rank
+S1
+%
+% Bad rank
+HHT
+%
+% Bad suit
+KT
+
+% ==================== game 49 ====================
+[Event "New play"]
+[Dealer "N"]
+[Vulnerable "-"]
+[Deal "W:KQT2.AT.J6542.85 .63.AKQ987.A9732 A8654.KQ5.T.QJT6 J973.J98742.3.K4"]
+[Declarer "S"]
+[Contract "5HX"]
+[Play "W"]
+%
+% Bad Revokes
+SQ      ^R D7   ^R DT   ^R D3
+%
+% Correct revokes
+^R SK   ^L DA   HK      C4
+%
+% Double illegal
+^R ^R C5
+%
+% Bad illegal
+^R ^L C2
+%
+% Bad illegal
+^L ^R C6
+%
+% Double illegal
+^L CK
+
+% ==================== game 50 ====================
+[Event "New play"]
+[Dealer "N"]
+[Vulnerable "-"]
+[Deal "W:KQT2.AT.J6542.85 .63.AKQ987.A9732 A8654.KQ5.T.QJT6 J973.J98742.3.K4"]
+[Declarer "S"]
+[Contract "5HX"]
+[Play "W"]
+%
+% Bad lead
+^L SK   H3      S4      S3
+
+% ==================== game 51 ====================
+[Event "New play"]
+[Dealer "N"]
+[Vulnerable "-"]
+[Deal "W:KQT2.AT.J6542.85 .63.AKQ987.A9732 A8654.KQ5.T.QJT6 J973.J98742.3.K4"]
+[Declarer "S"]
+[Contract "5HX"]
+[Play "W"]
+%
+% Bad revoke
+^R SK   H3      S4      S3
+
+% ==================== game 52 ====================
+[Event "New play"]
+[Dealer "N"]
+[Vulnerable "-"]
+[Deal "W:KQT2.AT.J6542.85 .63.AKQ987.A9732 A8654.KQ5.T.QJT6 J973.J98742.3.K4"]
+[Declarer "S"]
+[Contract "5HX"]
+[Play "W"]
+%
+% Bad revoke
+SK      ^R H3   S4      S3
+
+% ==================== game 53 ====================
+[Event "New play"]
+[Dealer "N"]
+[Vulnerable "-"]
+[Deal "W:KQT2.AT.J6542.85 .63.AKQ987.A9732 A8654.KQ5.T.QJT6 J973.J98742.3.K4"]
+[Declarer "S"]
+[Contract "5HX"]
+[Play "W"]
+%
+% Bad revoke
+SK      H3      ^R S4   S3
+
+% ==================== game 54 ====================
+% No declarer
+[Event "New play"]
+[Dealer "N"]
+[Vulnerable "-"]
+[Deal "W:KQT2.AT.J6542.85 .63.AKQ987.A9732 A8654.KQ5.T.QJT6 J973.J98742.3.K4"]
+[Contract "Pass"]
+[Result "1"]
+
+% ==================== game 55 ====================
+% No declarer
+[Event "New play"]
+[Dealer "N"]
+[Vulnerable "-"]
+[Deal "W:KQT2.AT.J6542.85 .63.AKQ987.A9732 A8654.KQ5.T.QJT6 J973.J98742.3.K4"]
+[Declarer ""]
+[Result "1"]
+
+% ==================== game 56 ====================
+[Event "2 International Amsterdam Airport Schiphol Bridgetournament"]
+[Site "Amsterdam, The Netherlands NLD"]
+[Date "1995.06.10"]
+[Round "1"]
+[Board "1"]
+[West "Podgor"]
+[North "Westra"]
+[East "Kalish"]
+[South "Leufkens"]
+[Dealer "N"]
+[Vulnerable "-"]
+[Deal "W:KQT2.AT.J6542.85 .63.AKQ987.A9732 A8654.KQ5.T.QJT6 J973.J98742.3.K4"]
+[Declarer "S"]
+[Contract "5HX"]
+[Result "9"]
+[Auction "W"]
+- 1D 1S 3H =1=
+4S 4NT =2= X Pass
+Pass 5C X 5H
+X Pass Pass Pass
+%
+% Bad note
+[Note "0: illegal note index"]
+% Bad note
+[Note "33: illegal note index"]
+[Note "1: non-forcing 6-9 points, 6-card"]
+[Note "2: two colors: clubs and diamonds"]
+[Note "32: unneeded note index"]
+[Play "W"]
+SK H3 S4 S3
+C5 C2 C6 CK
+S2 H6 S5 S7
+C8 CA CT C4
+D2 DA DT D3
+D4 DK H5 H7
+-  -  -  H2
+*
+% Unused note [32]
+
+% ==================== game 57 ====================
+[Event "3 International Amsterdam Airport Schiphol Bridgetournament"]
+[Site "Amsterdam, The Netherlands NLD"]
+[Date "1995.06.10"]
+[Round "1"]
+[Board "1"]
+[West "Podgor"]
+[North "Westra"]
+[East "Kalish"]
+[South "Leufkens"]
+[Dealer "N"]
+[Vulnerable "-"]
+[Deal "W:KQT2.AT.J6542.85 .63.AKQ987.A9732 A8654.KQ5.T.QJT6 J973.J98742.3.K4"]
+[Declarer "S"]
+[Contract "5HX"]
+[Result "NS 9 EW 4"]
+[Auction "W"]
+- 1D 1S 3H =1=
+4S 4NT =2= X =3= Pass
+Pass 5C X 5H
+X Pass Pass Pass
+[Note "1: non-forcing 6-9 points, 6-card"]
+[Note "2: two colors: clubs and diamonds"]
+[Note "32: unneeded note index"]
+[Play "W"]
+SK H3 S4 S3
+C5 C2 C6 CK
+S2 H6 S5 S7
+C8 CA CT C4
+D2 DA DT D3
+D4 DK H5 H7
+-  -  -  H2
+*
+% No note for =3=
+% No note for =32=
+
+% ==================== game 58 ====================
+[Event "4 International Amsterdam Airport Schiphol Bridgetournament"]
+[Site "Amsterdam, The Netherlands NLD"]
+[Date "1995.06.10"]
+[Round "1"]
+[Board "1"]
+[West "Podgor"]
+[North "Westra"]
+[East "Kalish"]
+[South "Leufkens"]
+[Dealer "N"]
+[Vulnerable "-"]
+[Deal "W:KQT2.AT.J6542.85 .63.AKQ987.A9732 A8654.KQ5.T.QJT6 J973.J98742.3.K4"]
+[Declarer "S"]
+[Contract "5HX"]
+[Result "^9"]           ; so, contract -2
+[Auction "W"]
+%
+% Sufficient
+- 1D ^I 1S 3H =1=
+4S 4NT =2= X Pass
+Pass 5C X 5H
+X Pass Pass Pass
+[Note "1: non-forcing 6-9 points, 6-card"]
+[Note "2: two colors: clubs and diamonds"]
+[Play "W"]
+SK H3 S4 S3
+C5 C2 C6 CK
+S2 H6 S5 S7
+C8 CA CT C4
+D2 DA DT D3
+D4 DK H5 H7
+-  -  -  H2
+*
+% Bad declarer
+% Bad result
+
+% ==================== game 59 ====================
+[Event "5 International Amsterdam Airport Schiphol Bridgetournament"]
+[Site "Amsterdam, The Netherlands NLD"]
+[Date "1995.06.10"]
+[Round "1"]
+{ round 1 }      { 2nd comment }
+[Board "1"]
+[West "Podgor"]         ; eol
+[North "Westra"]
+[East "Kalish"]
+[South "Leufkens"]
+[Dealer "N"]
+[Vulnerable "-"]
+[Deal "W:KQT2.AT.J6542.85 .63.AKQ987.A9732 A8654.KQ5.T.QJT6 J973.J98742.3.K4"]
+[Declarer "S"]
+[Contract "5HX"]
+% Bad number: sum differs from 13
+[Result "NS 9 EW 2"]
+{
+                S
+                H 6 3
+                D A K Q 9 8 7
+                C A 9 7 3 2
+S K Q 10 2                      S A 8 6 5 4
+H A 10                          H K Q 5
+D J 6 5 4 2                     D 10
+C 8 5                           C Q J 10 6
+                S J 9 7 3
+                H J 9 8 7 4 2
+                D 3
+                C K 4
+}
+[Auction "W"]
+%
+% Double nag
+- 1D 1S 3H {D1} ! {D2} $2 {D3} =1= {D4} {D5}
+4S 4NT =2= X Pass
+Pass 5C X 5H
+X Pass Pass Pass
+[Note "1: non-forcing 6-9 points, 6-card"]
+[Note "2: two colors: clubs and diamonds"]
+[Play "W"]
+%
+% Bad nag
+SK H3 S4 S3 {E1} ! {E2} $2 {E3} =3= {E4}
+C5 C2 C6 CK
+S2 H6 S5 S7
+C8 CA CT C4
+D2 DA DT D3
+%
+% Bad nag
+{F1} ! {F2} $2 {F3} =3= {F4} D4 DK H5 H7
+-  -  -  H2
+*
+[Note "3: test"]
+
+% ==================== game 60 ====================
+[Event "6 International Amsterdam Airport Schiphol Bridgetournament"]
+[Site "Amsterdam, The Netherlands NLD"]
+[Date "1995.06.10"]
+[Round "1"]
+[Board "1"]
+[West "Podgor"]
+[North "Westra"]
+[East "Kalish"]
+[South "Leufkens"]
+[Dealer "N"]
+[Vulnerable "-"]
+[Deal "W:KQT2.AT.J6542.85 .63.AKQ987.A9732 A8654.KQ5.T.QJT6 J973.J98742.3.K4"]
+[Declarer "S"]
+[Contract "5HX"]
+[Result "4"]
+{
+                S
+                H 6 3
+                D A K Q 9 8 7
+                C A 9 7 3 2
+S K Q 10 2                      S A 8 6 5 4
+H A 10                          H K Q 5
+D J 6 5 4 2                     D 10
+C 8 5                           C Q J 10 6
+                S J 9 7 3
+                H J 9 8 7 4 2
+                D 3
+                C K 4
+}
+[Auction "W"]
+- 1D 1S 3H =1=
+4S 4NT =2= X Pass
+Pass 5C X 5H
+X Pass Pass Pass
+[Note "1: non-forcing 6-9 points, 6-card"]
+[Note "2: two colors: clubs and diamonds"]
+[Play "W"]
+SK H3 S4 S3
+C5 C2 C6 CK
+S2 H6 S5 S7
+C8 CA CT C4
+D2 DA DT D3
+D4 DK H5 H7
+-  -  -  H2
+*
+% Bad result
+
+% ==================== game 61 ====================
+[Event "7 International Amsterdam Airport Schiphol Bridgetournament"]
+[Site "Amsterdam, The Netherlands NLD"]
+[Date "1995.06.10"]
+[Round "1"]
+[Board "1"]
+[West "Podgor"]
+[North "Westra"]
+[East "Kalish"]
+[South "Leufkens"]
+[Dealer "N"]
+[Vulnerable "-"]
+[Deal "W:KQT2.AT.J6542.85 .63.AKQ987.A9732 A8654.KQ5.T.QJT6 J973.J98742.3.K4"]
+[Declarer "S"]
+[Contract "5HX"]
+[Result "13"]
+{
+                S
+                H 6 3
+                D A K Q 9 8 7
+                C A 9 7 3 2
+S K Q 10 2                      S A 8 6 5 4
+H A 10                          H K Q 5
+D J 6 5 4 2                     D 10
+C 8 5                           C Q J 10 6
+                S J 9 7 3
+                H J 9 8 7 4 2
+                D 3
+                C K 4
+}
+[Auction "W"]
+- 1D 1S 3H =1=
+4S 4NT =2= X Pass
+Pass 5C X 5H
+X Pass Pass Pass
+[Note "1: non-forcing 6-9 points, 6-card"]
+[Note "2: two colors: clubs and diamonds"]
+[Play "W"]
+SK H3 S4 S3
+C5 C2 C6 CK
+S2 H6 S5 S7
+C8 CA CT C4
+D2 DA DT D3
+D4 DK H5 H7
+-  -  -  H2
+*
+
+% ==================== game 62 ====================
+% Bad inheritance: 7x
+[Dealer "#"]
+[Vulnerable "#"]
+[Deal "#"]
+[Declarer "#"]
+[Contract "#"]
+[Auction "#"]
+Pass Pass Pass
+[Play "#"]
+*
+
+% ==================== game 63 ====================
+% Bad number: 4x
+[Score          "a"]
+[ScoreIMP       "a"]
+[ScorePercentage "a"]
+[ScoreRubber    "a"]
+
+% ==================== game 64 ====================
+% Bad tag value: 4x
+[Score          "10.a"]
+[ScoreIMP       "10.a"]
+[ScorePercentage "10.a"]
+[ScoreRubber    "10.a"]
+
+% ==================== game 65 ====================
+% Bad tag value: 4x
+[Score          "10.-10"]
+[ScoreIMP       "10.-10"]
+[ScorePercentage "10.-10"]
+[ScoreRubber    "10.-10"]
+
+% ==================== game 66 ====================
+% Bad tag value: 4x
+[Score          "10. 10"]
+[ScoreIMP       "10. 10"]
+[ScorePercentage "10. 10"]
+[ScoreRubber    "10. 10"]
+
+% ==================== game 67 ====================
+% Bad tag value
+[ScorePercentage "-10"]
+
+% ==================== game 68 ====================
+% Line too long
+{
+123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345
+}
+% Line too long
+[Event"An extremely long line of 256 characters89012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123"]
+
+% ==================== game 69 ====================
+{
+% Line too long
+123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345
+}
+% Bad character
+[Description    "  Ä Å Ç É Ñ Ö Ü á à â ä ã å ç é è ê ë í ì î ï ñ ó ò ô ö õ ú ù û ü"]
+
+% ==================== game 70 ====================
+[WestType "Unknown tag"]
+[Competition "Unknown tag"]
+[Scoring "Unknown tag"]
+[Mode "Unknown tag"]
+
+
+% ==================== game 71 ====================
+% EXPORT
+[Event "Bridge Game"] [Site "At Home"]
+[Date "2009.10.02"]
+[Board "1"]
+[West "Computer"]
+[North "Computer"]
+[East "Computer"]
+[South "Human Player"]
+[Dealer "W"]
+[Vulnerable "None"]
+[Deal "W:AT2.K7.AKJ86.984 J8.654.T7532.A75 Q96543.Q2.94.T62 K7.AJT983.Q.KQJ3"]
+[Scoring "Rubber"]
+[Declarer "S"]
+[Contract "2H"]
+[Result "10"]
+[Auction "W"]
+1NT Pass Pass 2H Pass Pass Pass
+[Play "W"]
+DK D2 D9 DQ
+DA D3 D4 H3
+C4 CA C2 C3
+HK H4 H2 H8
+SA S8 S3 S7
+ST SJ SQ SK
+H7 H5 HQ HA
+C8 C5 C6 CJ C9 C7 CT CQ
+S2 D5 S4 CK
+-  -  -  - - - - - +  -  -  - *
+{..} [Generator "Norm Bridge"]
+ [Description ""]
+
+% ==================== game 72 ====================
+[Deal "N:AJ.J75.KJ62.QJ94 84.Q93.QT74.A852 KQ952.AK864.3.T7 T763.T2.A985.K63"]
+[Declarer "S"]
+[Contract "4H"]
+[Play "W"]
+% Bad number
+[Note ""]
+% Bad number
+[Note ":"]
+% Bad number
+[Note " "]
+% Bad number
+[Note "a"]
+% Bad number
+[Note "a:"]
+
+% ==================== game 73 ====================
+[Event "International Amsterdam Airport Schiphol Bridgetournament"]
+[Site "Amsterdam, The Netherlands NLD"]
+[Date "1995.06.10"]
+[Board "1"]
+[Table "1"]
+[West "Podgor"]
+[North "Westra"]
+[East "Kalish"]
+[South "Leufkens"]
+[Dealer "N"]
+[Vulnerable "None"]
+[Deal "N:.63.AKQ987.A9732 A8654.KQ5.T.QJT6 J973.J98742.3.K4 KQT2.AT.J6542.85"]
+[Scoring "IMP"]
+[Declarer "S"]
+[Contract "5HX"]
+[Result "9"]
+[Auction "N"]
+1D 1S 3H 4S 
+4NT X Pass Pass 
+5C X 5H X 
+Pass Pass Pass
+[Play "W"]
+SK H3 S4 S3 
+C5 C2 C6 CK 
+S2 H6 S5 S7 
+% Bad rank
+C8 CS CT C4 
+% Bad rank
+D2 DS DT D3 
+D4 DK H5 H7 
+-- -- -- H2
+*
+
+% ==================== game 74 ====================
+[Event "UMA Tournoi Hebdomadaire Mercredi"]
+[Site "LiËge, Belgium BEL"]
+[Date "2012.04.04"]
+[Board "4"]
+[West "BACK, L."]
+[North "UMA, M."]
+[East "VAN DEN HOVE, Chr."]
+[South "UMA, N."]
+[Dealer "W"]
+[Vulnerable "All"]
+[Deal "N:AT63.K76.9654.A2 97542.T98.AQ.Q63 Q8.AQ52.J72.KJ54 KJ.J43.KT83.T987"]
+[Scoring "MP"]
+[Declarer "S"]
+[Contract "3NT"]
+[Result "9"]
+[Auction "W"]
+Pass  Pass  Pass  1C
+Pass  1S    Pass  1NT
+Pass  2NT   Pass  3NT
+Pass  Pass  Pass
+[Play "W"]
+D3 D4 DA D2
+D8 D5 DQ D7
+H3 HK=1= HT H2
+H4 H7 H8 HQ
+HJ H6 H9 HA
+DT=2= S3 S2 H5
+DK D6 S4 DJ
+CT CA C3 C4
+C7 D9 S5 S8
+C8 C2 C6 CJ
+C9 S6 CQ CK
+SJ ST S7 C5
+SK SA S9 SQ
+% Bad character: non ISO 8859/1 character, and line too long
+[Note "1:Ce contrat est inchutable contre toute entame et tout retour. Il suffit de l'annoncer et puis il ne reste qu'‡ deviner la position des cartes Ö Vous trouverez ici une des faÁons de le jouer; mais il y en a beaucoup d'autres. Ouvrez les mains de Est - Ouest et regardez. RÈsultats ‡ table : 1 X 3SA=, 2 X 2SA=, 2 X 1SA=, 6 X 2SA-1, 1 X 1SA-1]
+% Bad character: missing quote
+[Note "2:La carte qui raconte toute l'histoire...]

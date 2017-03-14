@@ -1,0 +1,175 @@
+% ==================== game 1 ====================
+%
+% The intention of this pbn file is to check the PBN verifier.
+% The file contains many errors against the PBN standard 2.0 .
+%
+% New Scoring fields
+[Scoring "IMP;??"]
+
+% ==================== game 2 ====================
+[Scoring ";"]
+
+% ==================== game 3 ====================
+% Vulnerable tag and ScoreRubberHistory tag are inconsistent
+[Vulnerable "All"]
+[ScoreRubberHistory "NS 0 0 / 100 0 EW 0 0 / 0 0"]
+
+% ==================== game 4 ====================
+[ScoreRubberHistory "NS 0 0 / 100 0 EW 0 0 / 0 0"]
+[Vulnerable "All"]
+
+% ==================== game 5 ====================
+[Vulnerable "None"]
+[ScoreRubberHistory "NS 0 0 / 100 0 0 EW 0 0 / 0 100 0"]
+
+% ==================== game 6 ====================
+[ScoreRubberHistory "NS 0 0 / 100 0 0 EW 0 0 / 0 100 0"]
+[Vulnerable "None"]
+
+% ==================== game 7 ====================
+% Double '+'
+[Dealer "N"]
+[Vulnerable "None"]
+[Deal "N:AKJT986.QJ3.4.Q6 32.K7654.T93.AJ5 ..AKQJ87652.K943 Q754.AT982..T872"]
+[Declarer "N"]
+[Contract "6S"]
+[Play "E"]
+D3 DA S5 D4
+HK D2 H2 HQ
+H7 D5 H8 HJ
++  +  -  SA
+
+% ==================== game 8 ====================
+% Card after '+'
+[Dealer "N"]
+[Vulnerable "None"]
+[Deal "N:AKJT986.QJ3.4.Q6 32.K7654.T93.AJ5 ..AKQJ87652.K943 Q754.AT982..T872"]
+[Declarer "N"]
+[Contract "6S"]
+[Play "E"]
+D3 DA S5 D4
+HK D2 H2 HQ
+H7 D5 H8 HJ
+S3 +  S7 SA
+
+% ==================== game 9 ====================
+% Call after '+'
+[Dealer "N"]
+[Vulnerable "None"]
+[Deal "N:AKJT986.QJ3.4.Q6 32.K7654.T93.AJ5 ..AKQJ87652.K943 Q754.AT982..T872"]
+[Declarer "N"]
+[Contract "6S"]
+[Auction "N"]
+1S      Pass    2D      Pass
+3S      Pass    4NT     Pass
+5D      Pass    6D      Pass
+6S      Pass    +       +
+
+% ==================== game 10 ====================
+% Call after '+'
+[Dealer "N"]
+[Vulnerable "None"]
+[Deal "N:AKJT986.QJ3.4.Q6 32.K7654.T93.AJ5 ..AKQJ87652.K943 Q754.AT982..T872"]
+[Declarer "N"]
+[Contract "6S"]
+[Auction "N"]
+1S      Pass    2D      Pass
+3S      Pass    4NT     Pass
+5D      Pass    6D      Pass
+6S      Pass    +       Pass
+
+% ==================== game 11 ====================
+% Call after '+'
+[Dealer "N"]
+[Vulnerable "None"]
+[Deal "N:AKJT986.QJ3.4.Q6 32.K7654.T93.AJ5 ..AKQJ87652.K943 Q754.AT982..T872"]
+[Declarer "N"]
+[Contract "6S"]
+[Auction "N"]
+1S      Pass    2D      Pass
+3S      Pass    4NT     Pass
+5D      Pass    6D      +
+6S      Pass    Pass    Pass
++
+
+% ==================== game 12 ====================
+% Wrong syntax in width specifier
+[ActionTable "Rank;Call\"]
+
+% ==================== game 13 ====================
+[ActionTable "Rank;Call\ ]
+
+% ==================== game 14 ====================
+[ActionTable "Rank;Call\L"]
+
+% ==================== game 15 ====================
+% No comment allowed in table elements
+[ActionTable "Rank;Call\4L;Percentage\3R;Experts;Readers"]
+1  4H   100  6  8 ; no comment allowed
+
+% ==================== game 16 ====================
+% Forbidden characters in table elements
+[ActionTable "Rank;MyText"]
+1  %
+
+% ==================== game 17 ====================
+[ActionTable "Rank;MyText"]
+1  [
+
+% ==================== game 18 ====================
+[ActionTable "Rank;MyText"]
+1  ]
+
+% ==================== game 19 ====================
+[ActionTable "Rank;MyText"]
+1  {
+
+% ==================== game 20 ====================
+[ActionTable "Rank;MyText"]
+1  }
+
+% ==================== game 21 ====================
+% Missing table elements
+[ActionTable "Rank;Call\4L;Percentage\3R;Experts;Readers"]
+1  4H   100  6  8
+2  4D    80  2  1
+-  3C    80  1  3
+4  2S    70  1 17
+-  3S    70  1  0
+6  Pass  60  2 40
+-  3D    80  1 26
+-  5D    60  0  0
+-  3H    60  0  5
+10 -      0  0
+
+% ==================== game 22 ====================
+[Date "1999.01.29"]
+[Board "1"]
+[Dealer "N"]
+[Vulnerable "None"]
+[Deal "N:3.T865.Q7.KQ9643 AQJ98.K92.J9.J85 K42.AJ43.K8632.A T765.Q7.AT54.T72"]
+[ScoreTable "-Rank\3R;+Percentage_NS\4R;-Percentage_EW\4R;+Score_NS\5R;Multiplicity\2L"]
+  1 99.4  0.6   500 2
+  3 98.4  1.6   470 1
+  4 96.5  3.5   450 5
+[TotalScoreTable "-Rank\3R;PairId\5R;Names\45;Center\3;NrBoards\3R;MP\6R;-Percentage\5R"]
+{ Only the best 10 participants }
+  1   581 "Sergey OSTRIKOV      ;Oleg ODINTSEV        " OMS  20 1449.8 72.49
+  2   226 "Lia FREJDLINA        ;Anatoly ZHOKHOV      " UFA   6 2393.1 70.38
+  3   290 "Alexander KOLTSOV    ;Serge SHKREBELA      " MOS  20 1404.0 70.20
+
+% ==================== game 23 ====================
+[Date "1999.01.29"]
+[Board "1"]
+[Dealer "N"]
+[Vulnerable "None"]
+[Deal "N:3.T865.Q7.KQ9643 AQJ98.K92.J9.J85 K42.AJ43.K8632.A T765.Q7.AT54.T72"]
+[ScoreTable "#"]
+  1 99.4  0.6   500 2
+  3 98.4  1.6   470 1
+  4 96.5  3.5   450 5
+[TotalScoreTable "#"]
+{ Only the best 10 participants }
+  1   581 "Sergey OSTRIKOV      ;Oleg ODINTSEV        " OMS  20 1449.8 72.49
+  2   226 "Lia FREJDLINA        ;Anatoly ZHOKHOV      " UFA   6 2393.1 70.38
+  3   290 "Alexander KOLTSOV    ;Serge SHKREBELA      " MOS  20 1404.0 70.20

@@ -1,0 +1,11 @@
+% ==================== game 1 ====================
+%
+% The intention of this pbn file is to check the PBN verifier.
+% The file contains many errors against the PBN standard 2.1 .
+%
+% Bad tag value
+[OptimumScore "100"]
+
+% ==================== game 2 ====================
+% Bad number
+[OptimumScore "EW"]

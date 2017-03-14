@@ -13,8 +13,6 @@ module PortableBridgeNotation
         line.each_char do |char|
           # see section 3.8 "Commentary"
           if char == open_curly && (last_char.nil? || last_char == space)
-            # TODO: TDD erroring out descriptively for edge case: open curly (and semicolon) not-first on line and not-
-            # after space
             comment_is_open = true
           end
           comment_is_open = false if char == close_curly

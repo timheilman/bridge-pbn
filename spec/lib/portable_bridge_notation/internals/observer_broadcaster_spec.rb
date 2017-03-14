@@ -23,8 +23,6 @@ module PortableBridgeNotation
         let(:dealt_card_observer) { TestImportListeningObserver.new }
         context('and one non-dealt_card observer') do
           let(:non_dealt_card_observer) { TestImportNonlisteningObserver.new }
-          # TODO: test edge case with multiple \n's
-          # TODO: see section 4.8; TDD handling of # and ## tag values
           it 'calls the sole declared method only on the proper observer' do
             described_object.add_observer(dealt_card_observer)
             described_object.add_observer(non_dealt_card_observer)

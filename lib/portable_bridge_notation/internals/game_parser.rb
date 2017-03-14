@@ -13,8 +13,6 @@ module PortableBridgeNotation
         @section_notes = {}
       end
 
-      # TODO: enforce section continuity: no identification section tags both before and after play/auction/supplemental
-      # TODO: enforce 255 char cap on line width
       def each_subgame(&block)
         @block = block
         @subgame_builder.clear
@@ -61,7 +59,6 @@ module PortableBridgeNotation
         @section_notes.merge! section_name => {}
       end
 
-      # TODO: to be called from NoteSubgameParser
       def add_note_ref_resolution(ref_num, text)
         @section_notes[@section_name].merge! ref_num => text
       end

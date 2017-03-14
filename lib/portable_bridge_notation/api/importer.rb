@@ -10,8 +10,9 @@ module PortableBridgeNotation
     class Importer
       ##
       # Provide an instance. Parsing problems will be reported to client's logger, if provided
-      def self.create(logger: Logger.new(STDERR))
-        new(logger: logger)
+      # error_policy may alternately be :raise_error
+      def self.create(logger: Logger.new(STDERR), error_policy: :log_error)
+        new(logger: logger, error_policy: error_policy)
       end
 
       ##
@@ -37,9 +38,11 @@ module PortableBridgeNotation
       private
 
       def initialize(logger: Logger.new(STDERR),
+                     error_policy: :log_error,
                      abstract_factory: Internals::ConcreteFactory.new)
         @logger = logger
         @abstract_factory = abstract_factory
+        @error_policy = error_policy
         @observer_broadcaster = abstract_factory.make_observer_broadcaster
       end
 
@@ -55,7 +58,8 @@ module PortableBridgeNotation
         subgame_parser = @abstract_factory.make_subgame_parser(@observer_broadcaster, tag_name)
         subgame_parser.parse subgame
       rescue Internals::PortableBridgeNotationError => pbne
-        @logger.warn("; ignoring tag name `#{tag_name}' due to error: `#{pbne}'")
+        raise pbne unless @error_policy == :log_error
+        @logger.warn("; ignoring tag name `#{tag_name}' due to error: `#{pbne}'") if @error_policy == :log_error
       end
     end
   end

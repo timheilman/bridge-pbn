@@ -47,13 +47,15 @@ module PortableBridgeNotation
         game_parser = @abstract_factory.make_cached_game_parser game
         game_parser.each_subgame do |subgame|
           tag_name = subgame.tagPair[0]
-          begin
-            subgame_parser = @abstract_factory.make_subgame_parser(@observer_broadcaster, tag_name)
-            subgame_parser.parse subgame
-          rescue Internals::PortableBridgeNotationError => pbne
-            @logger.warn("; ignoring tag name `#{tag_name}' due to error: `#{pbne}'")
-          end
+          safely_parse subgame, tag_name
         end
+      end
+
+      def safely_parse(subgame, tag_name)
+        subgame_parser = @abstract_factory.make_subgame_parser(@observer_broadcaster, tag_name)
+        subgame_parser.parse subgame
+      rescue Internals::PortableBridgeNotationError => pbne
+        @logger.warn("; ignoring tag name `#{tag_name}' due to error: `#{pbne}'")
       end
     end
   end

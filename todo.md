@@ -1,4 +1,3 @@
-* 100% code coverage again, and adhere to the three laws of TDD thereafter!
 * establish failure mode configurations: error at game level, tag level: kill load, kill game, kill tag&section?
 * include Tis's tests, commenting-out those needing it
 * enforce section continuity: no identification section tags both before and after play/auction/supplemental

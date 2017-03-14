@@ -25,12 +25,8 @@ module PortableBridgeNotation
           err_str = "Unexpected section element starting character (see PBN section 5.1) : `#{char}'"
           game_parser.raise_error(err_str) unless section_tokens_allowed?
           tag_name = subgame_builder.tag_name
-          section_state = if tag_name == 'Play' || tag_name == 'Auction'
-                            game_parser.reached_section(subgame_builder.tag_name)
-                          else
-                            abstract_factory.make_game_parser_state(:InSupplementalSection)
-                          end
-          section_state.process_char char
+          game_parser.reached_section(subgame_builder.tag_name) if tag_name == 'Play' || tag_name == 'Auction'
+          abstract_factory.make_game_parser_state(:InSection).process_char char
         end
 
         def finalize

@@ -2,7 +2,7 @@ require_relative 'game_parser_state'
 module PortableBridgeNotation
   module Internals
     module GameParserStates
-      class InSupplementalSection < GameParserState
+      class InSection < GameParserState
         def post_initialize
           @section = ''
         end

@@ -20,10 +20,12 @@ require_relative 'game_parser_states/in_curly_comment'
 require_relative 'game_parser_states/in_semicolon_comment'
 require_relative 'game_parser_states/in_auction_section'
 require_relative 'game_parser_states/in_play_section'
-require_relative 'game_parser_states/in_supplemental_section'
+require_relative 'game_parser_states/in_section'
 
 # all subgame parsers implemented should be required here
+require_relative 'subgame_parsers/subgame_parser'
 require_relative 'subgame_parsers/deal_subgame_parser'
+require_relative 'subgame_parsers/note_subgame_parser'
 require_relative 'subgame_parsers/deal_string_parser'
 require_relative 'subgame_parsers/hand_string_parser'
 
@@ -60,7 +62,9 @@ module PortableBridgeNotation
 
       # Spring/Guice-sense Prototype-Scoped
       def make_subgame_parser(observer, tag_name)
-        get_subgame_parser_class_for_tag_name(tag_name).new self, observer
+        get_subgame_parser_class_for_tag_name(tag_name).new(abstract_factory: self,
+                                                            observer: observer,
+                                                            game_parser: @game_parser)
       end
 
       # Spring/Guice-sense Singleton-Scoped, due to namespace lookup;

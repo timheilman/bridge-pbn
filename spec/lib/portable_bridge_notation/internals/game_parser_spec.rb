@@ -17,11 +17,11 @@ module PortableBridgeNotation
         end.to yield_with_args(expected_arg)
       end
 
+      let(:described_object) do
+        factory = ConcreteFactory.new
+        factory.make_cached_game_parser pbn_game_string
+      end
       describe('#each_subgame') do
-        let(:described_object) do
-          factory = ConcreteFactory.new
-          factory.make_cached_game_parser pbn_game_string
-        end
         #### HAPPY PATHS #####
 
         context 'with an opening single-line comment with LF' do
@@ -134,7 +134,7 @@ module PortableBridgeNotation
             ";preceding comment#{line_feed}" \
             "[Event #{double_quote + double_quote}] {comment following event} " + # no line_feed!
               "[Site #{double_quote + double_quote}] " \
-              ";comment following site#{line_feed}"
+            ";comment following site#{line_feed}"
           end
           it 'yields twice with the structures including their commentary' do
             expect do |block|
@@ -258,6 +258,16 @@ module PortableBridgeNotation
           let(:expected_subgame_fields) { [[], %w(T v), [], '"["'] }
           it 'does not consider the bracket to be opening a new tag' do
             expect_first_yield_with_arg
+          end
+        end
+      end
+      describe('#add_note_ref_resolution') do
+        context('when a play section has been reached and a note reference has occurred') do
+          let(:pbn_game_string) { '' }
+          it 'provides back the note references it was informed of when asked' do
+            described_object.reached_section('Play')
+            described_object.add_note_ref_resolution(2, 'two colors: clubs and diamonds')
+            expect(described_object.get_note_ref(2)).to eq('two colors: clubs and diamonds')
           end
         end
       end

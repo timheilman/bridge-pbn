@@ -62,6 +62,10 @@ module PortableBridgeNotation
       def add_note_ref_resolution(ref_num, text)
         @section_notes[@section_name].merge! ref_num => text
       end
+
+      def get_note_ref(ref_num)
+        @section_notes[@section_name][ref_num]
+      end
     end
   end
 end

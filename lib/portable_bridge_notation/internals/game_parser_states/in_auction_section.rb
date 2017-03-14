@@ -4,6 +4,7 @@ module PortableBridgeNotation
     module GameParserStates
       class InAuctionSection < GameParserState
         def process_char(_char)
+          game_parser.reached_section(:auction)
           game_parser.raise_error 'Auction sections are complicated and not yet implemented!'
         end
       end

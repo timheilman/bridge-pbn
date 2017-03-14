@@ -6,10 +6,6 @@ module PortableBridgeNotation
         clear
       end
 
-      def suit_for_direction
-        { c: '', d: '', h: '', s: '' }
-      end
-
       def with_dealt_card(suit:, rank:, direction:)
         dirs = [:n, :s, :e, :w]
         @game.deal = dirs.each_with_object({}) { |dir, memo| memo[dir] = suit_for_direction; } if @game.deal.nil?
@@ -20,6 +16,12 @@ module PortableBridgeNotation
         return @game
       ensure
         clear
+      end
+
+      private
+
+      def suit_for_direction
+        { c: '', d: '', h: '', s: '' }
       end
 
       def clear

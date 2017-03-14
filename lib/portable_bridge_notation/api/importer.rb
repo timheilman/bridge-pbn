@@ -22,15 +22,15 @@ module PortableBridgeNotation
 
       ##
       # Invokes methods on observers attached with #attach_observer which respond_to specific methods called
-      # by SubgameParsers.  Yields one Game per game provided by the io.
+      # by SubgameParsers, as well as done_with_game referenced here.  Yields one Game per game provided by the io.
       def import(io, &block)
         return enum_for(:import) unless block_given?
         game_parser_listener = @abstract_factory.make_game_parser_listener
         attach_observer game_parser_listener
         @abstract_factory.make_io_parser(io).each_game_string do |game|
           import_game game
+          @observer_broadcaster.done_with_game if @observer_broadcaster.respond_to?(:done_with_game)
           block.yield game_parser_listener.build
-          game_parser_listener.clear
         end
       end
 

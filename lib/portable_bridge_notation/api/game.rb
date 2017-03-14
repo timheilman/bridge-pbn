@@ -5,19 +5,12 @@ module PortableBridgeNotation
     # strings themselves arranged in Ruby-native arrays and structures with descriptive field naming.
     # The meanings of all field values are still conveyed by the PBN standard.
     #
-    # Strings are thus used as-is from the PBN standard, 'N' for North, 'NT' for No-Trump, 'T' for
-    # Ten, '9' for nine, 'EW' for east-west, etc.  All the string-based API specified here is itself identical
-    # to the PBN standard. The evasion of dependency-magnetism is an explicit design goal, hence no domain enumerations
-    # are specified.
+    # Symbols rather than Strings are used to implement the flyweight pattern regarding some bridge domain nomenclature.
+    # The meanings of the symbols is specified by the PBN standard.  The evasion of dependency-magnetism is an explicit
+    # design goal, hence no domain enumerations are specified:
     #
-    # This is in hopes of collaborating with Daniel Evans's bridge domain model via another transformation from
-    # pbn-specified strings in ruby-native structures to domain-specified ruby-native structures.
-    #
-    # These snake-cased tag names specified by PBN will form the first layer of accessors on a Ruby data structure
-    #
-    # The Law of Demeter doesn't apply to this data structure, and no feature envy (methods of any kind) ought to be
-    # added to this structure; instead transform this structure into domain objects.  Nil as a representation of absent
-    # optional PBN data is deliberate, and the Ruby 2.3 &. operator with final nil-check is recommended for access.
+    # directions: :n :s :e :w
+    # strains: :s :h :c :d :n_t
     #
     # Consider alternately (in a SAX vs DOM approach) supplying a listener for the events dispatched by the
     # subgame parsers with Importer#attach_observer

@@ -1,4 +1,5 @@
 * include Tis's tests, commenting-out those needing it
+* TDD refactor duplicated intent: parameterization by type, in injector; standardize the call
 * enforce section continuity: no identification section tags both before and after play/auction/supplemental
 * enforce 255 char cap on line width
 * TDD erroring out descriptively for edge case: open curly (and semicolon) not-first on line and not-after space

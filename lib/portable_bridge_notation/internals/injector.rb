@@ -38,9 +38,12 @@ module PortableBridgeNotation
 
       # Spring/Guice-sense Custom-Scoped:game, assisting construction with runtime parameter pbn_game
       def game_parser(pbn_game)
-        @game_parser = GameParser.new pbn_game_string: pbn_game,
-                                      subgame_builder: @subgame_builder,
-                                      injector: self if @game_parser.nil?
+        if @game_parser.nil?
+          @game_parser = GameParser.new pbn_game_string: pbn_game,
+                                        subgame_builder: @subgame_builder,
+                                        injector: self
+        end
+        @game_parser
       end
 
       # Spring/Guice-sense Singleton-Scoped, parameterized by type
@@ -54,10 +57,10 @@ module PortableBridgeNotation
       # Spring/Guice-sense Prototype-Scoped, parameterized by type, and assisted for runtime-supplied args
       def game_parser_state(class_sym, enclosing_state = nil)
         GameParserStates.const_get(class_sym).new(
-            game_parser: @game_parser,
-            subgame_builder: @subgame_builder,
-            injector: self,
-            enclosing_state: enclosing_state
+          game_parser: @game_parser,
+          subgame_builder: @subgame_builder,
+          injector: self,
+          enclosing_state: enclosing_state
         )
       end
 

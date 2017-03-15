@@ -6,10 +6,10 @@ module PortableBridgeNotation
 
       def initialize(pbn_game_string:,
                      subgame_builder:,
-                     abstract_factory:)
+                     injector:)
         @pbn_game_string = pbn_game_string
         @subgame_builder = subgame_builder
-        @abstract_factory = abstract_factory
+        @injector = injector
         @section_notes = {}
       end
 
@@ -20,7 +20,7 @@ module PortableBridgeNotation
       end
 
       def process
-        state = @abstract_factory.make_game_parser_state :BeforeFirstTag
+        state = @injector.game_parser_state :BeforeFirstTag
         @pbn_game_string.each_char.with_index do |char, index|
           @cur_char_index = index
           verify_char char
@@ -50,7 +50,7 @@ module PortableBridgeNotation
       end
 
       def raise_error(message = nil)
-        raise @abstract_factory.make_error("state: #{@state}; string: `#{@pbn_game_string}'; " \
+        raise @injector.error("state: #{@state}; string: `#{@pbn_game_string}'; " \
                                                   "char_index: #{@cur_char_index}; message: #{message}")
       end
 

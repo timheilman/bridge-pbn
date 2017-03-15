@@ -1,12 +1,12 @@
 require 'spec_helper'
 require_relative '../../../../../lib/portable_bridge_notation/internals/subgame_parsers/deal_string_parser'
-require_relative '../../../../../lib/portable_bridge_notation/internals/concrete_factory'
+require_relative '../../../../../lib/portable_bridge_notation/internals/injector'
 
 module PortableBridgeNotation
   module Internals
     RSpec.describe DealStringParser do
       describe '.yield_cards' do
-        let(:described_object) { ConcreteFactory.new.make_deal_string_parser(deal) }
+        let(:described_object) { Injector.new.deal_string_parser(deal) }
         context 'provided a PBN deal string with only the aces dealt' do
           let(:space_separated_hands) { '..A.A A... ... .A..' }
           context 'starting with N' do

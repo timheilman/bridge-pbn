@@ -1,8 +1,8 @@
 module PortableBridgeNotation
   module Internals
     class DefaultGameParserListener
-      def initialize(abstract_factory)
-        @abstract_factory = abstract_factory
+      def initialize(injector)
+        @injector = injector
         clear
       end
 
@@ -25,7 +25,7 @@ module PortableBridgeNotation
       end
 
       def clear
-        @game = @abstract_factory.make_game
+        @game = @injector.game
       end
     end
   end

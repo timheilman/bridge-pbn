@@ -8,7 +8,7 @@ module PortableBridgeNotation
           when whitespace_allowed_in_games
             self
           when allowed_in_names
-            abstract_factory.make_game_parser_state(:InTagName).process_char(char)
+            injector.game_parser_state(:InTagName).process_char(char)
           else
             game_parser.raise_error "Unexpected non-whitespace, non-name token character: `#{char}'"
           end

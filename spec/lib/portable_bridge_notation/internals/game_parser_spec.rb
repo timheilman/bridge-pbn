@@ -1,7 +1,7 @@
 require 'spec_helper'
 require_relative '../../../../lib/portable_bridge_notation/internals/single_char_comparison_constants'
 require_relative '../../../../lib/portable_bridge_notation/internals/subgame'
-require_relative '../../../../lib/portable_bridge_notation/internals/concrete_factory'
+require_relative '../../../../lib/portable_bridge_notation/internals/injector'
 
 module PortableBridgeNotation
   module Internals
@@ -18,8 +18,8 @@ module PortableBridgeNotation
       end
 
       let(:described_object) do
-        factory = ConcreteFactory.new
-        factory.make_cached_game_parser pbn_game_string
+        factory = Injector.new
+        factory.game_parser pbn_game_string
       end
       describe('#each_subgame') do
         #### HAPPY PATHS #####

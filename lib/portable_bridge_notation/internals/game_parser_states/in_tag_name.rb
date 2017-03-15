@@ -24,12 +24,12 @@ module PortableBridgeNotation
 
         def handle_whitespace
           subgame_builder.add_tag_item(@tag_name)
-          abstract_factory.make_game_parser_state(:BeforeTagValue)
+          injector.game_parser_state(:BeforeTagValue)
         end
 
         def handle_double_quote
           subgame_builder.add_tag_item(@tag_name)
-          abstract_factory.make_game_parser_state(:InString, abstract_factory.make_game_parser_state(:BeforeTagClose))
+          injector.game_parser_state(:InString, injector.game_parser_state(:BeforeTagClose))
         end
 
         def finalize

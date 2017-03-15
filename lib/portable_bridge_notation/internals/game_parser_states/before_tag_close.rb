@@ -8,7 +8,7 @@ module PortableBridgeNotation
           when whitespace_allowed_in_games
             self
           when close_bracket
-            abstract_factory.make_game_parser_state :BetweenTags
+            injector.game_parser_state :BetweenTags
           else
             game_parser.raise_error "Unexpected char other than whitespace or closing bracket: `#{char}'"
           end

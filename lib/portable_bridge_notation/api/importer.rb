@@ -1,6 +1,6 @@
 require 'logger'
 
-require_relative '../internals/concrete_factory'
+require_relative '../internals/injector'
 require_relative '../internals/portable_bridge_notation_error'
 
 module PortableBridgeNotation
@@ -26,9 +26,9 @@ module PortableBridgeNotation
       # by SubgameParsers, as well as done_with_game referenced here.  Yields one Game per game provided by the io.
       def import(io, &block)
         return enum_for(:import) unless block_given?
-        game_parser_listener = @abstract_factory.make_game_parser_listener
+        game_parser_listener = @injector.game_parser_listener
         attach_observer game_parser_listener
-        @abstract_factory.make_io_parser(io).each_game_string do |game|
+        @injector.io_parser(io).each_game_string do |game|
           import_game game
           @observer_broadcaster.done_with_game if @observer_broadcaster.respond_to?(:done_with_game)
           block.yield game_parser_listener.build
@@ -39,15 +39,15 @@ module PortableBridgeNotation
 
       def initialize(logger: Logger.new(STDERR),
                      error_policy: :log_error,
-                     abstract_factory: Internals::ConcreteFactory.new)
+                     injector: Internals::Injector.new)
         @logger = logger
-        @abstract_factory = abstract_factory
+        @injector = injector
         @error_policy = error_policy
-        @observer_broadcaster = abstract_factory.make_observer_broadcaster
+        @observer_broadcaster = injector.observer_broadcaster
       end
 
       def import_game(game)
-        game_parser = @abstract_factory.make_cached_game_parser game
+        game_parser = @injector.game_parser game
         game_parser.each_subgame do |subgame|
           tag_name = subgame.tagPair[0]
           safely_parse subgame, tag_name
@@ -55,7 +55,7 @@ module PortableBridgeNotation
       end
 
       def safely_parse(subgame, tag_name)
-        subgame_parser = @abstract_factory.make_subgame_parser(@observer_broadcaster, tag_name)
+        subgame_parser = @injector.subgame_parser(@observer_broadcaster, tag_name)
         subgame_parser.parse subgame
       rescue Internals::PortableBridgeNotationError => pbne
         raise pbne unless @error_policy == :log_error

@@ -4,8 +4,8 @@ module PortableBridgeNotation
     class DealStringParser
       include SingleCharComparisonConstants
 
-      def initialize(abstract_factory, deal_string)
-        @abstract_factory = abstract_factory
+      def initialize(injector, deal_string)
+        @injector = injector
         @deal_string = deal_string
       end
 
@@ -32,7 +32,7 @@ module PortableBridgeNotation
       end
 
       def yield_hand
-        @abstract_factory.make_hand_string_parser(hand_string).yield_cards do |suit:, rank:|
+        @injector.hand_string_parser(hand_string).yield_cards do |suit:, rank:|
           yield direction: direction_char, suit: suit, rank: rank
         end
       end
@@ -45,7 +45,7 @@ module PortableBridgeNotation
       end
 
       def raise_error(initial_dir)
-        raise @abstract_factory.make_error("bad first position character for pgn deal string: `#{initial_dir}'")
+        raise @injector.error("bad first position character for pgn deal string: `#{initial_dir}'")
       end
     end
   end

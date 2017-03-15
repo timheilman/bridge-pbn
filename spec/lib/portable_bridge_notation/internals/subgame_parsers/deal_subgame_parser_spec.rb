@@ -1,5 +1,5 @@
 require 'spec_helper'
-require_relative '../../../../../lib/portable_bridge_notation/internals/concrete_factory'
+require_relative '../../../../../lib/portable_bridge_notation/internals/injector'
 require_relative '../../../../../lib/portable_bridge_notation/internals/subgame_parsers/deal_subgame_parser'
 module PortableBridgeNotation
   module Internals
@@ -8,7 +8,7 @@ module PortableBridgeNotation
         describe '#parse' do
           let(:domain_builder) { double }
           let(:described_object) do
-            described_class.new(abstract_factory: ConcreteFactory.new,
+            described_class.new(injector: Injector.new,
                                 observer: domain_builder,
                                 game_parser: nil)
           end

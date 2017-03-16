@@ -138,7 +138,7 @@ module PortableBridgeNotation
     Time = Struct.new(:hours, :minutes, :seconds)
 
     # "N", "S", "E" or "W" for direction
-    Declarer = Struct.new(:direction, :are_dummy_and_declarer_swapped)
+    Declarer = Struct.new(:direction, :dummy_and_declarer_are_swapped)
 
     # :level integer 1-7
     # :strain string "C" "D" "H" "S" "NT"

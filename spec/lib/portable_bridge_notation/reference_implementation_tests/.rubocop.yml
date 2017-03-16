@@ -1,0 +1,9 @@
+inherit_from: ../.rubocop.yml
+# intent: As a DSL, RSpec perhaps shouldn't be held to this metric at all, but moreover,
+# although the largeness of test files does reduce their readability, to flesh out overall behavior it's helpful to
+# have a few large tests that demonstrate the relevant cases for the problem domain at a higher level than
+# the individual components.  game_parser_spec does this as-is for now, and the reference implementation's tests
+# are similarly at an acceptance-like level.
+Metrics/BlockLength:
+  Exclude:
+    - '**/*.rb'

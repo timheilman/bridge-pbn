@@ -8,30 +8,30 @@ module PortableBridgeNotation
           let(:io) { StringIO.new('[UnrecognizedTagName "UnrecognizedTagValue"]') }
           context 'with an error policy of :throw_exception' do
             let(:error_policy) { :raise_error }
-            let(:importer) { described_class.create(error_policy: error_policy) }
+            let(:importer) { described_class.create(error_policy: error_policy, io: io) }
             it 'raises an error' do
               called = false
-              expect { importer.import(io) { |_game| called = true } }.to raise_error(/UnrecognizedTagName/)
+              expect { importer.import { |_game| called = true } }.to raise_error(/UnrecognizedTagName/)
               expect(called).to eq false
             end
           end
           context 'with no error policy specified' do
             let(:logger) { double }
-            let(:importer) { described_class.create(logger: logger) }
+            let(:importer) { described_class.create(logger: logger, io: io) }
             it 'logs an error' do
               expect(logger).to receive(:warn).with(/UnrecognizedTagName/)
               called = false
-              importer.import(io) { |_game| called = true }
+              importer.import { |_game| called = true }
               expect(called).to eq true
             end
           end
         end
         context 'when importing just a deal tag' do
-          let(:importer) { described_class.create }
           let(:io) { StringIO.new('[Deal"N:AKQJT9876543.2.. 2.AKQJT9876542.. ..AKQJT98765432. ...AKQJT98765432"]') }
+          let(:importer) { described_class.create io: io }
           it 'transforms with_dealt_card calls into ruby hashes within the single yielded game' do
             invocation_count = 0
-            importer.import(io) do |game|
+            importer.import do |game|
               invocation_count += 1
               expect(game.deal[:n][:s]).to eq('AKQJT9876543')
               expect(game.deal[:n][:h]).to eq('2')

@@ -5,6 +5,7 @@ require_relative 'portable_bridge_notation_error'
 require_relative 'observer_broadcaster'
 require_relative '../api/game'
 require_relative 'default_game_parser_listener'
+require_relative 'following_comment_notifying_decorator'
 
 # all defined game parser states should be required here
 require_relative 'game_parser_states/game_parser_state'
@@ -18,11 +19,26 @@ require_relative 'game_parser_states/before_tag_close'
 require_relative 'game_parser_states/between_tags'
 require_relative 'game_parser_states/in_curly_comment'
 require_relative 'game_parser_states/in_semicolon_comment'
-require_relative 'game_parser_states/in_section'
+require_relative 'game_parser_states/in_auction_or_play_section'
+require_relative 'game_parser_states/in_supplemental_section'
 
 # all subgame parsers implemented should be required here
 require_relative 'subgame_parsers/subgame_parser'
+require_relative 'subgame_parsers/subgame_parser_for_string_value'
+require_relative 'subgame_parsers/event_subgame_parser'
+require_relative 'subgame_parsers/site_subgame_parser'
+require_relative 'subgame_parsers/date_subgame_parser'
+require_relative 'subgame_parsers/board_subgame_parser'
+require_relative 'subgame_parsers/west_subgame_parser'
+require_relative 'subgame_parsers/north_subgame_parser'
+require_relative 'subgame_parsers/east_subgame_parser'
+require_relative 'subgame_parsers/south_subgame_parser'
+require_relative 'subgame_parsers/dealer_subgame_parser'
+require_relative 'subgame_parsers/vulnerable_subgame_parser'
 require_relative 'subgame_parsers/deal_subgame_parser'
+require_relative 'subgame_parsers/declarer_subgame_parser'
+require_relative 'subgame_parsers/contract_subgame_parser'
+require_relative 'subgame_parsers/result_subgame_parser'
 require_relative 'subgame_parsers/note_subgame_parser'
 require_relative 'subgame_parsers/deal_string_parser'
 require_relative 'subgame_parsers/hand_string_parser'
@@ -62,9 +78,13 @@ module PortableBridgeNotation
       end
 
       def subgame_parser(observer, tag_name)
-        subgame_parser_class_for_tag_name(tag_name).new(injector: self,
-                                                        observer: observer,
-                                                        game_parser: @game_parser)
+        FollowingCommentNotifyingDecorator.new(
+          observer: observer,
+          tag_name: tag_name,
+          subgame_parser: subgame_parser_class_for_tag_name(tag_name).new(injector: self,
+                                                                          observer: observer,
+                                                                          game_parser: @game_parser)
+        )
       end
 
       # Simple Spring/Guice-sense Prototype-Scoped, not parameterized by type, and potentially assisted

@@ -1,3 +1,4 @@
+require 'active_support/inflector'
 module PortableBridgeNotation
   module Internals
     class DefaultGameParserListener
@@ -26,6 +27,20 @@ module PortableBridgeNotation
 
       def clear
         @game = @injector.game
+      end
+
+      def method_missing(method_sym, *arguments, &block)
+        method_s = method_sym.to_s
+        return super unless method_s =~ /^with_/
+        simple_string_field = method_s.match(/^with_(.*)$/)[1]
+        @game.send((simple_string_field << '=').to_sym, *arguments)
+      end
+
+      def respond_to_missing?(method_sym, include_private = false)
+        method_s = method_sym.to_s
+        return super unless method_s =~ /^with_/
+        simple_string_field = method_s.match(/^with_(.*)$/)[1]
+        @game.respond_to? simple_string_field.to_sym
       end
     end
   end

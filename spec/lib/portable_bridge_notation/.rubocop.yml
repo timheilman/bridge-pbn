@@ -1,4 +1,4 @@
-inherit_from: ../../../../.rubocop.yml
+inherit_from: ../../../.rubocop.yml
 # intent: As a DSL, RSpec perhaps shouldn't be held to this metric at all, but moreover,
 # although the largeness of test files does reduce their readability, to flesh out overall behavior it's helpful to
 # have a few large tests that demonstrate the relevant cases for the problem domain at a higher level than

@@ -6,9 +6,11 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    activesupport-inflector (0.1.0)
     coderay (1.1.1)
     diff-lcs (1.3)
     docile (1.1.5)
+    i18n (0.7.0)
     json (2.0.3)
     method_source (0.8.2)
     pry (0.10.4)
@@ -41,7 +43,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activesupport-inflector
   bundler (~> 1.13)
+  i18n
   portable_bridge_notation!
   pry
   rake (~> 10.0)

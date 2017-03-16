@@ -24,9 +24,17 @@ module PortableBridgeNotation
         def start_section(char)
           err_str = "Unexpected section element starting character (see PBN section 5.1) : `#{char}'"
           game_parser.raise_error(err_str) unless section_tokens_allowed?
+          start_proper_section char
+        end
+
+        def start_proper_section(char)
           tag_name = subgame_builder.tag_name
-          game_parser.reached_section(subgame_builder.tag_name) if tag_name == 'Play' || tag_name == 'Auction'
-          injector.game_parser_state(:InSection).process_char char
+          if tag_name == 'Play' || tag_name == 'Auction'
+            game_parser.reached_section(subgame_builder.tag_name)
+            injector.game_parser_state(:InAuctionOrPlaySection).process_char char
+          else
+            injector.game_parser_state(:InSupplementalSection).process_char char
+          end
         end
 
         def finalize

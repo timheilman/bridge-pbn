@@ -28,7 +28,6 @@ module PortableBridgeNotation
 
       def tag_name
         @tag_pair[0]
-        self
       end
 
       def add_following_comment(comment)

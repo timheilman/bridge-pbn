@@ -5,40 +5,29 @@ require_relative 'portable_bridge_notation_error'
 require_relative 'observer_broadcaster'
 require_relative '../api/game'
 require_relative 'default_game_parser_listener'
-require_relative 'following_comment_notifying_decorator'
 
 # all defined game parser states should be required here
 require_relative 'game_parser_states/game_parser_state'
-require_relative 'game_parser_states/outside_tag_and_section_template'
 require_relative 'game_parser_states/before_first_tag'
 require_relative 'game_parser_states/before_tag_name'
 require_relative 'game_parser_states/in_tag_name'
 require_relative 'game_parser_states/before_tag_value'
 require_relative 'game_parser_states/in_string'
 require_relative 'game_parser_states/before_tag_close'
-require_relative 'game_parser_states/between_tags'
+require_relative 'game_parser_states/vacuous_section'
 require_relative 'game_parser_states/in_curly_comment'
 require_relative 'game_parser_states/in_semicolon_comment'
-require_relative 'game_parser_states/in_auction_or_play_section'
-require_relative 'game_parser_states/in_supplemental_section'
+require_relative 'game_parser_states/in_auction_section'
+require_relative 'game_parser_states/in_play_section'
+require_relative 'game_parser_states/in_deal_section'
+require_relative 'game_parser_states/in_date_section'
+require_relative 'game_parser_states/in_board_section'
+require_relative 'game_parser_states/in_declarer_section'
+require_relative 'game_parser_states/in_unrecognized_supplemental_section'
 
 # all subgame parsers implemented should be required here
 require_relative 'subgame_parsers/subgame_parser'
 require_relative 'subgame_parsers/subgame_parser_for_string_value'
-require_relative 'subgame_parsers/event_subgame_parser'
-require_relative 'subgame_parsers/site_subgame_parser'
-require_relative 'subgame_parsers/date_subgame_parser'
-require_relative 'subgame_parsers/board_subgame_parser'
-require_relative 'subgame_parsers/west_subgame_parser'
-require_relative 'subgame_parsers/north_subgame_parser'
-require_relative 'subgame_parsers/east_subgame_parser'
-require_relative 'subgame_parsers/south_subgame_parser'
-require_relative 'subgame_parsers/dealer_subgame_parser'
-require_relative 'subgame_parsers/vulnerable_subgame_parser'
-require_relative 'subgame_parsers/deal_subgame_parser'
-require_relative 'subgame_parsers/declarer_subgame_parser'
-require_relative 'subgame_parsers/contract_subgame_parser'
-require_relative 'subgame_parsers/result_subgame_parser'
 require_relative 'subgame_parsers/note_subgame_parser'
 require_relative 'subgame_parsers/deal_string_parser'
 require_relative 'subgame_parsers/hand_string_parser'
@@ -48,14 +37,16 @@ module PortableBridgeNotation
     class Injector
       # arguments passed here are Spring/Guice-sense Singleton-Scoped, but needed for mocking when Injector
       # is a collaborator for the system under test
-      def initialize(subgame_builder = SubgameBuilder.new)
-        @subgame_builder = subgame_builder
+      def initialize
+        super
       end
 
       # Spring/Guice-sense Custom-Scoped:game, assisting construction with runtime parameter pbn_game
-      def game_parser(pbn_game)
+      def game_parser(pbn_game, logger, observer)
+        @observer = observer
         @game_parser = GameParser.new pbn_game_string: pbn_game,
-                                      subgame_builder: @subgame_builder,
+                                      observer: observer,
+                                      logger: logger,
                                       injector: self
       end
 
@@ -71,19 +62,9 @@ module PortableBridgeNotation
       def game_parser_state(class_sym, enclosing_state = nil)
         GameParserStates.const_get(class_sym).new(
           game_parser: @game_parser,
-          subgame_builder: @subgame_builder,
+          observer: @observer,
           injector: self,
           enclosing_state: enclosing_state
-        )
-      end
-
-      def subgame_parser(observer, tag_name)
-        FollowingCommentNotifyingDecorator.new(
-          observer: observer,
-          tag_name: tag_name,
-          subgame_parser: subgame_parser_class_for_tag_name(tag_name).new(injector: self,
-                                                                          observer: observer,
-                                                                          game_parser: @game_parser)
         )
       end
 

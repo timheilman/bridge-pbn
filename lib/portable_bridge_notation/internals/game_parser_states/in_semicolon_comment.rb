@@ -41,6 +41,7 @@ module PortableBridgeNotation
 
         def finalize
           enclosing_state.add_comment(@comment)
+          enclosing_state.finalize
         end
       end
     end

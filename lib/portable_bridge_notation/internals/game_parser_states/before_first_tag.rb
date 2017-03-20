@@ -1,18 +1,34 @@
-require_relative 'outside_tag_and_section_template'
 module PortableBridgeNotation
   module Internals
     module GameParserStates
-      class BeforeFirstTag < OutsideTagAndSectionTemplate
+      class BeforeFirstTag < GameParserState
+        def post_initialize
+          @initial_comments = []
+        end
+
+        def process_char(char)
+          case char
+          when whitespace_allowed_in_games then self
+          when semicolon then injector.game_parser_state(:InSemicolonComment, self)
+          when open_curly then injector.game_parser_state(:InCurlyComment, self)
+          when open_bracket then handle_open_bracket
+          else
+            err_str = "Unexpected char other than whitespace, ';', '{', or '[' prior to any tag: `#{char}'"
+            game_parser.raise_error err_str
+          end
+        end
+
+        def handle_open_bracket
+          finalize
+          injector.game_parser_state(:BeforeTagName)
+        end
+
+        def finalize
+          observer.with_initial_comments(@initial_comments) unless @initial_comments.empty?
+        end
+
         def add_comment(comment)
-          subgame_builder.add_preceding_comment comment
-        end
-
-        def perhaps_yield
-          # no-op
-        end
-
-        def section_tokens_allowed?
-          false
+          @initial_comments << comment
         end
       end
     end

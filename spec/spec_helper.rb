@@ -3,6 +3,7 @@ require 'simplecov'
 SimpleCov.start
 
 require 'portable_bridge_notation'
+require 'logger'
 require 'lib/portable_bridge_notation/internals/game_parser_states/game_parser_state_spec_helper'
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|

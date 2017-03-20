@@ -5,6 +5,10 @@ module PortableBridgeNotation
         /[ \t\v\r\n]/
       end
 
+      def non_whitespace
+        /[^ \t\v\r\n]/
+      end
+
       # represents printable ASCII characters except: %;[]{}
       # note that " (\x22) *can* start a section, by starting a section element that is a string token
       def initial_supplemental_section_char

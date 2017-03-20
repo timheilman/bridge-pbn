@@ -4,14 +4,14 @@ module PortableBridgeNotation
   module Api
     RSpec.describe Importer do
       describe('#import') do
-        context 'when importing a bad tag name' do
-          let(:io) { StringIO.new('[UnrecognizedTagName "UnrecognizedTagValue"]') }
-          context 'with an error policy of :throw_exception' do
+        context 'when importing a malformed game string' do
+          let(:io) { StringIO.new('[UnrecognizedTagName "UnrecognizedTag') }
+          context 'with an error policy of :raise_error' do
             let(:error_policy) { :raise_error }
             let(:importer) { described_class.create(error_policy: error_policy, io: io) }
             it 'raises an error' do
               called = false
-              expect { importer.import { |_game| called = true } }.to raise_error(/UnrecognizedTagName/)
+              expect { importer.import { |_game| called = true } }.to raise_error(/end of input in unclosed string/)
               expect(called).to eq false
             end
           end
@@ -19,7 +19,8 @@ module PortableBridgeNotation
             let(:logger) { double }
             let(:importer) { described_class.create(logger: logger, io: io) }
             it 'logs an error' do
-              expect(logger).to receive(:warn).with(/UnrecognizedTagName/)
+              allow(logger).to receive(:debug)
+              expect(logger).to receive(:warn).with(/end of input in unclosed string/)
               called = false
               importer.import { |_game| called = true }
               expect(called).to eq true

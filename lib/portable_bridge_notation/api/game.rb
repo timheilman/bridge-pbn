@@ -108,26 +108,23 @@ module PortableBridgeNotation
       :optimum_result_table, # 5.7
       :play_time_table, # 5.8
       :score_table, # 5.9
-      :total_score_table # 5.10
+      :total_score_table, # 5.10
     ).freeze
 
-    Game = Struct.new(:initial_comments) do
-      KNOWN_TAG_SET.each do |known_tag|
-        define_method(known_tag.to_s) { instance_variable_get("@#{known_tag}") }
-        define_method("#{known_tag}_comments") { instance_variable_get("@#{known_tag}_comments") }
-        define_method("#{known_tag}=") { |value| instance_variable_set("@#{known_tag}", value) }
-        define_method("#{known_tag}_comments=") { |value| instance_variable_set("@#{known_tag}_comments", value) }
-      end
-
+    ##
+    # Primary data structure as interface to and from portable bridge notation
+    class Game < OpenStruct
       def initialize
+        super
         # intent: transformation back to PBN structure beyond string meanings will be identical
         # whether no-comments represented as nil or empty array, so avoid nil and use the empty array
         # for all outside-tag-pair-and-special-section commentary
-        @initial_comments = []
+        self.initial_comments = []
         KNOWN_TAG_SET.each do |known_tag|
-          instance_variable_set("@#{known_tag}", nil)
-          instance_variable_set("@#{known_tag}_comments", [])
+          send("#{known_tag}=", nil)
+          send("#{known_tag}_comments=", [])
         end
+        self.supplemental_sections = {}
       end
     end
 
@@ -187,5 +184,8 @@ module PortableBridgeNotation
     # type may be "I" for Insufficient bid, "S" for Skipped player due to call out of rotation,
     # "R" for uncaught Renege/Revoke, and "L" for this card being led out of turn for this trick
     Irregularity = Struct.new(:type)
+
+    # For unrecognized supplemental tags/sections
+    SupplementalSection = Struct.new(:tag_value, :section_string, :comments)
   end
 end

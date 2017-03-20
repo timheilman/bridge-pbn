@@ -5,29 +5,25 @@ module PortableBridgeNotation
       include SingleCharComparisonConstants
 
       def initialize(pbn_game_string:,
-                     subgame_builder:,
-                     injector:)
+                     observer:,
+                     injector:,
+                     logger:)
         @pbn_game_string = pbn_game_string
-        @subgame_builder = subgame_builder
+        @observer = observer
         @injector = injector
         @section_notes = {}
+        @logger = logger
       end
 
-      def each_subgame(&block)
-        @block = block
-        @subgame_builder.clear
-        process
-      end
-
-      def process
+      def parse
         state = @injector.game_parser_state :BeforeFirstTag
         @pbn_game_string.each_char.with_index do |char, index|
           @cur_char_index = index
           verify_char char
+          @logger.debug("State #{state.class} processing char '#{char}' at idx #{index}")
           state = state.process_char(char)
         end
         state.finalize
-        yield_subgame
       end
 
       def verify_char(char)
@@ -42,11 +38,6 @@ module PortableBridgeNotation
         when 0..8, 12, 14..31, 127..159
           raise_error "disallowed character in PBN files, decimal code: #{char.ord}"
         end
-      end
-
-      def yield_subgame
-        @block.yield @subgame_builder.build
-        @subgame_builder.clear
       end
 
       def raise_error(message = nil)

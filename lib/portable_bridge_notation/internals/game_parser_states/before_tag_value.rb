@@ -8,8 +8,7 @@ module PortableBridgeNotation
           when whitespace_allowed_in_games
             self
           when double_quote
-            injector
-              .game_parser_state(:InString, injector.game_parser_state(:BeforeTagClose))
+            injector.game_parser_state(:InString, enclosing_state)
           else
             game_parser.raise_error "Unexpected non-whitespace, non-double quote character: `#{char}'"
           end

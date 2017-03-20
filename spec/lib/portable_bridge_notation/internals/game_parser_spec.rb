@@ -5,21 +5,42 @@ require_relative '../../../../lib/portable_bridge_notation/internals/injector'
 
 module PortableBridgeNotation
   module Internals
+    module GameParserStates
+      class InTagNameSection < InUnrecognizedSupplementalSection
+      end
+    end
+
     RSpec.describe GameParser do
       # intent: to maximize human readability for quoting situations, use bare words for all difficult characters
       include SingleCharComparisonConstants
 
-      let(:expected_arg) { Subgame.new(*expected_subgame_fields) }
-
-      def expect_first_yield_with_arg
-        expect do |block|
-          described_object.each_subgame(&block)
-        end.to yield_with_args(expected_arg)
+      let(:expected_arg) do
+        expected_game = Api::Game.new
+        expected_game.initial_comments = expected_subgame_fields[0]
+        tag_name = expected_subgame_fields[1][0]
+        unless tag_name.nil?
+          expected_game.supplemental_sections[tag_name.to_sym] =
+            Api::SupplementalSection.new expected_subgame_fields[1][1],
+                                         expected_subgame_fields[3],
+                                         expected_subgame_fields[2]
+        end
+        expected_game
       end
 
+      def perform_test_with_expected_arg
+        game = conduct_test
+        expect(game).to eq expected_arg
+      end
+
+      def conduct_test
+        described_object.parse
+        game_parser_listener.build
+      end
+
+      let(:factory) { Injector.new }
+      let(:game_parser_listener) { factory.game_parser_listener }
       let(:described_object) do
-        factory = Injector.new
-        factory.game_parser pbn_game_string
+        factory.game_parser(pbn_game_string, Logger.new(STDERR), game_parser_listener)
       end
       describe('#each_subgame') do
         #### HAPPY PATHS #####
@@ -28,7 +49,7 @@ module PortableBridgeNotation
           let(:pbn_game_string) { "; just a comment#{line_feed}" }
           let(:expected_subgame_fields) { [[' just a comment'], [], [], ''] }
           it 'provides a structure with opening comment, no tag, no following comment, and no section' do
-            expect_first_yield_with_arg
+            perform_test_with_expected_arg
           end
         end
 
@@ -39,7 +60,7 @@ module PortableBridgeNotation
           end
           let(:expected_subgame_fields) { [[" multiline #{line_feed}comment "], %w(TagName TagValue), [], ''] }
           it 'provides a structure with the multi-line comment, the tag pair, no following comment, no section' do
-            expect_first_yield_with_arg
+            perform_test_with_expected_arg
           end
         end
 
@@ -55,7 +76,7 @@ module PortableBridgeNotation
              %w(TagName TagValue), [], '']
           end
           it 'provides multiple comments in the structure' do
-            expect_first_yield_with_arg
+            perform_test_with_expected_arg
           end
         end
 
@@ -63,7 +84,7 @@ module PortableBridgeNotation
           let(:pbn_game_string) { "[TagName #{double_quote}Tag#{backslash + double_quote}Value#{double_quote}]" }
           let(:expected_subgame_fields) { [[], %w(TagName Tag"Value), [], ''] }
           it 'handles escaped double-quotes properly' do
-            expect_first_yield_with_arg
+            perform_test_with_expected_arg
           end
         end
 
@@ -71,7 +92,7 @@ module PortableBridgeNotation
           let(:pbn_game_string) { "[TagName#{double_quote}TagValue#{double_quote}]" }
           let(:expected_subgame_fields) { [[], %w(TagName TagValue), [], ''] }
           it "doesn't mind the absence of whitespace" do
-            expect_first_yield_with_arg
+            perform_test_with_expected_arg
           end
         end
 
@@ -79,7 +100,7 @@ module PortableBridgeNotation
           let(:pbn_game_string) { "[TagName #{double_quote}Tag#{backslash + backslash}Value#{double_quote}]" }
           let(:expected_subgame_fields) { [[], ['TagName', "Tag#{backslash}Value"], [], ''] }
           it 'handles escaped backslashes properly' do
-            expect_first_yield_with_arg
+            perform_test_with_expected_arg
           end
         end
 
@@ -90,10 +111,10 @@ module PortableBridgeNotation
           end
           let(:expected_subgame_fields) do
             [[], %w(TagName TagValue), [],
-             "three section tokens#{double_quote}and a string#{double_quote + line_feed}"]
+             "\nthree section tokens#{double_quote}and a string#{double_quote + line_feed}"]
           end
           it 'yields the tag pair and the section unprocessed, including quotes and newlines' do
-            expect_first_yield_with_arg
+            perform_test_with_expected_arg
           end
         end
 
@@ -109,23 +130,22 @@ module PortableBridgeNotation
             [['comment1'],
              %w(TagName TagValue),
              ["comment2#{line_feed}comment2 second line"],
-             "verbatim section#{line_feed}"]
+             "#{line_feed}verbatim section#{line_feed}"]
           end
           it 'yields the single complete record accurately' do
-            expect_first_yield_with_arg
+            perform_test_with_expected_arg
           end
         end
 
-        context 'with two very simple tag pairs' do
+        context 'with two very simple non-supplemental informational tag pairs' do
           let(:pbn_game_string) do
             "[Event #{double_quote + double_quote}]#{line_feed}" \
             "[Site #{double_quote + double_quote}]"
           end
-          it 'yields twice with the minimal structures' do
-            expect do |block|
-              described_object.each_subgame(&block)
-            end.to yield_successive_args(Subgame.new([], ['Event', ''], [], ''),
-                                         Subgame.new([], ['Site', ''], [], ''))
+          it 'yields a game with the known fields populated' do
+            game = conduct_test
+            expect(game.event).to eq ''
+            expect(game.site).to eq ''
           end
         end
 
@@ -134,15 +154,15 @@ module PortableBridgeNotation
             ";preceding comment#{line_feed}" \
             "[Event #{double_quote + double_quote}] {comment following event} " + # no line_feed!
               "[Site #{double_quote + double_quote}] " \
-            ";comment following site#{line_feed}"
+          ";comment following site#{line_feed}"
           end
           it 'yields twice with the structures including their commentary' do
-            expect do |block|
-              described_object.each_subgame(&block)
-            end.to yield_successive_args(Subgame.new(['preceding comment'], ['Event', ''],
-                                                     ['comment following event'], ''),
-                                         Subgame.new([], ['Site', ''],
-                                                     ['comment following site'], ''))
+            game = conduct_test
+            expect(game.initial_comments[0]).to eq 'preceding comment'
+            expect(game.event).to eq ''
+            expect(game.event_comments).to eq ['comment following event']
+            expect(game.site).to eq ''
+            expect(game.site_comments).to eq ['comment following site']
           end
         end
 
@@ -154,12 +174,16 @@ module PortableBridgeNotation
             "b5 b6#{carriage_return + line_feed}"
           end
           it 'yields twice with the structures including their commentary and section data' do
-            expect do |block|
-              described_object.each_subgame(&block)
-            end.to yield_successive_args(Subgame.new(%w(a1 a2), ['a3', ''], ['a4'], '"a5" '),
-                                         Subgame.new([], ['b1', ''], ['b2 '],
-                                                     "b3 b4#{carriage_return + line_feed}" \
-                                                         "b5 b6#{carriage_return + line_feed}"))
+            game = conduct_test
+            expect(game.initial_comments[0]).to eq 'a1'
+            expect(game.initial_comments[1]).to eq 'a2'
+            expect(game.supplemental_sections[:a3].tag_value).to eq ''
+            expect(game.supplemental_sections[:a3].comments[0]).to eq 'a4'
+            expect(game.supplemental_sections[:a3].section_string).to eq ' "a5" '
+            expect(game.supplemental_sections[:b1].tag_value).to eq ''
+            expect(game.supplemental_sections[:b1].comments[0]).to eq 'b2 '
+            expect(game.supplemental_sections[:b1].section_string).to eq "b3 b4#{carriage_return + line_feed}" \
+                                                         "b5 b6#{carriage_return + line_feed}"
           end
         end
 
@@ -168,7 +192,7 @@ module PortableBridgeNotation
         context 'with an unclosed curly comment' do
           let(:pbn_game_string) { '{unclosed comment' }
           it 'complains about the unclosed comment' do
-            expect { described_object.each_subgame {} }.to raise_error(/.*unclosed brace comment.*/)
+            expect { conduct_test }.to raise_error(/.*unclosed brace comment.*/)
           end
         end
 
@@ -176,42 +200,42 @@ module PortableBridgeNotation
           let(:pbn_game_string) { '; comment without trailing newline' }
           let(:expected_subgame_fields) { [[' comment without trailing newline'], [], [], ''] }
           it 'treats end-of-game the same as end-of-line' do
-            expect_first_yield_with_arg
+            perform_test_with_expected_arg
           end
         end
 
         context 'with a barely-opened tag' do
           let(:pbn_game_string) { "[#{tab}#{tab}  " }
           it 'complains about the missing tag name' do
-            expect { described_object.each_subgame {} }.to raise_error(/.*prior to tag name.*/)
+            expect { conduct_test }.to raise_error(/.*prior to tag name.*/)
           end
         end
 
         context 'with a tag name followed by end-of-game' do
           let(:pbn_game_string) { "[#{tab}#{tab}  TagName" }
           it 'complains about an unfinished tag name' do
-            expect { described_object.each_subgame {} }.to raise_error(/.*unfinished tag name.*/)
+            expect { conduct_test }.to raise_error(/.*unfinished tag name.*/)
           end
         end
 
         context 'with a tag name but no value' do
           let(:pbn_game_string) { "[#{tab + tab}  TagName " }
           it 'complains about the missing tag value' do
-            expect { described_object.each_subgame {} }.to raise_error(/.*tag value.*/)
+            expect { conduct_test }.to raise_error(/.*tag value.*/)
           end
         end
 
         context 'with an unclosed tag value' do
           let(:pbn_game_string) { "[#{tab + tab}  TagName #{double_quote}TagVal " }
           it 'complains about the unclosed string' do
-            expect { described_object.each_subgame {} }.to raise_error(/.*unclosed string.*/)
+            expect { conduct_test }.to raise_error(/.*unclosed string.*/)
           end
         end
 
         context 'with an unclosed tag' do
           let(:pbn_game_string) { "[TagName #{double_quote}TagValue#{double_quote}" }
           it 'complains about the unclosed tag' do
-            expect { described_object.each_subgame {} }.to raise_error(/.*unclosed tag.*/)
+            expect { conduct_test }.to raise_error(/.*unclosed tag.*/)
           end
         end
 
@@ -219,7 +243,7 @@ module PortableBridgeNotation
           let(:pbn_game_string) { "; just a comment#{carriage_return + carriage_return + line_feed}" }
           let(:expected_subgame_fields) { [[" just a comment#{carriage_return}"], [], [], ''] }
           it 'includes only the first CR in the string' do
-            expect_first_yield_with_arg
+            perform_test_with_expected_arg
           end
         end
 
@@ -227,7 +251,7 @@ module PortableBridgeNotation
           let(:pbn_game_string) { "; just a #{carriage_return}comment#{line_feed}" }
           let(:expected_subgame_fields) { [[" just a #{carriage_return}comment"], [], [], ''] }
           it 'includes the CR in the string' do
-            expect_first_yield_with_arg
+            perform_test_with_expected_arg
           end
         end
 
@@ -235,21 +259,21 @@ module PortableBridgeNotation
           let(:pbn_game_string) { "; c'est très bon" }
           let(:expected_subgame_fields) { [[" c'est très bon"], [], [], ''] }
           it 'handles the latin-1 character just fine' do
-            expect_first_yield_with_arg
+            perform_test_with_expected_arg
           end
         end
 
         context 'with control ASCII characters' do
           let(:pbn_game_string) { "[TagName #{double_quote}Ta#{form_feed}gValue#{double_quote}" }
           it 'refuses the invalid character' do
-            expect { described_object.each_subgame {} }.to raise_error(/.*disallowed.*: 12/)
+            expect { conduct_test }.to raise_error(/.*disallowed.*: 12/)
           end
         end
 
         context 'with control non-ASCII characters' do
           let(:pbn_game_string) { "[TagName #{double_quote}Ta#{iso_8859_1_dec_val_149}gValue#{double_quote}" }
           it 'refuses the invalid character' do
-            expect { described_object.each_subgame {} }.to raise_error(/.*disallowed.*: 149/)
+            expect { conduct_test }.to raise_error(/.*disallowed.*: 149/)
           end
         end
 
@@ -257,7 +281,7 @@ module PortableBridgeNotation
           let(:pbn_game_string) { "[T #{double_quote}v#{double_quote}]#{double_quote}[#{double_quote}" }
           let(:expected_subgame_fields) { [[], %w(T v), [], '"["'] }
           it 'does not consider the bracket to be opening a new tag' do
-            expect_first_yield_with_arg
+            perform_test_with_expected_arg
           end
         end
       end

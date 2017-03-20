@@ -13,6 +13,10 @@ module PortableBridgeNotation
         @game.deal[direction.downcase.to_sym][suit.downcase.to_sym] << rank.upcase
       end
 
+      def with_unrecognized_supplemental_section(tag_name:, tag_value:, section:, comments:)
+        @game.supplemental_sections[tag_name.to_sym] = Api::SupplementalSection.new(tag_value, section, comments)
+      end
+
       def build
         return @game
       ensure

@@ -51,19 +51,15 @@ module PortableBridgeNotation
       end
 
       def import_game(game)
-        game_parser = @injector.game_parser game
-        game_parser.each_subgame do |subgame|
-          tag_name = subgame.tagPair[0]
-          safely_parse subgame, tag_name
-        end
+        game_parser = @injector.game_parser game, @logger, @observer_broadcaster
+        safely_parse game_parser
       end
 
-      def safely_parse(subgame, tag_name)
-        subgame_parser = @injector.subgame_parser(@observer_broadcaster, tag_name)
-        subgame_parser.parse subgame
+      def safely_parse(game_parser)
+        game_parser.parse
       rescue Internals::PortableBridgeNotationError => pbne
-        raise pbne unless @error_policy == :log_error
-        @logger.warn("; ignoring tag name `#{tag_name}' due to error: `#{pbne}'") if @error_policy == :log_error
+        raise StandardError, pbne unless @error_policy == :log_error
+        @logger.warn("; unable to parse game due to error: `#{pbne}'") if @error_policy == :log_error
       end
     end
   end

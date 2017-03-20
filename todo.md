@@ -9,3 +9,4 @@
 * write AuctionSectionParser, including call to GameParser#get_note_ref_resolution (@section_notes)
 * write PlaySectionParser, including call to GameParser#get_note_ref_resolution (@section_notes)
 * 100% implementation of Tis's tests (TDD finer scale to match each test, as an acceptance test)
+* stick comments after a Note tag in game.auction.annotated_calls\[n\].annotation.note_comments

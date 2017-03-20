@@ -102,6 +102,27 @@ C 8 5                           C Q J 10 6
                 D 3
                 C K 4
             eos
+            # %w(1D 1S 3H 4S 4NT X Pass Pass 5C X 5H X).each_with_index do |call, call_idx|
+            #   expect(game.auction.annotated_calls[call_idx]).to eq call
+            # end
+            # expect(game.auction.annotated_calls[2].annotation.note).to eq ' non-forcing 6-9 points, 6-card'
+            # expect(game.auction.annotated_calls[3].comments[0]).to eq ' end-of-line AUCTION'
+            # expect(game.auction.annotated_calls[4].annotation.note).to eq ' two colors: clubs and diamonds'
+            # expect(game.auction.is_completed).to eq true
+            # expect(game.auction.is_in_progress).to be_nil
+            # [%w(SK H3 S4 S3),
+            #  %w(C5 C2 C6 CK),
+            #  %w(S2 H6 S5 S7),
+            #  %w(C8 CA CT C4),
+            #  %w(D2 DA DT D3),
+            #  %w(D4 DK H5 H7)].each_with_index do |expected_cards_for_round, round|
+            #   %i(w n e s).each_with_index do |dir, dir_idx|
+            #     expect(game.play.tricks[round][dir].card).to eq expected_cards_for_round[dir_idx]
+            #   end
+            # end
+            # expect(game.play.tricks[6][:s]).to eq 'H2'
+            # expect(game.play.tricks[round][:s].comments[0]).to eq ' end-of-line PLAY'
+            # expect(game.play.is_completed).to eq true
           end
         end
       end

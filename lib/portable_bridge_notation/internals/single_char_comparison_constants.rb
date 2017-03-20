@@ -9,12 +9,6 @@ module PortableBridgeNotation
         /[^ \t\v\r\n]/
       end
 
-      # represents printable ASCII characters except: %;[]{}
-      # note that " (\x22) *can* start a section, by starting a section element that is a string token
-      def initial_supplemental_section_char
-        /[\x21-\x24\x26-\x3A\x3C-\x5A\x5C\x5E-\x7A\x7C\x7E]/
-      end
-
       def allowed_in_names
         /[A-Za-z0-9_]/
       end

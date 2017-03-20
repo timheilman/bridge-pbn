@@ -25,7 +25,7 @@ module PortableBridgeNotation
 
       ##
       # Invokes methods on observers attached with #attach_observer which respond_to specific methods called
-      # by SubgameParsers, as well as done_with_game referenced here.  Yields one Game per game provided by the io.
+      # by GameParserStates, as well as done_with_game referenced here.  Yields one Game per game provided by the io.
       def import
         return enum_for(:import) unless block_given?
         game_parser_listener = @injector.game_parser_listener

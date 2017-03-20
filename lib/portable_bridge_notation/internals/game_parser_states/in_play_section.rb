@@ -15,6 +15,8 @@ module PortableBridgeNotation
           when open_curly then handle_open_curly
           else raise_error char
           end
+          # future enclosed BetweenPlays states will be notifying this class of note refs, which then
+          # need to head up to GameParserState#expect_play_ref_resolution
         end
 
         def raise_error(char)

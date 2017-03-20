@@ -1,10 +1,11 @@
 require_relative 'io_parser'
-require_relative 'subgame_builder'
 require_relative 'game_parser'
 require_relative 'portable_bridge_notation_error'
 require_relative 'observer_broadcaster'
 require_relative '../api/game'
 require_relative 'default_game_parser_listener'
+require_relative 'string_parsers/deal_string_parser'
+require_relative 'string_parsers/hand_string_parser'
 
 # all defined game parser states should be required here
 require_relative 'game_parser_states/game_parser_state'
@@ -19,18 +20,12 @@ require_relative 'game_parser_states/in_curly_comment'
 require_relative 'game_parser_states/in_semicolon_comment'
 require_relative 'game_parser_states/in_auction_section'
 require_relative 'game_parser_states/in_play_section'
+require_relative 'game_parser_states/in_note_section'
 require_relative 'game_parser_states/in_deal_section'
 require_relative 'game_parser_states/in_date_section'
 require_relative 'game_parser_states/in_board_section'
 require_relative 'game_parser_states/in_declarer_section'
 require_relative 'game_parser_states/in_unrecognized_supplemental_section'
-
-# all subgame parsers implemented should be required here
-require_relative 'subgame_parsers/subgame_parser'
-require_relative 'subgame_parsers/subgame_parser_for_string_value'
-require_relative 'subgame_parsers/note_subgame_parser'
-require_relative 'subgame_parsers/deal_string_parser'
-require_relative 'subgame_parsers/hand_string_parser'
 
 module PortableBridgeNotation
   module Internals
@@ -48,14 +43,6 @@ module PortableBridgeNotation
                                       observer: observer,
                                       logger: logger,
                                       injector: self
-      end
-
-      # Spring/Guice-sense Singleton-Scoped, parameterized by type
-      # this is good: singleton-scoped class lookup as is in singleton-classloader scenario: KISS.
-      def subgame_parser_class_for_tag_name(tag_name)
-        return SubgameParsers.const_get(tag_name + 'SubgameParser')
-      rescue NameError
-        raise PortableBridgeNotationError, "Unrecognized tag name: #{tag_name}"
       end
 
       # Spring/Guice-sense Prototype-Scoped, parameterized by type, and assisted for runtime-supplied args

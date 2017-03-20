@@ -1,6 +1,5 @@
 require 'spec_helper'
 require_relative '../../../../lib/portable_bridge_notation/internals/single_char_comparison_constants'
-require_relative '../../../../lib/portable_bridge_notation/internals/subgame'
 require_relative '../../../../lib/portable_bridge_notation/internals/injector'
 
 module PortableBridgeNotation
@@ -16,13 +15,13 @@ module PortableBridgeNotation
 
       let(:expected_arg) do
         expected_game = Api::Game.new
-        expected_game.initial_comments = expected_subgame_fields[0]
-        tag_name = expected_subgame_fields[1][0]
+        expected_game.initial_comments = pre_com_tag_pair_post_com_section[0]
+        tag_name = pre_com_tag_pair_post_com_section[1][0]
         unless tag_name.nil?
           expected_game.supplemental_sections[tag_name.to_sym] =
-            Api::SupplementalSection.new expected_subgame_fields[1][1],
-                                         expected_subgame_fields[3],
-                                         expected_subgame_fields[2]
+            Api::SupplementalSection.new pre_com_tag_pair_post_com_section[1][1],
+                                         pre_com_tag_pair_post_com_section[3],
+                                         pre_com_tag_pair_post_com_section[2]
         end
         expected_game
       end
@@ -42,12 +41,12 @@ module PortableBridgeNotation
       let(:described_object) do
         factory.game_parser(pbn_game_string, Logger.new(STDERR), game_parser_listener)
       end
-      describe('#each_subgame') do
+      describe('#parse') do
         #### HAPPY PATHS #####
 
         context 'with an opening single-line comment with LF' do
           let(:pbn_game_string) { "; just a comment#{line_feed}" }
-          let(:expected_subgame_fields) { [[' just a comment'], [], [], ''] }
+          let(:pre_com_tag_pair_post_com_section) { [[' just a comment'], [], [], ''] }
           it 'provides a structure with opening comment, no tag, no following comment, and no section' do
             perform_test_with_expected_arg
           end
@@ -58,7 +57,10 @@ module PortableBridgeNotation
             "  { multiline #{line_feed}" \
             "comment } [TagName #{double_quote}TagValue#{double_quote}]#{line_feed}"
           end
-          let(:expected_subgame_fields) { [[" multiline #{line_feed}comment "], %w(TagName TagValue), [], ''] }
+          let(:pre_com_tag_pair_post_com_section) do
+            [[" multiline #{line_feed}comment "],
+             %w(TagName TagValue), [], '']
+          end
           it 'provides a structure with the multi-line comment, the tag pair, no following comment, no section' do
             perform_test_with_expected_arg
           end
@@ -71,7 +73,7 @@ module PortableBridgeNotation
               "comment} ;with more commentary#{line_feed} " \
               " [TagName #{double_quote}TagValue#{double_quote}]#{line_feed}"
           end
-          let(:expected_subgame_fields) do
+          let(:pre_com_tag_pair_post_com_section) do
             [['one-liner', "{{;;;multiline #{line_feed}comment", 'with more commentary'],
              %w(TagName TagValue), [], '']
           end
@@ -82,7 +84,7 @@ module PortableBridgeNotation
 
         context 'with double-quotes in the tag value' do
           let(:pbn_game_string) { "[TagName #{double_quote}Tag#{backslash + double_quote}Value#{double_quote}]" }
-          let(:expected_subgame_fields) { [[], %w(TagName Tag"Value), [], ''] }
+          let(:pre_com_tag_pair_post_com_section) { [[], %w(TagName Tag"Value), [], ''] }
           it 'handles escaped double-quotes properly' do
             perform_test_with_expected_arg
           end
@@ -90,7 +92,7 @@ module PortableBridgeNotation
 
         context 'with tag value smooshed up against the tag name' do
           let(:pbn_game_string) { "[TagName#{double_quote}TagValue#{double_quote}]" }
-          let(:expected_subgame_fields) { [[], %w(TagName TagValue), [], ''] }
+          let(:pre_com_tag_pair_post_com_section) { [[], %w(TagName TagValue), [], ''] }
           it "doesn't mind the absence of whitespace" do
             perform_test_with_expected_arg
           end
@@ -98,7 +100,7 @@ module PortableBridgeNotation
 
         context 'with backslash in the tag value' do
           let(:pbn_game_string) { "[TagName #{double_quote}Tag#{backslash + backslash}Value#{double_quote}]" }
-          let(:expected_subgame_fields) { [[], ['TagName', "Tag#{backslash}Value"], [], ''] }
+          let(:pre_com_tag_pair_post_com_section) { [[], ['TagName', "Tag#{backslash}Value"], [], ''] }
           it 'handles escaped backslashes properly' do
             perform_test_with_expected_arg
           end
@@ -109,7 +111,7 @@ module PortableBridgeNotation
             "[TagName #{double_quote}TagValue#{double_quote}]#{line_feed}" \
               "three section tokens#{double_quote}and a string#{double_quote + line_feed}"
           end
-          let(:expected_subgame_fields) do
+          let(:pre_com_tag_pair_post_com_section) do
             [[], %w(TagName TagValue), [],
              "\nthree section tokens#{double_quote}and a string#{double_quote + line_feed}"]
           end
@@ -126,7 +128,7 @@ module PortableBridgeNotation
               "comment2 second line}#{line_feed}" \
               "verbatim section#{line_feed}"
           end
-          let(:expected_subgame_fields) do
+          let(:pre_com_tag_pair_post_com_section) do
             [['comment1'],
              %w(TagName TagValue),
              ["comment2#{line_feed}comment2 second line"],
@@ -198,7 +200,7 @@ module PortableBridgeNotation
 
         context 'with a semicolon comment closed by end-of-game' do
           let(:pbn_game_string) { '; comment without trailing newline' }
-          let(:expected_subgame_fields) { [[' comment without trailing newline'], [], [], ''] }
+          let(:pre_com_tag_pair_post_com_section) { [[' comment without trailing newline'], [], [], ''] }
           it 'treats end-of-game the same as end-of-line' do
             perform_test_with_expected_arg
           end
@@ -241,7 +243,7 @@ module PortableBridgeNotation
 
         context 'with an opening single-line comment strangely containing two CRs then an LF' do
           let(:pbn_game_string) { "; just a comment#{carriage_return + carriage_return + line_feed}" }
-          let(:expected_subgame_fields) { [[" just a comment#{carriage_return}"], [], [], ''] }
+          let(:pre_com_tag_pair_post_com_section) { [[" just a comment#{carriage_return}"], [], [], ''] }
           it 'includes only the first CR in the string' do
             perform_test_with_expected_arg
           end
@@ -249,7 +251,7 @@ module PortableBridgeNotation
 
         context 'with an opening single-line comment containing carriage_return in the middle of the string' do
           let(:pbn_game_string) { "; just a #{carriage_return}comment#{line_feed}" }
-          let(:expected_subgame_fields) { [[" just a #{carriage_return}comment"], [], [], ''] }
+          let(:pre_com_tag_pair_post_com_section) { [[" just a #{carriage_return}comment"], [], [], ''] }
           it 'includes the CR in the string' do
             perform_test_with_expected_arg
           end
@@ -257,7 +259,7 @@ module PortableBridgeNotation
 
         context 'with printable latin-1 characters' do
           let(:pbn_game_string) { "; c'est très bon" }
-          let(:expected_subgame_fields) { [[" c'est très bon"], [], [], ''] }
+          let(:pre_com_tag_pair_post_com_section) { [[" c'est très bon"], [], [], ''] }
           it 'handles the latin-1 character just fine' do
             perform_test_with_expected_arg
           end
@@ -279,19 +281,9 @@ module PortableBridgeNotation
 
         context 'with a supplemental section containing a string with an open bracket' do
           let(:pbn_game_string) { "[T #{double_quote}v#{double_quote}]#{double_quote}[#{double_quote}" }
-          let(:expected_subgame_fields) { [[], %w(T v), [], '"["'] }
+          let(:pre_com_tag_pair_post_com_section) { [[], %w(T v), [], '"["'] }
           it 'does not consider the bracket to be opening a new tag' do
             perform_test_with_expected_arg
-          end
-        end
-      end
-      describe('#add_note_ref_resolution') do
-        context('when a play section has been reached and a note reference has occurred') do
-          let(:pbn_game_string) { '' }
-          it 'provides back the note references it was informed of when asked' do
-            described_object.reached_section('Play')
-            described_object.add_note_ref_resolution(2, 'two colors: clubs and diamonds')
-            expect(described_object.get_note_ref(2)).to eq('two colors: clubs and diamonds')
           end
         end
       end

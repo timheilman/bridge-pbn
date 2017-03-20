@@ -1,5 +1,5 @@
 require 'spec_helper'
-require_relative '../../../../../lib/portable_bridge_notation/internals/subgame_parsers/deal_string_parser'
+require_relative '../../../../../lib/portable_bridge_notation/internals/string_parsers/deal_string_parser'
 require_relative '../../../../../lib/portable_bridge_notation/internals/injector'
 
 module PortableBridgeNotation

@@ -13,6 +13,11 @@ module PortableBridgeNotation
         @injector = injector
         @section_notes = {}
         @logger = logger
+        @in_auction_section_state = nil
+        @in_play_section_state = nil
+        @most_recent_special_section_state = nil
+        @auction_note_ref_num_to_call_idxes = {}
+        @play_note_ref_num_to_trick_idx_dir_pairs = {}
       end
 
       def parse
@@ -20,10 +25,12 @@ module PortableBridgeNotation
         @pbn_game_string.each_char.with_index do |char, index|
           @cur_char_index = index
           verify_char char
-          @logger.debug("State #{state.class} processing char '#{char}' at idx #{index}")
+          # @logger.debug("State #{state.class} processing char '#{char}' at idx #{index}")
           state = state.process_char(char)
         end
         state.finalize
+        @in_auction_section_state.emit_after_note_refs_fulfilled unless @in_auction_section_state.nil?
+        @in_play_section_state.emit_after_note_refs_fulfilled unless @in_play_section_state.nil?
       end
 
       def verify_char(char)
@@ -45,17 +52,43 @@ module PortableBridgeNotation
                                                   "char_index: #{@cur_char_index}; message: #{message}")
       end
 
-      def reached_section(section_name)
-        @section_name = section_name
-        @section_notes.merge! section_name => {}
+      def expect_auction_ref_resolution(in_auction_section_state, call_index, ref_num)
+        @most_recent_special_section_state = in_auction_section_state
+        @in_auction_section_state = in_auction_section_state
+        @auction_note_ref_num_to_call_idxes[ref_num] = [] unless @auction_note_ref_num_to_call_idxes.key? ref_num
+        @auction_note_ref_num_to_call_idxes[ref_num] << call_index
+      end
+
+      def expect_play_ref_resolution(in_play_section_state, trick_index, direction, ref_num)
+        @most_recent_special_section_state = in_play_section_state
+        @in_play_section_state = in_play_section_state
+        @play_note_ref_num_to_trick_idx_dir_pairs[ref_num] = [trick_index, direction]
       end
 
       def add_note_ref_resolution(ref_num, text)
-        @section_notes[@section_name].merge! ref_num => text
+        if @most_recent_special_section_state == @in_auction_section_state
+          add_auction_note_ref_resolution ref_num, text
+        else
+          add_play_note_ref_resolution ref_num, text
+        end
       end
 
-      def get_note_ref(ref_num)
-        @section_notes[@section_name][ref_num]
+      def add_play_note_ref_resolution(ref_num, text)
+        err_string = "Note ref resolution #{ref_num} was provided (with text '#{text}'), "\
+                       'but no play was expecting that resolution.'
+        raise_error err_string unless @play_note_ref_num_to_trick_idx_dir_pairs.key? ref_num
+        @play_note_ref_num_to_trick_idx_dir_pairs[ref_num].each do |trick_idx_dir_pair|
+          @in_play_section_state.with_play_note(trick_idx_dir_pair[0], trick_idx_dir_pair[1], text)
+        end
+      end
+
+      def add_auction_note_ref_resolution(ref_num, text)
+        err_string = "Note ref resolution #{ref_num} was provided (with text '#{text}'), "\
+                       'but no call was expecting that resolution.'
+        raise_error err_string unless @auction_note_ref_num_to_call_idxes.key? ref_num
+        @auction_note_ref_num_to_call_idxes[ref_num].each do |call_idx|
+          @in_auction_section_state.with_auction_note(call_idx, text)
+        end
       end
     end
   end

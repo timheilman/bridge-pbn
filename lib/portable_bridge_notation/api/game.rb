@@ -13,7 +13,7 @@ module PortableBridgeNotation
     # strains: :s :h :c :d :n_t
     #
     # Consider alternately (in a SAX vs DOM approach) supplying a listener for the events dispatched by the
-    # subgame parsers with Importer#attach_observer
+    # game_parser_states with Importer#attach_observer
     MANDATORY_TAG_SET = [
       :event, # 3.4.1 descriptive string name of the event, shun abbreviations
       :site, # 3.4.2 ISO 3166 or EN 23166 recommended; "Portland, OR USA"

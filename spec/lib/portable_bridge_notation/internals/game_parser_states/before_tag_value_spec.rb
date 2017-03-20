@@ -4,7 +4,6 @@ module PortableBridgeNotation
     module GameParserStates
       RSpec.describe BeforeTagValue, group: :game_parser_states do
         describe('#process_char') do
-          let(:subgame_builder) { double }
           let(:described_object) { make_testing_game_parser_state described_class }
           it('should skip whitespace') do
             expect(described_object.process_char("\v")).to be(described_object)

@@ -8,9 +8,11 @@ module PortableBridgeNotation
       end
 
       def with_dealt_card(suit:, rank:, direction:)
-        dirs = [:n, :s, :e, :w]
-        @game.deal = dirs.each_with_object({}) { |dir, memo| memo[dir] = suit_for_direction; } if @game.deal.nil?
-        @game.deal[direction.downcase.to_sym][suit.downcase.to_sym] << rank.upcase
+        dir_sym = direction.downcase.to_sym
+        suit_sym = suit.downcase.to_sym
+        @game.deal = {} if @game.deal.nil?
+        @game.deal[dir_sym] = { c: '', d: '', h: '', s: '' } unless @game.deal.include? dir_sym
+        @game.deal[dir_sym][suit_sym] << rank.upcase
       end
 
       def with_unrecognized_supplemental_section(tag_name:, tag_value:, section:, comments:)

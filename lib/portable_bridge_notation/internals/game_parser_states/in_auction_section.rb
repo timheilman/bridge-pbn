@@ -28,14 +28,19 @@ module PortableBridgeNotation
         end
 
         def with_special_section_token(call_string)
-          @num_passes = 0 unless call_string == 'Pass'
-          @num_passes += 1 if call_string == 'Pass'
-          @is_completed = true if call_string == 'AP' || @num_passes == 3
+          return if call_string == hyphen
+          compute_is_completed call_string
           @calls << Api::AnnotatedCall.new(call_string, nil, [])
           @comment_array_for_last_token = @calls.last.comments
           @annotation_steward = AuctionAnnotationSteward.new(
             game_parser: game_parser, call: @calls.last, special_section: self, call_index: @calls.length - 1
           )
+        end
+
+        def compute_is_completed(call_string)
+          @num_passes = 0 unless call_string == 'Pass'
+          @num_passes += 1 if call_string == 'Pass'
+          @is_completed = true if call_string == 'AP' || @num_passes == 3
         end
 
         def with_auction_note(call_index, note_ref_text)

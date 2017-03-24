@@ -24,7 +24,7 @@ module PortableBridgeNotation
       :east, # 3.4.7 player name(s) as in :west
       :south, # 3.4.8 player name(s) as in :west
       :dealer, # 3.4.9 "N", "S", "E" or "W"
-      :vulnerable, # 3.4.10 "None", ("Love", "-"), "NS", "EW", "All", ("Both")
+      :vulnerable, # 3.4.10 "None", "NS", "EW", "All", ("Love", "-", "Both" are disallowed; use export format)
       :deal, # 3.4.11 Ruby hash from single-char among "NSEW" to
       # (cont'd) (a hash from single-char among "CDHS" to string of distinct single-char ranks among "AKQJT98765432")
 

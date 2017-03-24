@@ -59,6 +59,10 @@ module PortableBridgeNotation
                                                           game_parser: game_parser,
                                                           special_section: self)
         end
+
+        def with_play_note(trick_index, direction, text)
+          @tricks[trick_index][direction].annotation.note = text
+        end
       end
     end
   end

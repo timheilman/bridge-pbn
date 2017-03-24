@@ -13,7 +13,7 @@ module PortableBridgeNotation
 
       def nag_string_for_suffix_annotation_string(suffix_annotation_string)
         unless suffix_nag_indexes.include? suffix_annotation_string
-          @game_parser.raise_error "Unexpected suffix annotation string #{suffix_annotation_string}"
+          @game_parser.raise_error "Unexpected suffix annotation string `#{suffix_annotation_string}'"
         end
         suffix_nag_indexes[suffix_annotation_string]
       end

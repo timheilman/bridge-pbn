@@ -84,9 +84,8 @@ module PortableBridgeNotation
         err_string = "Note ref resolution #{ref_num} was provided (with text '#{text}'), "\
                        'but no play was expecting that resolution.'
         raise_error err_string unless @play_note_ref_num_to_trick_idx_dir_pairs.key? ref_num
-        @play_note_ref_num_to_trick_idx_dir_pairs[ref_num].each do |trick_idx_dir_pair|
-          @in_play_section_state.with_play_note(trick_idx_dir_pair[0], trick_idx_dir_pair[1], text)
-        end
+        trick_idx_dir_pair = @play_note_ref_num_to_trick_idx_dir_pairs[ref_num]
+        @in_play_section_state.with_play_note(trick_idx_dir_pair[0], trick_idx_dir_pair[1], text)
       end
 
       def add_auction_note_ref_resolution(ref_num, text)

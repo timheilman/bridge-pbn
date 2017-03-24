@@ -10,12 +10,10 @@ module PortableBridgeNotation
 
         def process_char(char)
           case char
-          when whitespace_allowed_in_games then
-            self
-          when special_section_token_char then
-            start_special_section char
-          else
-            handle_single_char char
+          when whitespace_allowed_in_games then self
+          when special_section_token_char then start_special_section char
+          when exclamation_point, question_mark then start_suffix char
+          else handle_single_char char
           end
         end
 
@@ -23,6 +21,7 @@ module PortableBridgeNotation
           { semicolon => method(:start_semicolon_comment),
             open_curly => method(:start_curly_comment),
             equals_sign => method(:start_note_reference),
+            dollar_sign => method(:start_nag),
             asterisk => method(:handle_asterisk),
             plus_sign => method(:handle_plus_sign),
             open_bracket => method(:handle_open_bracket) }
@@ -49,8 +48,20 @@ module PortableBridgeNotation
           injector.game_parser_state(:InNoteRef, self)
         end
 
+        def start_suffix(char)
+          injector.game_parser_state(:InSuffix, self).process_char char
+        end
+
+        def start_nag
+          injector.game_parser_state(:InNag, self)
+        end
+
         def with_suffix_annotation(suffix_annotation_string)
           @comment_array_for_last_token = @annotation_steward.with_suffix_annotation suffix_annotation_string
+        end
+
+        def with_nag(nag)
+          @comment_array_for_last_token = @annotation_steward.with_nag nag
         end
 
         def with_note_reference_number(note_reference_number)
@@ -73,7 +84,7 @@ module PortableBridgeNotation
         end
 
         def finalize
-          # no-op: these sections areemitted separately by game_parser after note_references
+          # no-op: these sections are emitted separately by game_parser after note_references
         end
       end
     end

@@ -143,12 +143,10 @@ module PortableBridgeNotation
     Contract = Struct.new(:level, :strain, :risk)
 
     # :declarer and :contract must agree with this section if :is_completed
-    # :is_in_progress is optional
-    Auction = Struct.new(:annotated_calls, :is_completed, :is_in_progress)
+    Auction = Struct.new(:annotated_calls, :is_completed)
 
     # :result must agree with this section if :is_completed
-    # :is_in_progress is optional
-    Play = Struct.new(:annotated_plays, :is_completed, :is_in_progress)
+    Play = Struct.new(:annotated_plays, :is_completed)
 
     # Section 3.5 and 3.5.1
     # :call may be "AP", "Pass", "X", "XX", "<k><strain>", "-" (it is not yet this player's turn)

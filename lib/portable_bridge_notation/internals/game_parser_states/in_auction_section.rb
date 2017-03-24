@@ -6,8 +6,7 @@ module PortableBridgeNotation
           @comments = []
           @calls = []
           @comment_array_for_last_token = @comments
-          @is_completed = nil
-          @is_in_progress = nil
+          @is_completed = false
         end
 
         def single_char_to_method
@@ -21,9 +20,12 @@ module PortableBridgeNotation
 
         def process_char(char)
           case char
-          when whitespace_allowed_in_games then self
-          when call_char then start_call char
-          else handle_single_char char
+          when whitespace_allowed_in_games then
+            self
+          when call_char then
+            start_call char
+          else
+            handle_single_char char
           end
         end
 
@@ -47,7 +49,6 @@ module PortableBridgeNotation
 
         def handle_plus_sign
           @is_completed = false
-          @is_in_progress = true
         end
 
         def handle_open_bracket
@@ -78,47 +79,30 @@ module PortableBridgeNotation
         end
 
         def finalize_after_note_references
-          observer.with_auction(Api::Auction.new(@calls, @is_completed, @is_in_progress))
+          observer.with_auction(Api::Auction.new(@calls, @is_completed))
         end
 
         def with_call(call_string)
+          @num_passes = 0 unless call_string == 'Pass'
+          @num_passes += 1 if call_string == 'Pass'
+          @is_completed = true if call_string == 'AP' || @num_passes == 3
           @calls << Api::AnnotatedCall.new(call_string, nil, [])
           @comment_array_for_last_token = @calls.last.comments
+          @annotation_steward = AuctionAnnotationSteward.new(
+            game_parser: game_parser, call: @calls.last, special_section: self, call_index: @calls.length - 1
+          )
         end
 
         def with_suffix_annotation(suffix_annotation_string)
-          with_nag(nag_string_for_suffix_annotation_string(suffix_annotation_string))
-        end
-
-        def nag_string_for_suffix_annotation_string(suffix_annotation_string)
-          suffix_nag_indexes = { '!' => 1, '?' => 2, '!!' => 3, '??' => 4, '!?' => 5, '?!' => 6 }
-          unless suffix_nag_indexes.include? suffix_annotation_string
-            game_parser.raise_error "Unexpected suffix annotation string #{suffix_annotation_string}"
-          end
-          suffix_nag_indexes[suffix_annotation_string]
+          @comment_array_for_last_token = @annotation_steward.with_suffix_annotation suffix_annotation_string
         end
 
         def with_note_reference_number(note_reference_number)
-          annotation = make_or_get_annotation
-          game_parser.expect_auction_ref_resolution(self, @calls.length - 1, note_reference_number)
-          @comment_array_for_last_token = annotation.note_comments
-        end
-
-        def with_nag(nag_string)
-          annotation = make_or_get_annotation
-          annotation.commented_numeric_annotation_glyphs <<
-            Api::CommentedNumericAnnotationGlyph.new(Integer(nag_string), [])
-          @comment_array_for_last_token = annotation.commented_numeric_annotation_glyphs.last.comments
+          @comment_array_for_last_token = @annotation_steward.with_note_reference_number note_reference_number
         end
 
         def with_auction_note(call_index, note_ref_text)
           @calls[call_index].annotation.note = note_ref_text
-        end
-
-        def make_or_get_annotation
-          last_call = @calls.last
-          last_call.annotation = Api::Annotation.new(nil, [], [], []) if last_call.annotation.nil?
-          last_call.annotation
         end
 
         def commentary_permitted

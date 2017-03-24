@@ -7,6 +7,8 @@ module PortableBridgeNotation
           super
           game_parser.reached_auction_section self
           @calls = []
+          @skipped_player_count = 0
+          @insufficient_but_accepted = false
         end
 
         def special_section_token_char
@@ -30,7 +32,7 @@ module PortableBridgeNotation
         def with_special_section_token(call_string)
           return if call_string == hyphen
           compute_is_completed call_string
-          @calls << Api::AnnotatedCall.new(call_string, nil, [])
+          @calls << Api::AnnotatedCall.new(call_string, nil, sufficiency_get_and_reset, skip_count_get_and_reset, [])
           @comment_array_for_last_token = @calls.last.comments
           @annotation_steward = AuctionAnnotationSteward.new(
             game_parser: game_parser, call: @calls.last, special_section: self, call_index: @calls.length - 1
@@ -45,6 +47,26 @@ module PortableBridgeNotation
 
         def with_auction_note(call_index, note_ref_text)
           @calls[call_index].annotation.note = note_ref_text
+        end
+
+        def with_insufficiency_irregularity
+          @insufficient_but_accepted = true
+        end
+
+        def with_skipped_player_irregularity
+          @skipped_player_count += 1
+        end
+
+        def sufficiency_get_and_reset
+          to_return = @insufficient_but_accepted
+          @insufficient_but_accepted = false
+          to_return
+        end
+
+        def skip_count_get_and_reset
+          to_return = @skipped_player_count
+          @skipped_player_count = 0
+          to_return
         end
       end
     end

@@ -6,54 +6,40 @@ module PortableBridgeNotation
           @comments = []
           @comment_array_for_last_token = @comments
           @is_completed = false
+          @char_to_simple_enclosed_state = {
+            open_curly => :InCurlyComment,
+            semicolon => :InSemicolonComment,
+            equals_sign => :InNoteRef,
+            carat => :InIrregularity,
+            dollar_sign => :InNag
+          }
         end
 
         def process_char(char)
-          case char
-          when whitespace_allowed_in_games then self
-          when special_section_token_char then start_special_section char
-          when exclamation_point, question_mark then start_suffix char
-          else handle_single_char char
+          return self if char =~ whitespace_allowed_in_games
+          if @char_to_simple_enclosed_state.include? char
+            injector.game_parser_state(@char_to_simple_enclosed_state[char], self)
+          else
+            handle_other_char char
           end
         end
 
-        def single_char_to_method
-          { semicolon => method(:start_semicolon_comment),
-            open_curly => method(:start_curly_comment),
-            equals_sign => method(:start_note_reference),
-            dollar_sign => method(:start_nag),
-            asterisk => method(:handle_asterisk),
-            plus_sign => method(:handle_plus_sign),
-            open_bracket => method(:handle_open_bracket) }
-        end
-
-        def handle_single_char(char)
-          raise_error char unless single_char_to_method.include? char
-          single_char_to_method[char].call
-        end
-
-        def start_curly_comment
-          injector.game_parser_state(:InCurlyComment, self)
-        end
-
-        def start_semicolon_comment
-          injector.game_parser_state(:InSemicolonComment, self)
+        def handle_other_char(char)
+          case char
+          when special_section_token_char then start_special_section char
+          when exclamation_point, question_mark then start_suffix char
+          when asterisk then handle_asterisk
+          when plus_sign then handle_plus_sign
+          when open_bracket then handle_open_bracket
+          end
         end
 
         def add_comment(comment)
           @comment_array_for_last_token << comment
         end
 
-        def start_note_reference
-          injector.game_parser_state(:InNoteRef, self)
-        end
-
         def start_suffix(char)
           injector.game_parser_state(:InSuffix, self).process_char char
-        end
-
-        def start_nag
-          injector.game_parser_state(:InNag, self)
         end
 
         def with_suffix_annotation(suffix_annotation_string)

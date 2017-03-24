@@ -151,11 +151,19 @@ module PortableBridgeNotation
 
     # Section 3.5 and 3.5.1
     # :call may be "AP", "Pass", "X", "XX", "<k><strain>", "-" (it is not yet this player's turn)
-    AnnotatedCall = Struct.new(:call, :annotation, :comments)
+    AnnotatedCall = Struct.new(:call,
+                               :annotation,
+                               :is_insufficient_but_accepted,
+                               :skipped_player_count, # due to accepted out-of-rotation call
+                               :comments)
 
     # Section 3.6 and 3.6.1
     # :card may be "-" when it doesn't matter, or "<suit><rank>" among "SHDC" and "AKQJT98765432"
-    AnnotatedPlay = Struct.new(:card, :annotation, :comments)
+    AnnotatedPlay = Struct.new(:card,
+                               :annotation,
+                               :is_unnoticed_revoke,
+                               :is_accepted_noninitial_lead_out_of_turn,
+                               :comments)
 
     # Section 3.5.2 and 3.6.2
     # for suffix annotations, use NAG 1-6 for auction, 7-12 for play
@@ -163,8 +171,7 @@ module PortableBridgeNotation
     # :commented_numeric_annotation_glyphs array
     Annotation = Struct.new(:note,
                             :note_comments,
-                            :commented_numeric_annotation_glyphs,
-                            :irregularities)
+                            :commented_numeric_annotation_glyphs)
 
     # :numeric_annotation_glyph
     # 0 => no annotation
@@ -179,10 +186,6 @@ module PortableBridgeNotation
     # 14 => card has been corrected manually
     # 15-255 => commenting calls and played cards
     CommentedNumericAnnotationGlyph = Struct.new(:numeric_annotation_glyph, :comments)
-
-    # type may be "I" for Insufficient bid, "S" for Skipped player due to call out of rotation,
-    # "R" for uncaught Renege/Revoke, and "L" for this card being led out of turn for this trick
-    Irregularity = Struct.new(:type)
 
     # For unrecognized supplemental tags/sections
     SupplementalSection = Struct.new(:tag_value, :section_string, :comments)

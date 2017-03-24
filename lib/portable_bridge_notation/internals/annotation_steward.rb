@@ -26,7 +26,7 @@ module PortableBridgeNotation
       end
 
       def make_or_get_annotation
-        @annotatable.annotation = Api::Annotation.new(nil, [], [], []) if @annotatable.annotation.nil?
+        @annotatable.annotation = Api::Annotation.new(nil, [], []) if @annotatable.annotation.nil?
         @annotatable.annotation
       end
     end

@@ -37,6 +37,10 @@ module PortableBridgeNotation
         '='
       end
 
+      def carat
+        '^'
+      end
+
       def plus_sign
         '+'
       end

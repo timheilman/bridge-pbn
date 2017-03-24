@@ -3,9 +3,8 @@ module PortableBridgeNotation
     RSpec.describe Api::Importer do
       describe '#import' do
         let(:described_object) { described_class.create(io: pbn_game_string) }
-        context 'game 1' do
-          let(:pbn_game_string) do
-            StringIO.new(<<-eos)
+        let(:pbn_game_string) do
+          StringIO.new(<<-eos)
 % ==================== game 2 ====================
 % Same game; no cards for W/E; demo (nonsense) comments
 %
@@ -54,62 +53,61 @@ D4 DK H5 H7
 -  -  -  H2
 *
 [Note "1:highest of series"]
-            eos
-          end
-          it 'should successfully import the sample string into Ruby-native structures' do
-            game_enumerator = described_object.import
-            game = game_enumerator.next
-            expect { game_enumerator.next }.to raise_error(StopIteration)
-            expect(game.event).to eq '2 International Amsterdam Airport Schiphol Bridgetournament'
-            expect(game.vulnerable).to eq 'None'
-            expected_deal = { n: { s: '', h: '63', d: 'AKQ987', c: 'A9732' },
-                              s: { s: 'J973', h: 'J98742', d: '3', c: 'K4' } }
-            expect(game.deal).to eq expected_deal
-            expect(game.result).to eq 'NS 9 EW 4'
+          eos
+        end
+        it 'should successfully import reference implementation test 2 into Ruby-native structures' do
+          game_enumerator = described_object.import
+          game = game_enumerator.next
+          expect { game_enumerator.next }.to raise_error(StopIteration)
+          expect(game.event).to eq '2 International Amsterdam Airport Schiphol Bridgetournament'
+          expect(game.vulnerable).to eq 'None'
+          expected_deal = { n: { s: '', h: '63', d: 'AKQ987', c: 'A9732' },
+                            s: { s: 'J973', h: 'J98742', d: '3', c: 'K4' } }
+          expect(game.deal).to eq expected_deal
+          expect(game.result).to eq 'NS 9 EW 4'
 
-            %w(1D 1S 3H 4S 4NT X Pass Pass 5C X 5H X).each_with_index do |call, call_idx|
-              expect(game.auction.annotated_calls[call_idx].call).to eq call
-            end
-            expect(game.auction.annotated_calls[2].comments[0]).to eq 'A1'
-            expect(game.auction.annotated_calls[2].comments[1]).to eq 'A2'
-            annotation_3h = game.auction.annotated_calls[2].annotation
-            expect(annotation_3h.commented_numeric_annotation_glyphs[0].numeric_annotation_glyph).to eq 1
-            expect(annotation_3h.commented_numeric_annotation_glyphs[0].comments[0]).to eq 'B1'
-            expect(annotation_3h.commented_numeric_annotation_glyphs[0].comments[1]).to eq 'B2'
-            expect(annotation_3h.commented_numeric_annotation_glyphs[1].numeric_annotation_glyph).to eq 13
-            expect(annotation_3h.commented_numeric_annotation_glyphs[1].comments[0]).to eq 'C1'
-            expect(annotation_3h.commented_numeric_annotation_glyphs[1].comments[1]).to eq 'C2'
-            expect(annotation_3h.note).to eq ' non-forcing 6-9 points, 6-card'
-            expect(annotation_3h.note_comments[0]).to eq 'D1'
-            expect(annotation_3h.note_comments[1]).to eq 'D2'
-            expect(game.auction.annotated_calls[4].annotation.note).to eq ' two colors: clubs and diamonds'
-            expect(game.auction.is_completed).to eq true
-            [%w(SK H3 S4 S3),
-             %w(C5 C2 C6 CK),
-             %w(S2 H6 S5 S7),
-             %w(C8 CA CT C4),
-             %w(D2 DA DT D3),
-             %w(D4 DK H5 H7)].each_with_index do |expected_cards_for_round, round|
-              %i(w n e s).each_with_index do |dir, dir_idx|
-                expect(game.play.tricks[round][dir].card).to eq expected_cards_for_round[dir_idx]
-              end
-            end
-            expect(game.play.tricks[6][:s].card).to eq 'H2'
-            # SK {A1} {A2} ! {B1} {B2} $14 {C1} {C2} =1= {D1} {D2} H3 S4 S3
-            annotated_play_sk = game.play.tricks[0][:w]
-            expect(annotated_play_sk.comments[0]).to eq 'A1'
-            expect(annotated_play_sk.comments[1]).to eq 'A2'
-            annotation_sk = annotated_play_sk.annotation
-            expect(annotation_sk.commented_numeric_annotation_glyphs[0].numeric_annotation_glyph).to eq 7
-            expect(annotation_sk.commented_numeric_annotation_glyphs[0].comments[0]).to eq 'B1'
-            expect(annotation_sk.commented_numeric_annotation_glyphs[0].comments[1]).to eq 'B2'
-            expect(annotation_sk.commented_numeric_annotation_glyphs[1].numeric_annotation_glyph).to eq 14
-            expect(annotation_sk.commented_numeric_annotation_glyphs[1].comments[0]).to eq 'C1'
-            expect(annotation_sk.commented_numeric_annotation_glyphs[1].comments[1]).to eq 'C2'
-            expect(annotation_sk.note).to eq 'highest of series'
-            expect(annotation_sk.note_comments[0]).to eq 'D1'
-            expect(annotation_sk.note_comments[1]).to eq 'D2'
+          %w(1D 1S 3H 4S 4NT X Pass Pass 5C X 5H X).each_with_index do |call, call_idx|
+            expect(game.auction.annotated_calls[call_idx].call).to eq call
           end
+          expect(game.auction.annotated_calls[2].comments[0]).to eq 'A1'
+          expect(game.auction.annotated_calls[2].comments[1]).to eq 'A2'
+          annotation_3h = game.auction.annotated_calls[2].annotation
+          expect(annotation_3h.commented_numeric_annotation_glyphs[0].numeric_annotation_glyph).to eq 1
+          expect(annotation_3h.commented_numeric_annotation_glyphs[0].comments[0]).to eq 'B1'
+          expect(annotation_3h.commented_numeric_annotation_glyphs[0].comments[1]).to eq 'B2'
+          expect(annotation_3h.commented_numeric_annotation_glyphs[1].numeric_annotation_glyph).to eq 13
+          expect(annotation_3h.commented_numeric_annotation_glyphs[1].comments[0]).to eq 'C1'
+          expect(annotation_3h.commented_numeric_annotation_glyphs[1].comments[1]).to eq 'C2'
+          expect(annotation_3h.note).to eq ' non-forcing 6-9 points, 6-card'
+          expect(annotation_3h.note_comments[0]).to eq 'D1'
+          expect(annotation_3h.note_comments[1]).to eq 'D2'
+          expect(game.auction.annotated_calls[4].annotation.note).to eq ' two colors: clubs and diamonds'
+          expect(game.auction.is_completed).to eq true
+          [%w(SK H3 S4 S3),
+           %w(C5 C2 C6 CK),
+           %w(S2 H6 S5 S7),
+           %w(C8 CA CT C4),
+           %w(D2 DA DT D3),
+           %w(D4 DK H5 H7)].each_with_index do |expected_cards_for_round, round|
+            %i(w n e s).each_with_index do |dir, dir_idx|
+              expect(game.play.tricks[round][dir].card).to eq expected_cards_for_round[dir_idx]
+            end
+          end
+          expect(game.play.tricks[6][:s].card).to eq 'H2'
+          # SK {A1} {A2} ! {B1} {B2} $14 {C1} {C2} =1= {D1} {D2} H3 S4 S3
+          annotated_play_sk = game.play.tricks[0][:w]
+          expect(annotated_play_sk.comments[0]).to eq 'A1'
+          expect(annotated_play_sk.comments[1]).to eq 'A2'
+          annotation_sk = annotated_play_sk.annotation
+          expect(annotation_sk.commented_numeric_annotation_glyphs[0].numeric_annotation_glyph).to eq 7
+          expect(annotation_sk.commented_numeric_annotation_glyphs[0].comments[0]).to eq 'B1'
+          expect(annotation_sk.commented_numeric_annotation_glyphs[0].comments[1]).to eq 'B2'
+          expect(annotation_sk.commented_numeric_annotation_glyphs[1].numeric_annotation_glyph).to eq 14
+          expect(annotation_sk.commented_numeric_annotation_glyphs[1].comments[0]).to eq 'C1'
+          expect(annotation_sk.commented_numeric_annotation_glyphs[1].comments[1]).to eq 'C2'
+          expect(annotation_sk.note).to eq 'highest of series'
+          expect(annotation_sk.note_comments[0]).to eq 'D1'
+          expect(annotation_sk.note_comments[1]).to eq 'D2'
         end
       end
     end

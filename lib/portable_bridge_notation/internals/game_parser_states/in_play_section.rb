@@ -8,6 +8,8 @@ module PortableBridgeNotation
           game_parser.reached_play_section self
           @tricks = []
           @direction_index = 0
+          @unnoticed_revoke = false
+          @accepted_lead_out_of_turn = false
         end
 
         def tag_value=(new_value)
@@ -49,7 +51,7 @@ module PortableBridgeNotation
         end
 
         def add_new_card(card_string)
-          new_annotated_play = Api::AnnotatedPlay.new(card_string, nil, [])
+          new_annotated_play = Api::AnnotatedPlay.new(card_string, nil, revoke_get_and_reset, lead_get_and_reset, [])
           current_direction = @direction_order[@direction_index]
           @tricks.last[current_direction] = new_annotated_play
           @comment_array_for_last_token = new_annotated_play.comments
@@ -62,6 +64,26 @@ module PortableBridgeNotation
 
         def with_play_note(trick_index, direction, text)
           @tricks[trick_index][direction].annotation.note = text
+        end
+
+        def with_revoke_irregularity
+          @unnoticed_revoke = true
+        end
+
+        def with_lead_irregularity
+          @accepted_lead_out_of_turn = true
+        end
+
+        def revoke_get_and_reset
+          to_return = @unnoticed_revoke
+          @insufficient_but_accepted = false
+          to_return
+        end
+
+        def lead_get_and_reset
+          to_return = @accepted_lead_out_of_turn
+          @accepted_lead_out_of_turn = false
+          to_return
         end
       end
     end

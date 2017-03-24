@@ -29,8 +29,8 @@ module PortableBridgeNotation
           state = state.process_char(char)
         end
         state.finalize
-        @in_auction_section_state.emit_after_note_refs_fulfilled unless @in_auction_section_state.nil?
-        @in_play_section_state.emit_after_note_refs_fulfilled unless @in_play_section_state.nil?
+        @in_auction_section_state.finalize_after_note_references unless @in_auction_section_state.nil?
+        # @in_play_section_state.emit_after_note_refs_fulfilled unless @in_play_section_state.nil?
       end
 
       def verify_char(char)

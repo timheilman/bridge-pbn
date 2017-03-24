@@ -102,9 +102,9 @@ C 8 5                           C Q J 10 6
                 D 3
                 C K 4
             eos
-            # %w(1D 1S 3H 4S 4NT X Pass Pass 5C X 5H X).each_with_index do |call, call_idx|
-            #   expect(game.auction.annotated_calls[call_idx]).to eq call
-            # end
+            %w(1D 1S 3H 4S 4NT X Pass Pass 5C X 5H X).each_with_index do |call, call_idx|
+              expect(game.auction.annotated_calls[call_idx].call).to eq call
+            end
             # expect(game.auction.annotated_calls[2].annotation.note).to eq ' non-forcing 6-9 points, 6-card'
             # expect(game.auction.annotated_calls[3].comments[0]).to eq ' end-of-line AUCTION'
             # expect(game.auction.annotated_calls[4].annotation.note).to eq ' two colors: clubs and diamonds'

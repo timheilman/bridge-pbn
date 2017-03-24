@@ -17,6 +17,38 @@ module PortableBridgeNotation
         /[^\]{\};%]/
       end
 
+      def call_char
+        /[APasX1-7CDHSNT-]/
+      end
+
+      def digit
+        /[0-9]/
+      end
+
+      def dollar_sign
+        '$'
+      end
+
+      def equals_sign
+        '='
+      end
+
+      def plus_sign
+        '+'
+      end
+
+      def exclamation_point
+        '!'
+      end
+
+      def question_mark
+        '?'
+      end
+
+      def asterisk
+        '*'
+      end
+
       def semicolon
         ';'
       end

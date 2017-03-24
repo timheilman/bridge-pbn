@@ -9,7 +9,6 @@ module PortableBridgeNotation
         def process_char(char)
           case char
           when open_bracket then handle_open_bracket
-          when double_quote then injector.game_parser_state(:InString, self)
           when continuing_nonstring_supp_sect_char then handle_supp_section_char char
           when semicolon then handle_semicolon
           when open_curly then handle_open_curly

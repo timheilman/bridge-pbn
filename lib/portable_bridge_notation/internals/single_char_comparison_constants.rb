@@ -21,6 +21,10 @@ module PortableBridgeNotation
         /[APasX1-7CDHSNT-]/
       end
 
+      def card_char
+        /[SHDCAKQJT2-9-]/
+      end
+
       def digit
         /[0-9]/
       end

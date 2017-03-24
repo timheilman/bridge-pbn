@@ -30,7 +30,7 @@ module PortableBridgeNotation
         end
         state.finalize
         @in_auction_section_state.finalize_after_note_references unless @in_auction_section_state.nil?
-        # @in_play_section_state.emit_after_note_refs_fulfilled unless @in_play_section_state.nil?
+        @in_play_section_state.finalize_after_note_references unless @in_play_section_state.nil?
       end
 
       def verify_char(char)
@@ -52,15 +52,22 @@ module PortableBridgeNotation
                                                   "char_index: #{@cur_char_index}; message: #{message}")
       end
 
-      def expect_auction_ref_resolution(in_auction_section_state, call_index, ref_num)
-        @most_recent_special_section_state = in_auction_section_state
+      def reached_auction_section(in_auction_section_state)
         @in_auction_section_state = in_auction_section_state
+        @most_recent_special_section_state = in_auction_section_state
+      end
+
+      def reached_play_section(in_play_section_state)
+        @in_play_section_state = in_play_section_state
+        @most_recent_special_section_state = in_play_section_state
+      end
+
+      def expect_auction_ref_resolution(_in_auction_section_state, call_index, ref_num)
         @auction_note_ref_num_to_call_idxes[ref_num] = [] unless @auction_note_ref_num_to_call_idxes.key? ref_num
         @auction_note_ref_num_to_call_idxes[ref_num] << call_index
       end
 
       def expect_play_ref_resolution(in_play_section_state, trick_index, direction, ref_num)
-        @most_recent_special_section_state = in_play_section_state
         @in_play_section_state = in_play_section_state
         @play_note_ref_num_to_trick_idx_dir_pairs[ref_num] = [trick_index, direction]
       end

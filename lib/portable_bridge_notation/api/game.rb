@@ -146,7 +146,8 @@ module PortableBridgeNotation
     Auction = Struct.new(:annotated_calls, :is_completed)
 
     # :result must agree with this section if :is_completed
-    Play = Struct.new(:annotated_plays, :is_completed)
+    # :tricks is an array of hashes from directions nesw to hashes from suits cdhs to AnnotatedPlays
+    Play = Struct.new(:tricks, :is_completed)
 
     # Section 3.5 and 3.5.1
     # :call may be "AP", "Pass", "X", "XX", "<k><strain>", "-" (it is not yet this player's turn)

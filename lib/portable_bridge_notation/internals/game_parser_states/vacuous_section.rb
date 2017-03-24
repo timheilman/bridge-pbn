@@ -53,26 +53,15 @@ module PortableBridgeNotation
         end
       end
 
-      class InEventSection < VacuousSection
-      end
-      class InSiteSection < VacuousSection
-      end
-      class InWestSection < VacuousSection
-      end
-      class InNorthSection < VacuousSection
-      end
-      class InEastSection < VacuousSection
-      end
-      class InSouthSection < VacuousSection
-      end
-      class InDealerSection < VacuousSection
-      end
-      class InVulnerableSection < VacuousSection
-      end
-      class InContractSection < VacuousSection
-      end
-      class InResultSection < VacuousSection
-      end
+      InEventSection = VacuousSection
+      InSiteSection = VacuousSection
+      InWestSection = VacuousSection
+      InNorthSection = VacuousSection
+      InEastSection = VacuousSection
+      InSouthSection = VacuousSection
+      InDealerSection = VacuousSection
+      InContractSection = VacuousSection
+      InResultSection = VacuousSection
     end
   end
 end

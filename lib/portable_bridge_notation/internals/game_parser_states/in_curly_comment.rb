@@ -10,7 +10,7 @@ module PortableBridgeNotation
         def process_char(char)
           case char
           when close_curly
-            enclosing_state.add_comment(@comment)
+            enclosing_state.add_comment(@comment.encode(Encoding::UTF_8))
             enclosing_state
           else
             @comment << char

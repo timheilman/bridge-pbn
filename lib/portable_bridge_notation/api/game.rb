@@ -43,7 +43,7 @@ module PortableBridgeNotation
       :competition, # 4.1.1 Examples: "Cavendish", "Chicago", "Individuals", "Pairs", "Rubber", "Teams"
       :deal_id, # 4.1.2 must be unique among all deals
       :description, # 4.1.3 arbitrary game description
-      :french_m_p, # 4.1.4 'Yes' or 'No'
+      :french_mp, # 4.1.4 'Yes' or 'No'
       :generator, # 4.1.5 name of hand generator program and potentially a seed value
       :hidden, # 4.1.6 directions of cards that should be hidden initially, string comprised of "N", "S", "E", "W"
       :room, # 4.1.7 "Open" or "Closed" for teams tournaments
@@ -52,22 +52,22 @@ module PortableBridgeNotation
 
       # 4.2 Score-related information
       :score, # 4.2.1 "<score>" "EW <score>" "NS <score>" "EW <score> NS <score>" "NS <score> EW <score>"; see :scoring
-      :score_i_m_p, # 4.2.2 same as :score but in international match-points
-      :score_m_p, # 4.2.3 same as :score but in match points; see :scoring and 'MP1'
+      :score_imp, # 4.2.2 same as :score but in international match-points
+      :score_mp, # 4.2.3 same as :score but in match points; see :scoring and 'MP1'
       :score_percentage, # 4.2.4 same as :score but in percentage, 0-100
       :score_rubber, # 4.2.5 same as :score but with <over-the-line-score>/<under-the-line-score>
       :score_rubber_history, # 4.2.6 Ruby Struct; must align with :vulnerable
       :optimum_score, # 4.2.7
 
       # 4.3 Player-related information
-      :bid_system_e_w, # 4.3.1
-      :bid_system_n_s, # 4.3.1
-      :pair_e_w, # 4.3.2
-      :pair_n_s, # 4.3.2
-      :west_n_a, # 4.3.3 network address or email address
-      :north_n_a, # 4.3.3
-      :east_n_a, # 4.3.3
-      :south_n_a, # 4.3.3
+      :bid_system_ew, # 4.3.1
+      :bid_system_ns, # 4.3.1
+      :pair_ew, # 4.3.2
+      :pair_ns, # 4.3.2
+      :west_na, # 4.3.3 network address or email address
+      :north_na, # 4.3.3
+      :east_na, # 4.3.3
+      :south_na, # 4.3.3
       :west_type, # 4.3.4 "human" or "program"
       :north_type, # 4.3.4
       :east_type, # 4.3.4
@@ -85,8 +85,8 @@ module PortableBridgeNotation
 
       # 4.5 Time- and Date-related information
       :time, # 4.5.1 Ruby struct described below
-      :u_t_c_date, # 4.5.2 same as :date, yet according to Universal Coordinated Time
-      :u_t_c_time, # 4.5.3 same as :time, yet according to Universal Coordinated Time
+      :utc_date, # 4.5.2 same as :date, yet according to Universal Coordinated Time
+      :utc_time, # 4.5.3 same as :time, yet according to Universal Coordinated Time
 
       # 4.6 Time Control-related information
       :time_control, # 4.6.1
@@ -95,7 +95,7 @@ module PortableBridgeNotation
 
       # 4.7 Miscellaneous information
       :annotator, # 4.7.1
-      :annotator_n_a, # 4.7.2 network address or email address
+      :annotator_na, # 4.7.2 network address or email address
       :application, # 4.7.3 works in concert with application_comments for external programs
       :mode, # "EM" for email, "IBS" for internet bridge server, "OKB" for OK Bridge, "TABLE" for normal table
       # (cont'd) "TC" for general telecommunication

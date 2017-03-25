@@ -14,6 +14,7 @@ module PortableBridgeNotation
           when double_quote then handle_double_quote
           when tab, line_feed, vertical_tab, carriage_return then raise_error char
           else
+            @string << backslash if @escaped
             @escaped = false
             @string << char
             self
@@ -32,7 +33,7 @@ module PortableBridgeNotation
             @string << double_quote
             self
           else
-            enclosing_state.add_string(@string)
+            enclosing_state.add_string(@string.encode(Encoding::UTF_8))
             enclosing_state
           end
         end

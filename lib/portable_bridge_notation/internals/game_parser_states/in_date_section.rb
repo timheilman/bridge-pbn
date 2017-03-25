@@ -1,13 +1,28 @@
 module PortableBridgeNotation
   module Internals
     module GameParserStates
-      class InDateSection < VacuousSection
+      class SimpleDateSection < VacuousSection
         def finalize
           emit_comments
           year, month, day = tag_value.match(
             /([0-9?][0-9?][0-9?][0-9?])\.([0-9?][0-9?])\.([0-9?][0-9?])/
           ).captures
-          observer.with_date Api::Date.new(year, month, day)
+          notify_observer PortableBridgeNotation::Api::Date.new(year, month, day)
+        end
+      end
+      class InDateSection < SimpleDateSection
+        def notify_observer(date)
+          observer.with_date date
+        end
+      end
+      class InEventDateSection < SimpleDateSection
+        def notify_observer(date)
+          observer.with_event_date date
+        end
+      end
+      class InUTCDateSection < SimpleDateSection
+        def notify_observer(date)
+          observer.with_utc_date date
         end
       end
     end

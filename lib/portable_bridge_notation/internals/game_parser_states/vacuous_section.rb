@@ -53,15 +53,47 @@ module PortableBridgeNotation
         end
       end
 
-      InEventSection = VacuousSection
-      InSiteSection = VacuousSection
-      InWestSection = VacuousSection
-      InNorthSection = VacuousSection
-      InEastSection = VacuousSection
-      InSouthSection = VacuousSection
-      InDealerSection = VacuousSection
-      InContractSection = VacuousSection
-      InResultSection = VacuousSection
+      %w(
+        Annotator
+        AnnotatorNA
+        BidSystemEW
+        BidSystemNS
+        Competition
+        Contract
+        Dealer
+        Description
+        East
+        EastNA
+        EastType
+        Event
+        EventSponsor
+        FrenchMP
+        Generator
+        Hidden
+        HomeTeam
+        Mode
+        North
+        NorthNA
+        NorthType
+        Result
+        Room
+        Round
+        ScoreRubber
+        Scoring
+        Section
+        Site
+        South
+        SouthNA
+        SouthType
+        Stage
+        Table
+        Termination
+        TimeControl
+        VisitTeam
+        West
+        WestNA
+        WestType
+      ).each { |classname| module_eval 'In' + classname + 'Section = VacuousSection' }
     end
   end
 end

@@ -40,7 +40,7 @@ module PortableBridgeNotation
         end
 
         def finalize
-          enclosing_state.add_comment(@comment)
+          enclosing_state.add_comment(@comment.encode(Encoding::UTF_8))
           enclosing_state.finalize
         end
       end

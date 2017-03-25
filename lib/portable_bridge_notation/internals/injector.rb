@@ -32,6 +32,8 @@ require_relative 'game_parser_states/in_vulnerable_section'
 require_relative 'game_parser_states/in_date_section'
 require_relative 'game_parser_states/in_board_section'
 require_relative 'game_parser_states/in_declarer_section'
+require_relative 'game_parser_states/in_time_section'
+require_relative 'game_parser_states/in_time_call_section'
 require_relative 'game_parser_states/in_unrecognized_supplemental_section'
 
 module PortableBridgeNotation

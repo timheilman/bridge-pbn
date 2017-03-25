@@ -60,7 +60,7 @@ D4 DK H5 H7
 
           eos
         end
-        it 'should successfully import reference implementation test 1 into Ruby-native structures' do
+        it 'should successfully import reference implementation correct 1.0 game 1 into Ruby-native structures' do
           game_enumerator = described_object.import
           game = game_enumerator.next
           expect { game_enumerator.next }.to raise_error(StopIteration)

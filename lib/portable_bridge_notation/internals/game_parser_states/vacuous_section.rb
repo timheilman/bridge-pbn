@@ -78,6 +78,8 @@ module PortableBridgeNotation
         Result
         Room
         Round
+        Score
+        ScoreIMP
         ScoreRubber
         Scoring
         Section

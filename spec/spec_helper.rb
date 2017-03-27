@@ -5,6 +5,7 @@ SimpleCov.start
 require 'portable_bridge_notation'
 require 'logger'
 require 'lib/portable_bridge_notation/internals/game_parser_states/game_parser_state_spec_helper'
+require 'lib/portable_bridge_notation/reference_implementation_tests/ref_impl_test_helper'
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
@@ -22,4 +23,6 @@ RSpec.configure do |config|
   config.alias_it_should_behave_like_to :it_has_behaviour, 'has behavior'
   config.include(PortableBridgeNotation::Internals::GameParserStates::GameParserStateSpecHelper,
                  group: :game_parser_states)
+  config.include(PortableBridgeNotation::ReferenceImplementationTests::RefImplTestHelper,
+                 group: :ref_impl_tests)
 end

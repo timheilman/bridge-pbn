@@ -1,7 +1,7 @@
 module PortableBridgeNotation
   module ReferenceImplementationTests
-    RSpec.describe Api::Importer do
-      describe '#import' do
+    RSpec.describe Api::Importer, group: :ref_impl_tests do
+      describe '#import game 2' do
         let(:described_object) { described_class.create(io: pbn_game_string) }
         let(:pbn_game_string) do
           StringIO.new(<<-eos)
@@ -55,10 +55,8 @@ D4 DK H5 H7
 [Note "1:highest of series"]
           eos
         end
-        it 'should successfully import reference implementation correct 1.0 game 2 into Ruby-native structures' do
-          game_enumerator = described_object.import
-          game = game_enumerator.next
-          expect { game_enumerator.next }.to raise_error(StopIteration)
+        it 'should import the same game as game 1; no cards for W/E; demo (nonsense) comments' do
+          game = import_only_game
           expect(game.event).to eq '2 International Amsterdam Airport Schiphol Bridgetournament'
           expect(game.vulnerable).to eq 'None'
           expected_deal = { n: { s: '', h: '63', d: 'AKQ987', c: 'A9732' },

@@ -1,7 +1,7 @@
 module PortableBridgeNotation
   module ReferenceImplementationTests
-    RSpec.describe Api::Importer do
-      describe '#import' do
+    RSpec.describe Api::Importer, group: :ref_impl_tests do
+      describe '#import game 4' do
         let(:described_object) { described_class.create(io: pbn_game_string) }
         let(:pbn_game_string) do
           new_string = <<-eos
@@ -55,10 +55,8 @@ module PortableBridgeNotation
           new_string.encode!(Encoding::ISO_8859_1)
           StringIO.new(new_string)
         end
-        it 'should successfully import reference implementation correct 1.0 game 4 into Ruby-native structures' do
-          game_enumerator = described_object.import
-          game = game_enumerator.next
-          expect { game_enumerator.next }.to raise_error(StopIteration)
+        it 'should import a games without deal, testing ISO 8859/1 characters and various tag values' do
+          game = import_only_game
           expect(game.south).to eq '   ¡ ¢ £ ¤ ¥ ¦ § ¨ © ª « ¬ ­ ® ¯ ° ± ² ³ ´ µ ¶ · ¸ ¹ º » ¼ ½ ¾ ¿'
           expect(game.west).to eq ' À Á Â Ã Ä Å Æ Ç È É Ê Ë Ì Í Î Ï Ð Ñ Ò Ó Ô Õ Ö × Ø Ù Ú Û Ü Ý Þ ß'
           expect(game.north).to eq ' à á â ã ä å æ ç è é ê ë ì í î ï ð ñ ò ó ô õ ö ÷ ø ù ú û ü ý þ ÿ'

@@ -1,7 +1,7 @@
 module PortableBridgeNotation
   module ReferenceImplementationTests
-    RSpec.describe Api::Importer do
-      describe '#import' do
+    RSpec.describe Api::Importer, group: :ref_impl_tests do
+      describe '#import game 3' do
         let(:described_object) { described_class.create(io: pbn_game_string) }
         let(:pbn_game_string) do
           StringIO.new(<<-eos)
@@ -30,10 +30,8 @@ D4 DK H5 H7
 *
           eos
         end
-        it 'should successfully import reference implementation correct 1.0 game 3 into Ruby-native structures' do
-          game_enumerator = described_object.import
-          game = game_enumerator.next
-          expect { game_enumerator.next }.to raise_error(StopIteration)
+        it 'should import a game with all auction and play irregularity situations' do
+          game = import_only_game
           expect(game.event).to eq 'Test illegals'
           expect(game.dealer).to eq 'N'
           expect(game.vulnerable).to eq 'None'

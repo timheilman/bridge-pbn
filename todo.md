@@ -6,7 +6,4 @@
 * TDD known bug: double quotes and backslashes within string tokens aren't forwarded properly for sections
 * test edge case with multiple \n's
 * see section 4.8; TDD handling of # and ## tag values
-* write AuctionSectionParser, including call to GameParser#get_note_ref_resolution (@section_notes)
-* write PlaySectionParser, including call to GameParser#get_note_ref_resolution (@section_notes)
 * 100% implementation of Tis's tests (TDD finer scale to match each test, as an acceptance test)
-* stick comments after a Note tag in game.auction.annotated_calls\[n\].annotation.note_comments

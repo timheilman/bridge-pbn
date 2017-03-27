@@ -4,7 +4,11 @@
 
 This project aims to provide parsing and building capabilities for
  [Portable Bridge Notation](http://www.tistis.nl/pbn/). The PBN version
- targeted is 2.1
+ targeted is 2.1 .  Many thanks to Tis Veugen (tis.veugen :common symbol
+ here: gmail.com) for the creation and maintenance of the spec and
+ provision copyright-free of the reference implementation, the PBN
+ Verifier, including its tests, which have been copied into this repo
+ with his permission.
 
 ### Imagined Use
 

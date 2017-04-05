@@ -1,3 +1,5 @@
+* fix bug: multiple emits for each event on second+ call to import
+* fix bug: fourth-seat opens are incorrectly marked complete? (in auction section, compute is completed)
 * include Tis's tests, commenting-out those needing it
 * TDD refactor duplicated intent: parameterization by type, in injector; standardize the call
 * enforce section continuity: no identification section tags both before and after play/auction/supplemental

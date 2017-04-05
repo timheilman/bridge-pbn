@@ -2,8 +2,10 @@ module PortableBridgeNotation
   module Internals
     module GameParserStates
       class InSpecialSectionToken < GameParserState
+        attr_accessor :special_token
+
         def post_initialize
-          @special_token = ''
+          self.special_token = ''
         end
 
         def process_char(char)
@@ -12,7 +14,7 @@ module PortableBridgeNotation
             finalize
             enclosing_state.process_char char
           when special_token_char
-            @special_token << char
+            special_token << char
             self
           else
             game_parser.raise_error "Unexpected character within a Call: #{char}"
@@ -20,7 +22,7 @@ module PortableBridgeNotation
         end
 
         def finalize
-          enclosing_state.with_special_section_token @special_token
+          enclosing_state.with_special_section_token special_token
         end
       end
       class InCall < InSpecialSectionToken

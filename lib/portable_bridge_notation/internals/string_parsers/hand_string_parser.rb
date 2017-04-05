@@ -9,22 +9,24 @@ module PortableBridgeNotation
       end
 
       def yield_cards(&block)
+        self.block = block
         hand_string.split(period).each_with_index do |ranks_string, suit_index|
-          @ranks_string = ranks_string
-          @suit_index = suit_index
-          yield_cards_for_suit(&block)
+          self.ranks_string = ranks_string
+          self.suit_index = suit_index
+          yield_cards_for_suit
         end
       end
 
       private
 
       attr_reader :hand_string
-      attr_reader :ranks_string
-      attr_reader :suit_index
+      attr_accessor :ranks_string
+      attr_accessor :suit_index
+      attr_accessor :block
 
       def yield_cards_for_suit
         ranks_string.split(//).each do |rank_char|
-          yield suit: suit_char_for(suit_index), rank: rank_char
+          block.yield suit: suit_char_for(suit_index), rank: rank_char
         end
       end
 

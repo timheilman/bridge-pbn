@@ -7,13 +7,17 @@ module PortableBridgeNotation
         @special_section = special_section
       end
 
+      attr_reader :game_parser
+      attr_reader :annotatable
+      attr_reader :special_section
+
       def with_suffix_annotation(suffix_annotation_string)
         with_nag(nag_string_for_suffix_annotation_string(suffix_annotation_string))
       end
 
       def nag_string_for_suffix_annotation_string(suffix_annotation_string)
         unless suffix_nag_indexes.include? suffix_annotation_string
-          @game_parser.raise_error "Unexpected suffix annotation string `#{suffix_annotation_string}'"
+          game_parser.raise_error "Unexpected suffix annotation string `#{suffix_annotation_string}'"
         end
         suffix_nag_indexes[suffix_annotation_string]
       end
@@ -26,8 +30,8 @@ module PortableBridgeNotation
       end
 
       def make_or_get_annotation
-        @annotatable.annotation = Api::Annotation.new(nil, [], []) if @annotatable.annotation.nil?
-        @annotatable.annotation
+        annotatable.annotation = Api::Annotation.new(nil, [], []) if annotatable.annotation.nil?
+        annotatable.annotation
       end
     end
     class AuctionAnnotationSteward < AnnotationSteward
@@ -35,6 +39,7 @@ module PortableBridgeNotation
         super annotatable: call, game_parser: game_parser, special_section: special_section
         @call_index = call_index
       end
+      attr_reader :call_index
 
       def suffix_nag_indexes
         { '!' => 1, '?' => 2, '!!' => 3, '??' => 4, '!?' => 5, '?!' => 6 }
@@ -42,7 +47,7 @@ module PortableBridgeNotation
 
       def with_note_reference_number(note_reference_number)
         annotation = make_or_get_annotation
-        @game_parser.expect_auction_ref_resolution(@special_section, @call_index, note_reference_number)
+        game_parser.expect_auction_ref_resolution(call_index, note_reference_number)
         annotation.note_comments
       end
     end
@@ -53,13 +58,16 @@ module PortableBridgeNotation
         @direction = direction
       end
 
+      attr_reader :trick_index
+      attr_reader :direction
+
       def suffix_nag_indexes
         { '!' => 7, '?' => 8, '!!' => 9, '??' => 10, '!?' => 11, '?!' => 12 }
       end
 
       def with_note_reference_number(note_reference_number)
         annotation = make_or_get_annotation
-        @game_parser.expect_play_ref_resolution(@special_section, @trick_index, @direction, note_reference_number)
+        game_parser.expect_play_ref_resolution(trick_index, direction, note_reference_number)
         annotation.note_comments
       end
     end

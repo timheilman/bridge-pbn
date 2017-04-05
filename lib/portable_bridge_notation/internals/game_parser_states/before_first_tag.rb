@@ -6,6 +6,8 @@ module PortableBridgeNotation
           @initial_comments = []
         end
 
+        attr_reader :initial_comments
+
         def process_char(char)
           case char
           when whitespace_allowed_in_games then self
@@ -24,11 +26,11 @@ module PortableBridgeNotation
         end
 
         def finalize
-          observer.with_initial_comments(@initial_comments) unless @initial_comments.empty?
+          observer.with_initial_comments(initial_comments) unless initial_comments.empty?
         end
 
         def add_comment(comment)
-          @initial_comments << comment
+          initial_comments << comment
         end
       end
     end

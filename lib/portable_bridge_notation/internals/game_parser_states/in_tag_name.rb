@@ -3,8 +3,10 @@ module PortableBridgeNotation
   module Internals
     module GameParserStates
       class InTagName < GameParserState
+        attr_accessor :tag_name
+
         def post_initialize
-          @tag_name = ''
+          self.tag_name = ''
         end
 
         def process_char(char)
@@ -21,7 +23,7 @@ module PortableBridgeNotation
         end
 
         def handle_name_char(char)
-          @tag_name << char
+          tag_name << char
           self
         end
 
@@ -36,12 +38,12 @@ module PortableBridgeNotation
         end
 
         def safely_get_section_state
-          section_state = injector.game_parser_state "In#{@tag_name}Section".to_sym
-          section_state.tag_name = @tag_name if section_state.respond_to? :tag_name=
+          section_state = injector.game_parser_state "In#{tag_name}Section".to_sym
+          section_state.tag_name = tag_name if section_state.respond_to? :tag_name=
           section_state
         rescue NameError
           supplemental_section_state = injector.game_parser_state(:InUnrecognizedSupplementalSection)
-          supplemental_section_state.tag_name = @tag_name
+          supplemental_section_state.tag_name = tag_name
           supplemental_section_state
         end
 

@@ -7,7 +7,7 @@ module PortableBridgeNotation
           note_parts = tag_value.split(':')
           note_index = Integer(note_parts[0])
           note_text = note_parts[1..note_parts.length].join(':')
-          @game_parser.add_note_ref_resolution(note_index, note_text)
+          game_parser.add_note_ref_resolution(note_index, note_text)
         end
       end
     end

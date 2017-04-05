@@ -77,7 +77,7 @@ module PortableBridgeNotation
       :event_date, # 4.4.1
       :event_sponsor, # 4.4.2
       :home_team, # 4.4.3
-      :round, # 4.4.4
+      :round, # 4.4.4 must =~ /[A-Za-z0-9_.]/; period is used only to separate round indicators most-sig to least-sig
       :section, # 4.4.5
       :stage, # 4.4.6
       :table, # 4.4.7
@@ -128,7 +128,7 @@ module PortableBridgeNotation
       end
     end
 
-    # with @year "YYYY", @month "MM", @day "DD"; "?" is an allowed char for any unknown digit
+    # with year "YYYY", month "MM", day "DD"; "?" is an allowed char for any unknown digit
     Date = Struct.new(:year, :month, :day)
 
     # local time for :site, 24-hour clock

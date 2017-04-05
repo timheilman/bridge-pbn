@@ -4,10 +4,12 @@ module PortableBridgeNotation
       class InUnrecognizedSupplementalSection < GameParserState
         attr_accessor :tag_name
         attr_accessor :tag_value
+        attr_accessor :comments
+        attr_accessor :section
 
         def post_initialize
-          @comments = []
-          @section = ''
+          self.comments = []
+          self.section = ''
         end
 
         def process_char(char)
@@ -27,7 +29,7 @@ module PortableBridgeNotation
         end
 
         def handle_supp_section_char(char)
-          @section << char
+          section << char
           self
         end
 
@@ -38,36 +40,36 @@ module PortableBridgeNotation
 
         def handle_open_curly
           raise_error open_curly unless commentary_permitted
-          @section = ''
+          self.section = ''
           return injector.game_parser_state(:InCurlyComment, self) if commentary_permitted
         end
 
         def handle_semicolon
           raise_error semicolon unless commentary_permitted
-          @section = ''
+          self.section = ''
           return injector.game_parser_state(:InSemicolonComment, self) if commentary_permitted
         end
 
         def add_comment(comment)
-          @comments << comment
+          comments << comment
         end
 
         def finalize
-          @section = '' unless @section =~ non_whitespace
+          self.section = '' unless section =~ non_whitespace
           observer.with_unrecognized_supplemental_section(tag_name: tag_name,
                                                           tag_value: tag_value,
-                                                          section: @section,
-                                                          comments: @comments)
+                                                          section: section,
+                                                          comments: comments)
         end
 
         def add_string(string)
-          @section << double_quote
-          @section << string
-          @section << double_quote
+          section << double_quote
+          section << string
+          section << double_quote
         end
 
         def commentary_permitted
-          @section !~ non_whitespace
+          section !~ non_whitespace
         end
       end
     end

@@ -3,9 +3,12 @@ module PortableBridgeNotation
   module Internals
     module GameParserStates
       class InSemicolonComment < GameParserState
+        attr_accessor :comment
+        attr_accessor :prev_char_was_cr
+
         def post_initialize
-          @comment = ''
-          @prev_char_was_cr = false # fail-to-omit \r when it immediately precedes \n
+          self.comment = ''
+          self.prev_char_was_cr = false # fail-to-omit \r when it immediately precedes \n
         end
 
         def process_char(char)
@@ -18,8 +21,8 @@ module PortableBridgeNotation
 
         def handle_other(char)
           perhaps_emit_cr
-          @prev_char_was_cr = false
-          @comment << char
+          self.prev_char_was_cr = false
+          comment << char
           self
         end
 
@@ -30,17 +33,17 @@ module PortableBridgeNotation
 
         def handle_carriage_return
           perhaps_emit_cr
-          @prev_char_was_cr = true
+          self.prev_char_was_cr = true
           self
         end
 
         def perhaps_emit_cr
           # spec allows literally any character in comments, including CR
-          @comment << carriage_return if @prev_char_was_cr
+          comment << carriage_return if prev_char_was_cr
         end
 
         def finalize
-          enclosing_state.add_comment(@comment.encode(Encoding::UTF_8))
+          enclosing_state.add_comment(comment.encode(Encoding::UTF_8))
           enclosing_state.finalize
         end
       end

@@ -6,34 +6,36 @@ module PortableBridgeNotation
 
       def initialize(injector, deal_string)
         @injector = injector
-        @deal_string = deal_string
+        @hand_0_direction, @hand_strings = deal_string.split(colon)
       end
 
       def yield_cards(&block)
-        @hand_0_direction, @hand_strings = deal_string.split(colon)
-        yield_hands block
+        return enum_for(:yield_cards) unless block_given?
+        self.block = block
+        yield_hands
       end
 
       private
 
-      attr_reader :deal_string
+      attr_reader :injector
       attr_reader :hand_0_direction
       attr_reader :hand_strings
-      attr_reader :hand_string
-      attr_reader :hand_index
+      attr_accessor :block
+      attr_accessor :hand_string
+      attr_accessor :hand_index
 
-      def yield_hands(block)
+      def yield_hands
         hand_strings.split(space).each_with_index do |hand_string, hand_index|
           next if hand_string == hyphen
-          @hand_string = hand_string
-          @hand_index = hand_index
-          yield_hand(&block)
+          self.hand_string = hand_string
+          self.hand_index = hand_index
+          yield_hand
         end
       end
 
       def yield_hand
-        @injector.hand_string_parser(hand_string).yield_cards do |suit:, rank:|
-          yield direction: direction_char, suit: suit, rank: rank
+        injector.hand_string_parser(hand_string).yield_cards do |suit:, rank:|
+          block.yield direction: direction_char, suit: suit, rank: rank
         end
       end
 
@@ -45,7 +47,7 @@ module PortableBridgeNotation
       end
 
       def raise_error(initial_dir)
-        raise @injector.error("bad first position character for pgn deal string: `#{initial_dir}'")
+        raise injector.error("bad first position character for pgn deal string: `#{initial_dir}'")
       end
     end
   end

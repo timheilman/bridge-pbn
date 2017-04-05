@@ -7,12 +7,14 @@ module PortableBridgeNotation
           @tag_value = nil
         end
 
+        attr_accessor :tag_value
+
         def process_char(char)
           case char
           when whitespace_allowed_in_games
             self
           when close_bracket
-            enclosing_state.tag_value = @tag_value if enclosing_state.respond_to? :tag_value=
+            enclosing_state.tag_value = tag_value if enclosing_state.respond_to? :tag_value=
             enclosing_state
           else
             game_parser.raise_error "Unexpected char other than whitespace or closing bracket: `#{char}'"
@@ -24,7 +26,7 @@ module PortableBridgeNotation
         end
 
         def add_string(string)
-          @tag_value = string
+          self.tag_value = string
         end
       end
     end

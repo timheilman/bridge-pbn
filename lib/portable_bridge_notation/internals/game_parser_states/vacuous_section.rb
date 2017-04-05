@@ -5,9 +5,10 @@ module PortableBridgeNotation
       class VacuousSection < GameParserState
         attr_accessor :tag_name
         attr_accessor :tag_value
+        attr_accessor :comments
 
         def post_initialize
-          @comments = []
+          self.comments = []
         end
 
         def process_char(char)
@@ -39,11 +40,11 @@ module PortableBridgeNotation
         end
 
         def add_comment(comment)
-          @comments << comment
+          comments << comment
         end
 
         def emit_comments
-          observer.send("with_#{tag_name.underscore}_comments", @comments) unless @comments.empty?
+          observer.send("with_#{tag_name.underscore}_comments", comments) unless comments.empty?
         end
 
         def finalize

@@ -2,14 +2,16 @@ module PortableBridgeNotation
   module Internals
     module GameParserStates
       class InNoteRef < GameParserState
+        attr_accessor :note_ref_number
+
         def post_initialize
-          @note_ref_number = ''
+          self.note_ref_number = ''
         end
 
         def process_char(char)
           case char
           when digit then
-            @note_ref_number << char
+            note_ref_number << char
             self
           when equals_sign then
             finalize
@@ -20,7 +22,7 @@ module PortableBridgeNotation
         end
 
         def finalize
-          enclosing_state.with_note_reference_number(Integer(@note_ref_number))
+          enclosing_state.with_note_reference_number(Integer(note_ref_number))
         end
       end
     end

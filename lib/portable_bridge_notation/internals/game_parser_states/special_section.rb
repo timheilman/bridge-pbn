@@ -2,11 +2,17 @@ module PortableBridgeNotation
   module Internals
     module GameParserStates
       class SpecialSection < GameParserState
+        attr_accessor :comments
+        attr_accessor :char_to_simple_enclosed_state
+        attr_accessor :comment_array_for_last_token
+        attr_accessor :is_completed
+        attr_accessor :annotation_steward
+
         def post_initialize
-          @comments = []
-          @comment_array_for_last_token = @comments
-          @is_completed = false
-          @char_to_simple_enclosed_state = {
+          self.comments = []
+          self.comment_array_for_last_token = comments
+          self.is_completed = false
+          self.char_to_simple_enclosed_state = {
             open_curly => :InCurlyComment,
             semicolon => :InSemicolonComment,
             equals_sign => :InNoteRef,
@@ -17,8 +23,8 @@ module PortableBridgeNotation
 
         def process_char(char)
           return self if char =~ whitespace_allowed_in_games
-          if @char_to_simple_enclosed_state.include? char
-            injector.game_parser_state(@char_to_simple_enclosed_state[char], self)
+          if char_to_simple_enclosed_state.include? char
+            injector.game_parser_state(char_to_simple_enclosed_state[char], self)
           else
             handle_other_char char
           end
@@ -35,7 +41,7 @@ module PortableBridgeNotation
         end
 
         def add_comment(comment)
-          @comment_array_for_last_token << comment
+          comment_array_for_last_token << comment
         end
 
         def start_suffix(char)
@@ -43,24 +49,24 @@ module PortableBridgeNotation
         end
 
         def with_suffix_annotation(suffix_annotation_string)
-          @comment_array_for_last_token = @annotation_steward.with_suffix_annotation suffix_annotation_string
+          self.comment_array_for_last_token = annotation_steward.with_suffix_annotation suffix_annotation_string
         end
 
         def with_nag(nag)
-          @comment_array_for_last_token = @annotation_steward.with_nag nag
+          self.comment_array_for_last_token = annotation_steward.with_nag nag
         end
 
         def with_note_reference_number(note_reference_number)
-          @comment_array_for_last_token = @annotation_steward.with_note_reference_number note_reference_number
+          self.comment_array_for_last_token = annotation_steward.with_note_reference_number note_reference_number
         end
 
         def handle_asterisk
-          @is_completed = true
+          self.is_completed = true
           self
         end
 
         def handle_plus_sign
-          @is_completed = false
+          self.is_completed = false
           self
         end
 

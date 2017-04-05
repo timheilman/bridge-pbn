@@ -2,14 +2,15 @@ module PortableBridgeNotation
   module Internals
     module GameParserStates
       class InNag < GameParserState
+        attr_accessor :nag
         def post_initialize
-          @nag = ''
+          self.nag = ''
         end
 
         def process_char(char)
           case char
           when digit then
-            @nag << char
+            nag << char
             self
           else
             finalize
@@ -18,7 +19,7 @@ module PortableBridgeNotation
         end
 
         def finalize
-          enclosing_state.with_nag @nag
+          enclosing_state.with_nag nag
         end
       end
     end

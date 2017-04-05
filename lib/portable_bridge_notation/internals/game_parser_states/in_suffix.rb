@@ -2,14 +2,16 @@ module PortableBridgeNotation
   module Internals
     module GameParserStates
       class InSuffix < GameParserState
+        attr_accessor :suffix
+
         def post_initialize
-          @suffix = ''
+          self.suffix = ''
         end
 
         def process_char(char)
           case char
           when exclamation_point, question_mark then
-            @suffix << char
+            suffix << char
             self
           else
             finalize
@@ -18,7 +20,7 @@ module PortableBridgeNotation
         end
 
         def finalize
-          enclosing_state.with_suffix_annotation @suffix
+          enclosing_state.with_suffix_annotation suffix
         end
       end
     end

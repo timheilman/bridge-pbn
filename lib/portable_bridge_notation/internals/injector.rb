@@ -41,24 +41,22 @@ module PortableBridgeNotation
     class Injector
       # arguments passed here are Spring/Guice-sense Singleton-Scoped, but needed for mocking when Injector
       # is a collaborator for the system under test
-      def initialize
-        super
-      end
+      def initialize; end
 
       # Spring/Guice-sense Custom-Scoped:game, assisting construction with runtime parameter pbn_game
       def game_parser(pbn_game, logger, observer)
-        @observer = observer
-        @game_parser = GameParser.new pbn_game_string: pbn_game,
-                                      observer: observer,
-                                      logger: logger,
-                                      injector: self
+        self.cached_observer = observer
+        self.cached_game_parser = GameParser.new pbn_game_string: pbn_game,
+                                                 observer: observer,
+                                                 logger: logger,
+                                                 injector: self
       end
 
       # Spring/Guice-sense Prototype-Scoped, parameterized by type, and assisted for runtime-supplied args
       def game_parser_state(class_sym, enclosing_state = nil)
         GameParserStates.const_get(class_sym).new(
-          game_parser: @game_parser,
-          observer: @observer,
+          game_parser: cached_game_parser,
+          observer: cached_observer,
           injector: self,
           enclosing_state: enclosing_state
         )
@@ -92,6 +90,11 @@ module PortableBridgeNotation
       def game
         Api::Game.new
       end
+
+      private
+
+      attr_accessor :cached_game_parser
+      attr_accessor :cached_observer
     end
   end
 end

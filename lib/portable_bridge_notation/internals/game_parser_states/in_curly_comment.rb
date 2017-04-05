@@ -3,8 +3,10 @@ module PortableBridgeNotation
   module Internals
     module GameParserStates
       class InCurlyComment < GameParserState
+        attr_accessor :comment
+
         def post_initialize
-          @comment = ''
+          self.comment = ''
         end
 
         def process_char(char)
@@ -13,7 +15,7 @@ module PortableBridgeNotation
             enclosing_state.add_comment(@comment.encode(Encoding::UTF_8))
             enclosing_state
           else
-            @comment << char
+            comment << char
             self
           end
         end

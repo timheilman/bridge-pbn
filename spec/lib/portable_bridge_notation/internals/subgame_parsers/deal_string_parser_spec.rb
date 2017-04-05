@@ -46,7 +46,9 @@ module PortableBridgeNotation
         context 'with a bad initial direction letter' do
           let(:deal) { 'M:foo' }
           it 'raises an error' do
-            expect { |block| described_object.yield_cards(&block) }.to raise_error(/.*first position.*M.*/)
+            expect do
+              described_object.yield_cards { |_card| }
+            end.to raise_error(/.*first position.*M.*/)
           end
         end
       end

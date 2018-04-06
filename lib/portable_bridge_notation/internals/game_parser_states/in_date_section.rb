@@ -5,7 +5,7 @@ module PortableBridgeNotation
         def finalize
           emit_comments
           date_match_data = tag_value.match(
-              /([0-9?][0-9?][0-9?][0-9?])\.([0-9?][0-9?])\.([0-9?][0-9?])/
+            /([0-9?][0-9?][0-9?][0-9?])\.([0-9?][0-9?])\.([0-9?][0-9?])/
           )
           return if date_match_data.nil?
           year, month, day = date_match_data.captures

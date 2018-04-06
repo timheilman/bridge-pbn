@@ -4,9 +4,11 @@ module PortableBridgeNotation
       class SimpleDateSection < VacuousSection
         def finalize
           emit_comments
-          year, month, day = tag_value.match(
-            /([0-9?][0-9?][0-9?][0-9?])\.([0-9?][0-9?])\.([0-9?][0-9?])/
-          ).captures
+          date_match_data = tag_value.match(
+              /([0-9?][0-9?][0-9?][0-9?])\.([0-9?][0-9?])\.([0-9?][0-9?])/
+          )
+          return if date_match_data.nil?
+          year, month, day = date_match_data.captures
           notify_observer PortableBridgeNotation::Api::Date.new(year, month, day)
         end
       end

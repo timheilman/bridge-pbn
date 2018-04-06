@@ -20,12 +20,19 @@ Api::Importer#attach which respond_to messages such
 as with_dealt_card(direction:, rank:, suit:) made from the
 In<TagName>Section GameParserStates.
 
+### Example usage
+
+```
+require 'portable_bridge_notation'
+file = File.open('filename.pbn')
+importer = PortableBridgeNotation::Api::Importer.create(io: file)
+importer.import() { |game| pp game.deal }
+```
+
+
 ### Structure of the code
 
-The primary design goal of the code base is practice with elements from
-_Design Patterns_, _Clean Code_, _The Clean Coder_, _Refactoring_,
-and _The Pragmatic Programmer_ .  The structure of the parsing code is
-in two stages:
+The structure of the parsing code is in two stages:
 
 1. Parsing of an Io into game strings, yielding those strings
 2. Parsing of a game string into games, described in game.rb

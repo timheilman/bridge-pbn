@@ -1,3 +1,5 @@
+require 'ostruct'
+
 module PortableBridgeNotation
   module Api
     # intent: try only to bring the structures of PBN into equivalent Ruby-language structures.

@@ -1,5 +1,20 @@
 # Portable Bridge Notation in Pure Ruby
 
+### Security Vulnerabilities: DO NOT USE
+
+untended project's top priority: fix security
+
+### Wat this is/was
+
+Upon revisiting this little project, it's clear this was more of an
+exercise in learning Ruby than a project as I would put it together now.
+
+This project needs a restart from a grammar, I think, since then the
+good tools available for such things can be employed.  (This was an idea
+I tossed around with Joe Harjung back then; what I didn't realize was
+that I was more intent on learning Ruby than on architecting this
+project well.)
+
 ### Origin of the standard
 
 This project aims to provide parsing and building capabilities for
